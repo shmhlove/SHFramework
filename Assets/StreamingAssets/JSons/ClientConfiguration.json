@@ -1,0 +1,22 @@
+{
+	"ClientConfiguration": 
+	{
+		"ServerConfigurationCDN": "",
+		"ServiceMode": "Dev",
+		"Version": "1.0.0",
+		"VSyncCount": 0,
+		"FrameRate": 30,
+		"CacheSize(MB)": 200,
+        
+        
+        "Description_ServerConfigurationCDN_List":
+        {
+            "DEV": "http://blueasa.synology.me/Dev",
+        },
+        
+        "Description_ServiceMode_List":
+        [
+            "Dev", "Dev_QA", "Review", "Live"
+        ]
+    }
+}
