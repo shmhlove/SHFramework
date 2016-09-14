@@ -10,8 +10,11 @@ using System.Xml;
 
 public class SHXML
 {
+    #region Value Members
     public string m_strXMLData = string.Empty;
+    #endregion
 
+    #region System Functions
     public SHXML() { }
     public SHXML(string strFileName)
     {
@@ -37,7 +40,10 @@ public class SHXML
         if (null != pTextAsset)
             SetXMLData(pTextAsset.text);
     }
+    #endregion
 
+
+    #region Interface Functions
     // 인터페이스 : XML데이터가 로드되었는지 체크
     public bool CheckXML()
     {
@@ -96,4 +102,5 @@ public class SHXML
 
         return pNode.ChildNodes;
     }
+    #endregion
 }

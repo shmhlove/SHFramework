@@ -24,6 +24,7 @@ using System.Collections.Generic;
 
 public class UILabelHyperLink : MonoBehaviour
 {
+    #region Value Members
     public bool         m_bIsAutoOpenURL    = true; // 터치 시 URL로 자동 연결합니다.
     public bool         m_bAddUnderLine     = true; // Link문자에 UnderLine을 추가합니다.
 
@@ -31,7 +32,10 @@ public class UILabelHyperLink : MonoBehaviour
     private BoxCollider m_pCollider         = null;
     private Vector2     m_vSizeToCollider   = Vector3.zero;
     private List<Action<string>> m_pEvent   = new List<Action<string>>();
+    #endregion
 
+
+    #region System Functions
     // 시스템 : 시작
     public void Start()
     {
@@ -45,7 +49,10 @@ public class UILabelHyperLink : MonoBehaviour
         SetSizeToCollider();
         SetUnderLine();
     }
+    #endregion
 
+
+    #region Interface Functions
     // 인터페이스 : 이벤트 등록
     public void AddEvent(Action<string> pEvent)
     {
@@ -63,7 +70,10 @@ public class UILabelHyperLink : MonoBehaviour
 
         m_pEvent.Remove(pEvent);
     }
+    #endregion
 
+
+    #region Event Handler
     // 이벤트 : 클릭 이벤트
     void OnCliSH()
     {
@@ -82,7 +92,10 @@ public class UILabelHyperLink : MonoBehaviour
             pEvent(strURL);
         }
     }
+    #endregion
 
+
+    #region Utility Functions
     // 유틸 : 콜리더 생성
     void CreateCollider()
     {
@@ -157,4 +170,5 @@ public class UILabelHyperLink : MonoBehaviour
 
         m_pLabel.text = strLabel;
     }
+    #endregion
 }

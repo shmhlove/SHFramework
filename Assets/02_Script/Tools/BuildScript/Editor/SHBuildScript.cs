@@ -9,58 +9,59 @@ using System.Collections.Generic;
 
 class SHBuildScript
 {
-    static string   APP_NAME  = "Framework";
+    #region Value Members
     static string[] SCENES    = FindEnabledEditorScenes();
+    #endregion
 
     #region KOR Android Build
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 인터페이스 : 한국 AOS App빌드 ( 전체 패킹 )
-    [MenuItem("SHTools/CI/Korea Android To Only AppBuild")]
-    static void KOR_AndroidToOnlyAppBuild()                             {   OnlyAppBuild(eNationType.KOREA, BuildTarget.Android, eServiceMode.DevQA);   }
+    [MenuItem("SHTools/CI/Korea Android To Full AppBuild")]
+    static void KOR_AndroidToOnlyAppBuild()                             {   OnlyAppBuild(eNationType.Korea, BuildTarget.Android, eServiceMode.DevQA);   }
 
     // 인터페이스 : 한국 AOS App빌드 + 번들(ALL) 패킹
-    [MenuItem("SHTools/CI/Korea Android To AppBuild With All AssetBundles Packing")]
-    static void KOR_AndroidToAppBuildWithAllAssetBundlesPacking()       {   AppBuildWithBundlePacking(eNationType.KOREA, BuildTarget.Android, eServiceMode.DevQA, eBundlePackType.All);  }
+    [MenuItem("SHTools/CI/Korea Android To AppBuild With All AssetBundles")]
+    static void KOR_AndroidToAppBuildWithAllAssetBundlesPacking()       {   AppBuildWithBundlePacking(eNationType.Korea, BuildTarget.Android, eServiceMode.DevQA, eBundlePackType.All);  }
 
     // 인터페이스 : 한국 AOS App빌드 + 번들(Update) 패킹
-    [MenuItem("SHTools/CI/Korea Android To AppBuild With Update AssetBundles Packing")]
-    static void KOR_AndroidToAppBuildWithUpdateAssetBundlesPacking()    {   AppBuildWithBundlePacking(eNationType.KOREA, BuildTarget.Android, eServiceMode.DevQA, eBundlePackType.Update);   }
+    [MenuItem("SHTools/CI/Korea Android To AppBuild With Update AssetBundles")]
+    static void KOR_AndroidToAppBuildWithUpdateAssetBundlesPacking()    {   AppBuildWithBundlePacking(eNationType.Korea, BuildTarget.Android, eServiceMode.DevQA, eBundlePackType.Update);   }
 
     // 인터페이스 : 한국 AOS 번들(ALL) 패킹
     [MenuItem("SHTools/CI/Korea Android To Only AssetBundles Of All")]
-    static void KOR_AndroidToOnlyAssetBundlesOfAll()                    {   OnlyBundlePacking(eNationType.KOREA, BuildTarget.Android, eBundlePackType.All);  }
+    static void KOR_AndroidToOnlyAssetBundlesOfAll()                    {   OnlyBundlePacking(eNationType.Korea, BuildTarget.Android, eBundlePackType.All);  }
 
     // 인터페이스 : 한국 AOS 번들(Update) 패킹
     [MenuItem("SHTools/CI/Korea Android To Only AssetBundles Of Update")]
-    static void KOR_AndroidToOnlyAssetBundlesOfUpdate()                 {   OnlyBundlePacking(eNationType.KOREA, BuildTarget.Android, eBundlePackType.Update);   }
+    static void KOR_AndroidToOnlyAssetBundlesOfUpdate()                 {   OnlyBundlePacking(eNationType.Korea, BuildTarget.Android, eBundlePackType.Update);   }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     #endregion
 
     #region KOR IOS Build
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 인터페이스 : 한국 IOS App빌드 ( 전체 패킹 )
-    [MenuItem("SHTools/CI/Korea IPhone To Only AppBuild")]
-    static void KOR_IPhoneToOnlyAppBuild()                              {   OnlyAppBuild(eNationType.KOREA, BuildTarget.iOS, eServiceMode.DevQA);   }
+    [MenuItem("SHTools/CI/Korea IPhone To Full AppBuild")]
+    static void KOR_IPhoneToOnlyAppBuild()                              {   OnlyAppBuild(eNationType.Korea, BuildTarget.iOS, eServiceMode.DevQA);   }
 
     // 인터페이스 : 한국 IOS App빌드 + 번들(ALL) 패킹
-    [MenuItem("SHTools/CI/Korea IPhone To AppBuild With All AssetBundles Packing")]
-    static void KOR_IPhoneToAppBuildWithAllAssetBundlesPacking()        {   AppBuildWithBundlePacking(eNationType.KOREA, BuildTarget.iOS, eServiceMode.DevQA, eBundlePackType.All);  }
+    [MenuItem("SHTools/CI/Korea IPhone To AppBuild With All AssetBundles")]
+    static void KOR_IPhoneToAppBuildWithAllAssetBundlesPacking()        {   AppBuildWithBundlePacking(eNationType.Korea, BuildTarget.iOS, eServiceMode.DevQA, eBundlePackType.All);  }
 
     // 인터페이스 : 한국 IOS App빌드 + 번들(Update) 패킹
-    [MenuItem("SHTools/CI/Korea IPhone To AppBuild With Update AssetBundles Packing")]
-    static void KOR_IPhoneToAppBuildWithUpdateAssetBundlesPacking()     {   AppBuildWithBundlePacking(eNationType.KOREA, BuildTarget.iOS, eServiceMode.DevQA, eBundlePackType.Update);   }
+    [MenuItem("SHTools/CI/Korea IPhone To AppBuild With Update AssetBundles")]
+    static void KOR_IPhoneToAppBuildWithUpdateAssetBundlesPacking()     {   AppBuildWithBundlePacking(eNationType.Korea, BuildTarget.iOS, eServiceMode.DevQA, eBundlePackType.Update);   }
 
     // 인터페이스 : 한국 IOS 번들(ALL) 패킹
     [MenuItem("SHTools/CI/Korea IPhone To Only AssetBundles Of All")]
-    static void KOR_IPhoneToOnlyAssetBundlesOfAll()                     {   OnlyBundlePacking(eNationType.KOREA, BuildTarget.iOS, eBundlePackType.All);  }
+    static void KOR_IPhoneToOnlyAssetBundlesOfAll()                     {   OnlyBundlePacking(eNationType.Korea, BuildTarget.iOS, eBundlePackType.All);  }
 
     // 인터페이스 : 한국 IOS 번들(Update) 패킹
     [MenuItem("SHTools/CI/Korea IPhone To Only AssetBundles Of Update")]
-    static void KOR_IPhoneToOnlyAssetBundlesOfUpdate()                  {   OnlyBundlePacking(eNationType.KOREA, BuildTarget.iOS, eBundlePackType.Update);   }
+    static void KOR_IPhoneToOnlyAssetBundlesOfUpdate()                  {   OnlyBundlePacking(eNationType.Korea, BuildTarget.iOS, eBundlePackType.Update);   }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     #endregion
 
-    #region Utility
+    #region Utility Functions
     // 유틸 : Only App Build
     static void OnlyAppBuild(eNationType eNation, BuildTarget eTarget, eServiceMode eMode)
     {
@@ -105,7 +106,7 @@ class SHBuildScript
     {
         switch (eNation)
         {
-            case eNationType.KOREA:
+            case eNationType.Korea:
                 // ClinetConfiguration파일 업데이트( CDN 주소 )
                 WriteClientConfiguration(GetURLToConfigurationCDNOfKorea(eMode), eMode);
                 break;
@@ -149,7 +150,7 @@ class SHBuildScript
         {
             EditorUserBuildSettings.SwitchActiveBuildTarget(eTarget);
 
-            string strFileName = (BuildTarget.Android == eTarget) ? string.Format("{0}.apk", APP_NAME) : APP_NAME;
+            string strFileName = (BuildTarget.Android == eTarget) ? string.Format("{0}.apk", Single.AppInfo.GetAppName()) : Single.AppInfo.GetAppName();
             string strResult = BuildPipeline.BuildPlayer(strScenes, strFileName, eTarget, eOptions);
             if (0 < strResult.Length)
                 throw new Exception("BuildPlayer failure: " + strResult);

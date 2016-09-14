@@ -46,11 +46,18 @@ using System.Collections.Generic;
 
 public class SHEventUtil : SHSingleton<SHEventUtil>
 {
+    #region Value Members
     private SHEvent pEvent = new SHEvent();
+    #endregion
 
+
+    #region Virtual Functions
     public override void OnInitialize() { }
     public override void OnFinalize() { }
+    #endregion
 
+
+    #region Interface Functions
     public SHEventParam<T> SetArgs<T>(T pArgs)
     {
         return new SHEventParam<T>(pArgs);
@@ -83,6 +90,7 @@ public class SHEventUtil : SHSingleton<SHEventUtil>
         pEvent.Add(pObserver);
         pEvent.Callback<T>(this, pArgs);
     }
+    #endregion
 }
 
 public class SHEventParam<T> : EventArgs
@@ -94,15 +102,22 @@ public class SHEventParam<T> : EventArgs
 
 public sealed class SHEvent
 {
+    #region Value Members
     private event EventHandler m_pHandler = null;
     private Dictionary<EventHandler, string> m_dicHandler = new Dictionary<EventHandler, string>();
+    #endregion
 
+
+    #region System Functions
     public SHEvent() { }
     public SHEvent(EventHandler pObserver)
     {
         Add(pObserver);
     }
+    #endregion
 
+
+    #region Interface Functions
     public void Add(EventHandler pObserver, bool bCheckInstance = false)
     {
         if (true == bCheckInstance)
@@ -161,4 +176,5 @@ public sealed class SHEvent
         if (null != m_pHandler)
             m_pHandler(pSender, pArgs);
     }
+    #endregion
 }

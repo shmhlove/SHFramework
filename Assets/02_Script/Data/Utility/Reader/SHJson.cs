@@ -11,9 +11,13 @@ using SimpleJSON;
 
 public class SHJson
 {
+    #region Value Members
     private JSONNode m_pJsonNode = null;
     public JSONNode Node { get { return m_pJsonNode; } }
+    #endregion
 
+
+    #region System Functions
     public SHJson() { }
     public SHJson(string strFileName)
     {
@@ -35,7 +39,10 @@ public class SHJson
     {
         SetJsonNode(null);
     }
+    #endregion
 
+
+    #region Interface Functions
     // 인터페이스 : JsonNode설정
     public JSONNode SetJsonNode(JSONNode pNode)
     {
@@ -80,23 +87,7 @@ public class SHJson
 
         return GetJsonParseToString(pWWW.text);
     }
-
-    // 유틸 : Json파일 로드
-    public JSONNode LoadLocal(string strFilePath)
-    {
-        if (false == File.Exists(strFilePath))
-            return null;
-
-        string strBuff = File.ReadAllText(strFilePath);
-        if (true == string.IsNullOrEmpty(strBuff))
-        {
-            Debug.LogWarningFormat("Json(*.json)파일을 읽는 중 오류발생!!(Path:{0})", strFilePath);
-            return null;
-        }
-
-        return GetJsonParseToString(strBuff);
-    }
-
+    
     // 인터페이스 : Byte로 Json파싱
     public JSONNode GetJsonParseToByte(byte[] pByte)
     {
@@ -122,30 +113,15 @@ public class SHJson
         return (null != m_pJsonNode);
     }
 
-    // 유틸 : StreamingPath경로 만들기
-    string GetStreamingPath(string strFileName)
-    {
-        string strPath = string.Empty;
-
-#if UNITY_EDITOR || UNITY_STANDALONE
-        strPath = string.Format("{0}{1}",    "file://", SHPath.GetPathToStreamingAssets());
-#elif UNITY_ANDROID
-        strPath = string.Format("{0}{1}{2}", "jar:file://", SHPath.GetPathToAssets(), "!/assets");
-#elif UNITY_IOS
-        strPath = string.Format("{0}{1}{2}", "file://", SHPath.GetPathToAssets(), "/Raw");
-#endif
-
-        return string.Format("{0}/JSons/{1}.json", strPath, Path.GetFileNameWithoutExtension(strFileName));
-    }
-
-#if UNITY_EDITOR
+    // 인터페이스 : DataSet을 Json으로 쓰기
     public void Write(string strFileName, Dictionary<string, List<SHTableDataSet>> dicData)
     {
+        #if UNITY_EDITOR
         if (null == dicData)
         {
             Debug.LogError(string.Format("Json으로 저장할 데이터가 없습니다!!"));
             return;
-        }   
+        }
 
         string strNewLine = "\r\n";
         string strBuff = "{" + strNewLine;
@@ -157,7 +133,7 @@ public class SHJson
                 strBuff += "\t\t{" + strNewLine;
                 for (int iCol = 0; iCol < pData.m_iMaxCol; ++iCol)
                 {
-                    strBuff += string.Format("\t\t\t\"{0}\": {1},{2}", 
+                    strBuff += string.Format("\t\t\t\"{0}\": {1},{2}",
                         pData.m_ColumnNames[iCol],
                         pData.m_pDatas[iCol],
                         strNewLine);
@@ -172,6 +148,42 @@ public class SHJson
         strBuff += "}";
 
         SHUtil.SaveFile(strBuff, string.Format("{0}/{1}.json", SHPath.GetPathToJson(), Path.GetFileNameWithoutExtension(strFileName)));
+        #endif
     }
+    #endregion
+
+
+    #region Utility Functions
+    // 유틸 : Json파일 로드
+    public JSONNode LoadLocal(string strFilePath)
+    {
+        if (false == File.Exists(strFilePath))
+            return null;
+
+        string strBuff = File.ReadAllText(strFilePath);
+        if (true == string.IsNullOrEmpty(strBuff))
+        {
+            Debug.LogWarningFormat("Json(*.json)파일을 읽는 중 오류발생!!(Path:{0})", strFilePath);
+            return null;
+        }
+
+        return GetJsonParseToString(strBuff);
+    }
+
+    // 유틸 : StreamingPath경로 만들기
+    string GetStreamingPath(string strFileName)
+    {
+        string strPath = string.Empty;
+
+#if UNITY_EDITOR || UNITY_STANDALONE
+        strPath = string.Format("{0}{1}", "file://", SHPath.GetPathToStreamingAssets());
+#elif UNITY_ANDROID
+        strPath = string.Format("{0}{1}{2}", "jar:file://", SHPath.GetPathToAssets(), "!/assets");
+#elif UNITY_IOS
+        strPath = string.Format("{0}{1}{2}", "file://", SHPath.GetPathToAssets(), "/Raw");
 #endif
+
+        return string.Format("{0}/JSons/{1}.json", strPath, Path.GetFileNameWithoutExtension(strFileName));
+    }
+    #endregion
 }

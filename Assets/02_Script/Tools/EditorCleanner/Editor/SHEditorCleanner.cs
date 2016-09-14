@@ -9,8 +9,8 @@ using System.Collections.Generic;
 
 public class SHEditorCleanner : Editor 
 {
-    [MenuItem("SHTools/Editor CleanCache", false, 100)]
-    [MenuItem("Assets/SHTools/Editor CleanCache", false, 100)]
+    [MenuItem("SHTools/Editor/CleanCache", false, 100)]
+    [MenuItem("Assets/SHTools/Editor/CleanCache", false, 100)]
     static void SelectToCleanCache()
     {
         if (true == Caching.CleanCache())
@@ -23,16 +23,16 @@ public class SHEditorCleanner : Editor
         }
     }
 
-    [MenuItem("SHTools/Editor CleanPlayerPrefs", false, 101)]
-    [MenuItem("Assets/SHTools/Editor CleanPlayerPrefs", false, 101)]
+    [MenuItem("SHTools/Editor/CleanPlayerPrefs", false, 101)]
+    [MenuItem("Assets/SHTools/Editor/CleanPlayerPrefs", false, 101)]
     static void SelectToCleanPlayerPrefs()
     {
         SHPlayerPrefs.DeleteAll();
         EditorUtility.DisplayDialog("알림", "PlayerPrefs가 삭제되었습니다.", "확인");
     }
 
-    [MenuItem("SHTools/Editor Delete PersistentData", false, 102)]
-    [MenuItem("Assets/SHTools/Editor Delete PersistentData", false, 102)]
+    [MenuItem("SHTools/Editor/Delete PersistentData", false, 102)]
+    [MenuItem("Assets/SHTools/Editor/Delete PersistentData", false, 102)]
     static void SelectToDeletePersistentData()
     {
         SHUtil.DeleteDirectory(Application.persistentDataPath);

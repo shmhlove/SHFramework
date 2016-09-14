@@ -5,6 +5,15 @@ using System.Collections.Generic;
 
 public partial class SHUserData : SHBaseData
 {
+    #region Value Members
+    #endregion
+
+
+    #region System Functions
+    #endregion
+
+
+    #region Virtual Functions
     public override void OnInitialize() { }
 
     public override void OnFinalize() { }
@@ -18,4 +27,5 @@ public partial class SHUserData : SHBaseData
     public override void Load(SHLoadData pInfo, Action<string, SHLoadStartInfo> pStart, Action<string, SHLoadEndInfo> pDone) { }
 
     public override void Patch(SHLoadData pInfo, Action<string, SHLoadStartInfo> pStart, Action<string, SHLoadEndInfo> pDone) { }
+    #endregion
 }

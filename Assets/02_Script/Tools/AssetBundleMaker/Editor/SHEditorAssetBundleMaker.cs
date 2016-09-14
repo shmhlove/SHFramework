@@ -7,28 +7,18 @@ using System.Collections;
 
 public class SHEditorAssetBundleMaker : EditorWindow
 {
+    #region Value Members
     public enum PlatformType { ALL, AOS, IOS, PC };
 
     private static EditorWindow m_pEditorWindow;
     private static string       m_strOutputPath;
     private static int          m_iSelPlatformType;
     private static bool         m_bIsDeleteOriginal;
+    #endregion
 
-    // 시스템 : 메뉴 선택
-    [MenuItem("SHTools/AssetBundleMaker", false, 200)]
-    [MenuItem("Assets/AssetBundleMaker", false, 200)]
-    static void SelectMenu()
-    {
-        m_pEditorWindow = EditorWindow.GetWindow(typeof(SHEditorAssetBundleMaker));
-        m_pEditorWindow.autoRepaintOnSceneChange = true;
-        m_pEditorWindow.ShowUtility();
 
-        m_strOutputPath     = SHPath.GetPathToExportAssetBundle();
-        m_iSelPlatformType  = 0;
-        m_bIsDeleteOriginal = false;
-    }
-    
-    // 시스템 : 렌더링
+    #region System Functions
+    // 시스템 : GUI 업데이트
     void OnGUI()
     {
         GUILayout.Label("Asset Bundle Maker", EditorStyles.boldLabel);
@@ -48,7 +38,27 @@ public class SHEditorAssetBundleMaker : EditorWindow
 
         StartPacking(m_iSelPlatformType, GetPackingType(), m_bIsDeleteOriginal, m_strOutputPath);
     }
+    #endregion
 
+
+    #region Interface Functions
+    // 시스템 : 메뉴 선택
+    [MenuItem("SHTools/AssetBundleMaker", false, 200)]
+    [MenuItem("Assets/AssetBundleMaker", false, 200)]
+    static void SelectMenu()
+    {
+        m_pEditorWindow = EditorWindow.GetWindow(typeof(SHEditorAssetBundleMaker));
+        m_pEditorWindow.autoRepaintOnSceneChange = true;
+        m_pEditorWindow.ShowUtility();
+
+        m_strOutputPath     = SHPath.GetPathToExportAssetBundle();
+        m_iSelPlatformType  = 0;
+        m_bIsDeleteOriginal = false;
+    }
+    #endregion
+
+
+    #region Utility Functions
     // 유틸 : 플랫폼 타입 얻기
     int GetPlatformType()
     {
@@ -125,5 +135,6 @@ public class SHEditorAssetBundleMaker : EditorWindow
                                     break;
         }
     }
+    #endregion
 }
 #endif

@@ -1,7 +1,7 @@
 ﻿// 국가
 public enum eNationType
 {
-    KOREA,
+    Korea,
 }
 
 // 서비스 모드

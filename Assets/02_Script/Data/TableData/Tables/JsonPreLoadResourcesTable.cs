@@ -9,23 +9,28 @@ using SimpleJSON;
 
 public class JsonPreLoadResourcesTable : SHBaseTable
 {
+    #region Value Members
     Dictionary<eSceneType, List<string>> m_pData = new Dictionary<eSceneType, List<string>>();
+    #endregion
 
+
+    #region System Functions
     public JsonPreLoadResourcesTable()
     {
         m_strFileName = "PreLoadResourcesTable";
     }
+    #endregion
 
+
+    #region Virtual Functions
     public override void Initialize()
     {
         m_pData.Clear();
     }
-
     public override bool IsLoadTable()
     {
         return (0 != m_pData.Count);
     }
-
     public override bool? LoadJsonTable(JSONNode pJson, string strFileName)
     {
         if (null == pJson)
@@ -48,16 +53,10 @@ public class JsonPreLoadResourcesTable : SHBaseTable
 
         return true;
     }
+    #endregion
 
-    void AddData(eSceneType eType, string strData)
-    {
-        if (false == m_pData.ContainsKey(eType))
-            m_pData.Add(eType, new List<string>());
 
-        strData = strData.ToLower();
-        m_pData[eType].Add(strData);
-    }
-
+    #region Interface Functions
     public override ICollection GetData()
     {
         if (false == IsLoadTable())
@@ -65,7 +64,6 @@ public class JsonPreLoadResourcesTable : SHBaseTable
 
         return m_pData;
     }
-
     public List<string> GetData(eSceneType eType)
     {
         if (false == IsLoadTable())
@@ -76,4 +74,17 @@ public class JsonPreLoadResourcesTable : SHBaseTable
 
         return m_pData[eType];
     }
+    #endregion
+
+
+    #region Utility Functions
+    void AddData(eSceneType eType, string strData)
+    {
+        if (false == m_pData.ContainsKey(eType))
+            m_pData.Add(eType, new List<string>());
+
+        strData = strData.ToLower();
+        m_pData[eType].Add(strData);
+    }
+    #endregion
 }

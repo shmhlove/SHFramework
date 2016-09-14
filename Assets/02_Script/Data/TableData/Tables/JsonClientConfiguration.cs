@@ -9,18 +9,25 @@ using SimpleJSON;
 
 public class JsonClientConfiguration : SHBaseTable
 {
+    #region Value Members
     public string        m_strConfigurationCDN  = string.Empty;
     public string        m_strServiceMode       = string.Empty;
     public string        m_strVersion           = string.Empty;
     public int           m_iVSyncCount          = 0;
     public int           m_iFrameRate           = 60;
     public int           m_iCacheSize           = 200;
+    #endregion
 
+
+    #region System Functions
     public JsonClientConfiguration()
     {
         m_strFileName = "ClientConfiguration";
     }
+    #endregion
 
+
+    #region Virtual Functions
     public override void Initialize()
     {
         m_strConfigurationCDN   = string.Empty;
@@ -30,12 +37,10 @@ public class JsonClientConfiguration : SHBaseTable
         m_iFrameRate            = 60;
         m_iCacheSize            = 200;
     }
-
     public override bool IsLoadTable()
     {
         return (false == string.IsNullOrEmpty(m_strVersion));
     }
-
     public override bool? LoadJsonTable(JSONNode pJson, string strFileName)
     {
         if (null == pJson)
@@ -52,8 +57,10 @@ public class JsonClientConfiguration : SHBaseTable
         
         return true;
     }
+    #endregion
 
-    // 인터페이스 : 정보를 Json파일로 저장
+
+    #region Interface Functions
     public void SaveJsonFile(string strSavePath)
     {
         string strNewLine = "\r\n";
@@ -93,8 +100,6 @@ public class JsonClientConfiguration : SHBaseTable
         // 저장
         SHUtil.SaveFile(strBuff, string.Format("{0}/{1}.json", strSavePath, m_strFileName));
     }
-
-    // 인터페이스 : ConfigurationCDN URL얻기
     public string GetConfigurationCDN()
     {
         if (false == IsLoadTable())
@@ -102,8 +107,6 @@ public class JsonClientConfiguration : SHBaseTable
 
         return m_strConfigurationCDN;
     }
-
-    // 인터페이스 : 서비스 모드 얻기
     public string GetServiceMode()
     {
         if (false == IsLoadTable())
@@ -111,8 +114,6 @@ public class JsonClientConfiguration : SHBaseTable
 
         return m_strServiceMode;
     }
-
-    // 인터페이스 : 클라이언트 버전얻기
     public string GetVersion()
     {
         if (false == IsLoadTable())
@@ -131,8 +132,6 @@ public class JsonClientConfiguration : SHBaseTable
 
         return int.Parse(strSplit[((int)eOrder) - 1]);
     }
-
-    // 인터페이스 : VSync 카운트 얻기
     public int GetVSyncCount()
     {
         if (false == IsLoadTable())
@@ -140,8 +139,6 @@ public class JsonClientConfiguration : SHBaseTable
 
         return m_iVSyncCount;
     }
-
-    // 인터페이스 : 프레임 레이트 얻기
     public int GetFrameRate()
     {
         if (false == IsLoadTable())
@@ -149,8 +146,6 @@ public class JsonClientConfiguration : SHBaseTable
 
         return m_iFrameRate;
     }
-
-    // 인터페이스 : 캐쉬크기 얻기
     public int GetCacheSize()
     {
         if (false == IsLoadTable())
@@ -158,4 +153,5 @@ public class JsonClientConfiguration : SHBaseTable
 
         return m_iCacheSize;
     }
+    #endregion
 }

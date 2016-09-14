@@ -12,11 +12,15 @@ using SimpleJSON;
 
 public class AssetBundleInfo
 {
+    #region Value Members
     public string                                   m_strBundleName = string.Empty;
     public long                                     m_lBundleSize   = 0;
     public Hash128                                  m_pHash128;
     public Dictionary<string, SHResourcesTableInfo> m_dicResources  = new Dictionary<string, SHResourcesTableInfo>();
+    #endregion
 
+
+    #region System Functions
     public AssetBundleInfo() { }
     public AssetBundleInfo(AssetBundleInfo pCopy)
     {
@@ -25,7 +29,10 @@ public class AssetBundleInfo
         m_pHash128      = pCopy.m_pHash128;
         m_dicResources  = new Dictionary<string, SHResourcesTableInfo>(pCopy.m_dicResources);
     }
+    #endregion
 
+
+    #region Interface Functions
     public void AddResourceInfo(SHResourcesTableInfo pInfo)
     {
         if (null == pInfo)
@@ -59,17 +66,25 @@ public class AssetBundleInfo
     {
         return m_dicResources.ContainsKey(strResourceName);
     }
+    #endregion
 }
 
 public class JsonAssetBundleInfo : SHBaseTable
 {
+    #region Value Members
     Dictionary<string, AssetBundleInfo> m_pData = new Dictionary<string, AssetBundleInfo>();
+    #endregion
 
+
+    #region System Functions
     public JsonAssetBundleInfo()
     {
         m_strFileName = "AssetBundleInfo";
     }
+    #endregion
 
+
+    #region Virtual Functions
     public override void Initialize()
     {
         m_pData.Clear();
@@ -116,7 +131,11 @@ public class JsonAssetBundleInfo : SHBaseTable
 
         return true;
     }
-    
+    #endregion
+
+
+    #region Interface Functions
+    // 인터페이스 : 정보파일 다운로드
     public void DownloadByCDN(Action pComplate)
     {
         // 서버정보파일(ServerConfiguration.json)에 URL이 없으면 패치하지 않는다.
@@ -141,18 +160,6 @@ public class JsonAssetBundleInfo : SHBaseTable
             }
 
         }, new WWW(string.Format("{0}/{1}.json", SHPath.GetURLToBundleCDNWithPlatform(), m_strFileName)));
-    }
-
-    // 유틸 : 데이터 하나 저장
-    void AddData(string strKey, AssetBundleInfo pData)
-    {
-        m_pData[strKey.ToLower()] = pData;
-    }
-
-    // 유틸 : 데이터 덮기
-    public void SetData(Dictionary<string, AssetBundleInfo> pData)
-    {
-        m_pData = new Dictionary<string, AssetBundleInfo>(pData);
     }
 
     // 인터페이스 : 컨테이너 얻기
@@ -322,4 +329,20 @@ public class JsonAssetBundleInfo : SHBaseTable
     {
         SHResourcesLister.SaveToAssetBundleInfo(dicData, strSaveFilePath);
     }
+    #endregion
+
+
+    #region Utility Functions
+    // 유틸 : 데이터 하나 저장
+    void AddData(string strKey, AssetBundleInfo pData)
+    {
+        m_pData[strKey.ToLower()] = pData;
+    }
+
+    // 유틸 : 데이터 덮기
+    public void SetData(Dictionary<string, AssetBundleInfo> pData)
+    {
+        m_pData = new Dictionary<string, AssetBundleInfo>(pData);
+    }
+    #endregion
 }

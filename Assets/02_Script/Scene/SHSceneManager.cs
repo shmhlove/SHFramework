@@ -19,6 +19,7 @@ public class SHSceneHistory
 
 public class SHSceneManager : SHSingleton<SHSceneManager>
 {
+    #region Value Members
     // 씬 상태
     private eSceneType      m_eCurrentScene   = eSceneType.None;
     private eSceneType      m_eBeforeScene    = eSceneType.None;
@@ -29,7 +30,10 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
     // 이벤트
     private List<Action<eSceneType, eSceneType>> m_pEventToChangeScene = 
         new List<Action<eSceneType, eSceneType>>();
+    #endregion
 
+
+    #region Virtual Functions
     // 다양화 : 초기화
     public override void OnInitialize()
     {
@@ -38,7 +42,10 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
 
     // 다양화 : 종료
     public override void OnFinalize() { }
+    #endregion
 
+
+    #region Interface Functions
     // 인터페이스 : 씬 이동
     public void GoTo(eSceneType eChange)
     {
@@ -50,45 +57,6 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
 
         // 로드명령
 		ExcuteGoTo(eChange); 
-    }
-
-    // 유틸 : 씬 이동 실행
-    void ExcuteGoTo(eSceneType eType)
-    {
-        if (true == IsNeedLoading(eType))
-            LoadScene(eSceneType.Loading, null); 
-        else
-            LoadScene(eType, null);
-    }
-
-    // 인터페이스 : 씬 로드 ( Add 방식 : SceneData 클래스에서 호출됨 )
-    public AsyncOperation AddScene(string strSceneName, Action<bool> pComplate)
-    {
-        return SetLoadPostProcess(pComplate,
-            SceneManager.LoadSceneAsync(strSceneName, LoadSceneMode.Additive));
-    }
-
-    // 인터페이스 : 씬 로드 ( Change 방식 : GoTo 명령시 호출됨 )
-    public AsyncOperation LoadScene(eSceneType eType, Action<bool> pComplate)
-    {
-        return SetLoadPostProcess(pComplate,
-            SceneManager.LoadSceneAsync(eType.ToString(), LoadSceneMode.Single));
-    }
-
-    // 유틸 : 씬 로드 후 처리를 위한 코루틴 등록
-    AsyncOperation SetLoadPostProcess(Action<bool> pComplate, AsyncOperation pAsyncInfo)
-    {
-        Single.Coroutine.Async((bIsSuccess) =>
-        {
-            if (false == bIsSuccess)
-                Debug.LogError(string.Format("씬 로드 실패!!(SceneType : {0})", GetCurrentScene()));
-
-            if (null != pComplate)
-                pComplate(bIsSuccess);
-        },
-        pAsyncInfo);
-
-        return pAsyncInfo;
     }
 
     // 인터페이스 : 현재 씬 얻기
@@ -166,7 +134,49 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
 
         m_pEventToChangeScene.Remove(pAction);
     }
+    #endregion
 
+
+    #region Utility Functions
+    // 유틸 : 씬 이동 실행
+    void ExcuteGoTo(eSceneType eType)
+    {
+        if (true == IsNeedLoading(eType))
+            LoadScene(eSceneType.Loading, null);
+        else
+            LoadScene(eType, null);
+    }
+    
+    // 유틸 : 씬 로드 ( Change 방식 : GoTo 명령시 호출됨 )
+    AsyncOperation LoadScene(eSceneType eType, Action<bool> pComplate)
+    {
+        return SetLoadPostProcess(pComplate,
+            SceneManager.LoadSceneAsync(eType.ToString(), LoadSceneMode.Single));
+    }
+    
+    // 유틸 : 씬 로드 ( Add 방식 : SceneData 클래스에서 호출됨 )
+    AsyncOperation AddScene(string strSceneName, Action<bool> pComplate)
+    {
+        return SetLoadPostProcess(pComplate,
+            SceneManager.LoadSceneAsync(strSceneName, LoadSceneMode.Additive));
+    }
+
+    // 유틸 : 씬 로드 후 처리를 위한 코루틴 등록
+    AsyncOperation SetLoadPostProcess(Action<bool> pComplate, AsyncOperation pAsyncInfo)
+    {
+        Single.Coroutine.Async((bIsSuccess) =>
+        {
+            if (false == bIsSuccess)
+                Debug.LogError(string.Format("씬 로드 실패!!(SceneType : {0})", GetCurrentScene()));
+
+            if (null != pComplate)
+                pComplate(bIsSuccess);
+        },
+        pAsyncInfo);
+
+        return pAsyncInfo;
+    }
+    
     // 유틸 : 등록된 콜백인가?
     bool IsAddEvent(Action<eSceneType, eSceneType> pAction)
     {
@@ -205,4 +215,5 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
         m_eBeforeScene  = m_eCurrentScene;
         m_eCurrentScene = eType;
     }
+    #endregion
 }

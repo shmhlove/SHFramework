@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public partial class SHLoader
 {
+    #region Interface Functions
     public void LoadStart(SHLoadData pLoadInfo,
         EventHandler pComplate = null, EventHandler pProgress = null, EventHandler pError = null)
     {
@@ -52,7 +53,10 @@ public partial class SHLoader
         //Thread pThread = new Thread(new ThreadStart(ThreadToLoad));
         //pThread.Start();
     }
+    #endregion
 
+
+    #region Event Handler
     void OnEventToPrograss(object pSender, EventArgs vArgs)
     {
         var pInfo = Single.Event.GetArgs<SHLoadEvent>(vArgs);
@@ -114,4 +118,5 @@ public partial class SHLoader
                         pInfo.m_pCount.Value2,
                         pInfo.m_pTime.Value1);
     }
+    #endregion
 }

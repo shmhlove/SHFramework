@@ -9,6 +9,7 @@ using SimpleJSON;
 
 public class SHResourcesTableInfo
 {
+    #region Value Members
     public string           m_strName;             // 확장자가 없는 이름
     public string           m_strFileName;         // 확장자가 있는 이름
     public string           m_strExtension;        // 확장자
@@ -17,7 +18,10 @@ public class SHResourcesTableInfo
     public string           m_strHash;             // 해시
     public string           m_strPath;             // Resources폴더 이하 경로
     public eResourceType    m_eResourceType;       // 리소스 타입
+    #endregion
 
+
+    #region Interface Functions
     public void CopyTo(SHResourcesTableInfo pData)
     {
         if (null == pData)
@@ -32,17 +36,25 @@ public class SHResourcesTableInfo
         m_strPath             = pData.m_strPath;
         m_eResourceType       = pData.m_eResourceType;
     }
+    #endregion
 }
 
 public class JsonResourcesTable : SHBaseTable
 {
+    #region Value Members
     Dictionary<string, SHResourcesTableInfo> m_pData = new Dictionary<string, SHResourcesTableInfo>();
+    #endregion
 
+
+    #region System Functions
     public JsonResourcesTable()
     {
         m_strFileName = "ResourcesTable";
     }
+    #endregion
 
+
+    #region Virtual Functions
     public override void Initialize()
     {
         m_pData.Clear();
@@ -78,12 +90,6 @@ public class JsonResourcesTable : SHBaseTable
         return true;
     }
 
-    void AddResources(string strKey, SHResourcesTableInfo pData)
-    {
-        m_pData[strKey.ToLower().Trim()] = pData;
-    }
-
-    // 인터페이스 : 컨테이너 얻기
     public override ICollection GetData()
     {
         if (false == IsLoadTable())
@@ -91,7 +97,10 @@ public class JsonResourcesTable : SHBaseTable
 
         return m_pData;
     }
-    
+    #endregion
+
+
+    #region Interface Functions
     // 인터페이스 : 파일명으로 리소스 정보얻기
     public SHResourcesTableInfo GetResouceInfo(string strName)
     {
@@ -136,4 +145,13 @@ public class JsonResourcesTable : SHBaseTable
     {
         return (null != GetResouceInfo(strName));
     }
+    #endregion
+
+
+    #region Utility Functions
+    void AddResources(string strKey, SHResourcesTableInfo pData)
+    {
+        m_pData[strKey.ToLower().Trim()] = pData;
+    }
+    #endregion
 }

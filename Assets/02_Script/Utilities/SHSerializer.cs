@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 public class SHSerializer
 {
+    #region Value Members
     private int         m_iIndex = 0;
     private byte[]      m_pByteArray;
     private List<byte>  m_pStream = new List<byte>();
@@ -22,14 +23,20 @@ public class SHSerializer
             return m_pByteArray;
         }
     }
+    #endregion
 
+
+    #region System Functions
     public SHSerializer() { }
     public SHSerializer(byte[] ByteArray)
     {
         m_pByteArray = ByteArray;
         m_pStream    = new List<byte>(ByteArray);
     }
+    #endregion
 
+
+    #region Interface Functions
     // 인터페이스 : int
     public void Serialize(int iValue)
     {
@@ -206,7 +213,10 @@ public class SHSerializer
 
         return pBytes;
     }
+    #endregion
 
+
+    #region Utility Functions
     // 유틸 : Vector 혹은 Quaternion 시리얼라이즈
     byte[] GetBytes(Vector2 vValue)
     {
@@ -270,7 +280,10 @@ public class SHSerializer
 
         return m_iIndex;
     }
+    #endregion
 
+
+    #region Example Functions
     public static void Example()
     {
         Vector2 vVector2    = UnityEngine.Random.insideUnitCircle;
@@ -312,4 +325,5 @@ public class SHSerializer
         Debug.Log(string.Format("vVector2 : {0}, vVector3 : {1}, qQuater : {2}, fFloat : {3}, iInt : {4}, dDouble : {5}, strString : {6}, bBool : {7}",
             vVector2, vVector3, qQuater, fFloat, iInt, dDouble, strString, bBool));
     }
+    #endregion
 }

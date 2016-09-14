@@ -6,8 +6,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 [CustomEditor(typeof(SHConvertToByte))]
-public class SHEditorConvertToByte : Editor 
+public class SHEditorConvertToByte : Editor
 {
+    #region Interface Functions
     [MenuItem("SHTools/Convert Table To Byte", false, 0)]
     [MenuItem("Assets/SHTools/Convert Table To Byte", false, 0)]
     static void SelectToMenu()
@@ -23,5 +24,6 @@ public class SHEditorConvertToByte : Editor
             string.Format("Bytes파일이 변환/생성 되었습니다.!!\n시간 : {0:F2}sec", 
             ((DateTime.Now - pStartTime).TotalMilliseconds / 1000.0f)), "확인");
     }
+    #endregion
 }
 #endif

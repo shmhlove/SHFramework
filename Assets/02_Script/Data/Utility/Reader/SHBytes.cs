@@ -9,8 +9,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class SHBytes
 {
+    #region Value Members
     public byte[] m_pBytes = null;
+    #endregion
 
+
+    #region System Functions
     public SHBytes() { }
     public SHBytes(string strFileName)
     {
@@ -28,7 +32,23 @@ public class SHBytes
         else
             m_pBytes = LoadPackage(strFileName);
     }
+    #endregion
 
+
+    #region Interface Functions
+    public bool CheckBytes()
+    {
+        return (null != m_pBytes);
+    }
+
+    public byte[] GetBytes()
+    {
+        return m_pBytes;
+    }
+    #endregion
+
+
+    #region Utility Functions
     // 유틸 : Byte파일 로드
     byte[] LoadWWW(string strFilePath)
     {
@@ -63,14 +83,5 @@ public class SHBytes
 
         return pTextAsset.bytes;
     }
-
-    public bool CheckBytes()
-    {
-        return (null != m_pBytes);
-    }
-
-    public byte[] GetBytes()
-    {
-        return m_pBytes;
-    }
+    #endregion
 }

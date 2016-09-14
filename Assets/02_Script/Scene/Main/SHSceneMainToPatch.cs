@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SHSceneMainToPatch : MonoBehaviour 
+public class SHSceneMainToPatch : MonoBehaviour
 {
-	void Start () 
+    #region System Functions
+    void Start() 
     {
         Single.AppInfo.CreateSingleton();
 	}
 	
 	void Update () 
     {
-	
-	}
+
+    }
+    #endregion
 }

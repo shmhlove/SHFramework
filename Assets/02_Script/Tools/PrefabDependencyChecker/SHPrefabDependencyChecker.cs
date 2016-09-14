@@ -9,8 +9,12 @@ using System.Collections.Generic;
 
 public class SHPrefabDependencyChecker
 {
+    #region Value Members
     Dictionary<string, string> m_dicGUID = new Dictionary<string, string>();
+    #endregion
 
+
+    #region Interface Functions
     // 인터페이스 : 원본 리소스들의 GUID를 기록한다.
     public void ReadyGUID()
     {
@@ -55,5 +59,6 @@ public class SHPrefabDependencyChecker
 
         return (0 == pResult.Count) ? null : pResult;
     }
+    #endregion
 }
 #endif

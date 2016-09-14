@@ -4,6 +4,7 @@ using System.Collections;
 
 public class SHMonoBehaviour : MonoBehaviour
 {
+    #region Value Members
     private Vector3     m_vPosition         = Vector3.zero;
     private Vector3     m_vLocalPosition    = Vector3.zero;
 
@@ -13,10 +14,10 @@ public class SHMonoBehaviour : MonoBehaviour
     private Quaternion  m_qLocalRotate      = Quaternion.identity;
 
     private eBOOL       m_eIsActive         = eBOOL.None;
+    #endregion
 
-    public virtual void OnAwakeToExplicit() { }
 
-    #region Active
+    #region Interface Active
     public void SetActive(bool bIsActive)
     {
         if (bIsActive == IsActive())
@@ -34,7 +35,8 @@ public class SHMonoBehaviour : MonoBehaviour
     }
     #endregion
 
-    #region Position
+
+    #region Interface Position
     public void SetPosition(Vector3 vPos)
     {
         gameObject.transform.position = m_vPosition = vPos;
@@ -69,7 +71,8 @@ public class SHMonoBehaviour : MonoBehaviour
     }
     #endregion
 
-    #region Scale
+
+    #region Interface Scale
     public void SetLocalScale(Vector3 vScale)
     {
         gameObject.transform.localScale = m_vLocalScale = vScale;
@@ -93,7 +96,8 @@ public class SHMonoBehaviour : MonoBehaviour
     }
     #endregion
 
-    #region Rotate
+
+    #region Interface Rotate
     public void SetRotate(Quaternion qRotate)
     {
         gameObject.transform.rotation = m_qRotate = qRotate;

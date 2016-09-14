@@ -19,16 +19,23 @@ public class JsonServerConfigurationData
 
 public class JsonServerConfiguration : SHBaseTable
 {
+    #region Value Members
     private string                                                m_strAOSMarketURL  = string.Empty;
     private string                                                m_strIOSMarketURL  = string.Empty;
     
     private Dictionary<eServiceMode, JsonServerConfigurationData> m_dicServerInfo    = new Dictionary<eServiceMode, JsonServerConfigurationData>();
+    #endregion
 
+
+    #region System Functions
     public JsonServerConfiguration()
     {
         m_strFileName = "ServerConfiguration";
     }
+    #endregion
 
+
+    #region Virtual Functions
     public override void Initialize()
     {
         m_strAOSMarketURL = string.Empty;
@@ -70,7 +77,10 @@ public class JsonServerConfiguration : SHBaseTable
         
         return true;
     }
-    
+    #endregion
+
+
+    #region Interface Functions
     // 인터페이스 : CDN에서 정보파일 다운로드
     public void DownloadByCDN(Action pComplate, string strURL)
     {
@@ -317,7 +327,10 @@ public class JsonServerConfiguration : SHBaseTable
         // 저장
         SHUtil.SaveFile(strBuff, string.Format("{0}/{1}.json", strSavePath, m_strFileName));
     }
+    #endregion
 
+
+    #region Utility Functions
     // 유틸 : 서비스 상태 Enum 얻기
     eServiceState GetEnumToServiceState(string strState)
     {
@@ -329,4 +342,5 @@ public class JsonServerConfiguration : SHBaseTable
             default:                return eServiceState.None;
         }
     }
+    #endregion
 }

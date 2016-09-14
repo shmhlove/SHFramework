@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 public partial class SHServerData : SHBaseData
 {
+    #region Virtual Functions
     public override void OnInitialize() { }
 
     public override void OnFinalize() { }
@@ -28,4 +29,5 @@ public partial class SHServerData : SHBaseData
 
     public override void Patch(SHLoadData pInfo, Action<string, SHLoadStartInfo> pStart, 
                                                  Action<string, SHLoadEndInfo> pDone) { }
+    #endregion
 }

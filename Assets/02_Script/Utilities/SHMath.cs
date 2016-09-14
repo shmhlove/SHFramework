@@ -16,8 +16,8 @@ public static partial class SHMath
     // 비율 구하기
     public static float Percent(float fMin, float fMax, float fCurrent)
     {
-        float fMaxGap = Mathf.Clamp(fMax - fMin, 0.0f, fMax);
-        float fCurrentGap = Mathf.Clamp(fCurrent - fMin, 0.0f, fMaxGap);
+        float fMaxGap       = Mathf.Clamp(fMax - fMin, 0.0f, fMax);
+        float fCurrentGap   = Mathf.Clamp(fCurrent - fMin, 0.0f, fMaxGap);
 
         return Percent(fMaxGap, fCurrentGap);
     }
@@ -31,32 +31,32 @@ public static partial class SHMath
     }
 
     // Value 스왑
-    public static void Swap(ref float fValue1, ref float fValue2)
+    public static void Swap<T>(ref T pValue1, ref T pValue2)
     {
-        float fValue = fValue1;
-        fValue1 = fValue2;
-        fValue2 = fValue;
+        T pTempValue    = pValue1;
+        pValue1         = pValue2;
+        pValue2         = pTempValue;
     }
 
-    // 벡터 각 요소들 곱하기
+    // 벡터 : 각 요소들 곱하기
     public static Vector3 Vector3ToMul(Vector3 v3Arg1, Vector3 v3Arg2)
     {
         return new Vector3((v3Arg1.x * v3Arg2.x), (v3Arg1.y * v3Arg2.y), (v3Arg1.z * v3Arg2.z));
     }
 
-    // 벡터From에서 벡터To로의 방향
+    // 벡터 : From에서 To로의 방향
     public static Vector3 GetDirection(Vector3 vFrom, Vector3 vTo)
     {
         return (vTo - vFrom).normalized;
     }
 
-    // 반사벡터 구하기
+    // 벡터 : 반사벡터 구하기
     public static Vector3 GetReflect(Vector3 vFrom, Vector3 vTo, Vector3 vNormal)
     {
         return Vector3.Reflect(GetDirection(vFrom, vTo), vNormal).normalized;
     }
 
-    // 두 지점 사이의 X비율에 해당하는 값 구하기
+    // 보간 : 두 지점 사이의 X비율에 해당하는 값 구하기
     public static float Lerp(float fMin, float fMax, float fRatio)
     {
         if (fMax < fMin)
@@ -72,10 +72,16 @@ public static partial class SHMath
     }
 
     // 범위 컨버팅 : -1 ~ 1 범위값을 0 ~ 1로 컨버팅
-    public static float GetRangeToConvert(float fValue)
+    public static float GetConvertToRange(float fValue)
     {
         fValue = Mathf.Clamp(fValue, -1.0f, 1.0f);
         return 0.5f + (fValue * 0.5f);
+    }
+
+    // 범위 컨버팅 : 0 ~ 360 범위값을 -180 ~ 0 ~ 180으로 컨버팅
+    public static float GetConvertToHalfAngle(float fAngle)
+    {
+        return fAngle > 180 ? fAngle - 360 : fAngle;
     }
 
     // 범위체크 : Min과 Max사이에 Value가 속하는가?
@@ -84,21 +90,16 @@ public static partial class SHMath
         return (fMin <= fValue && fValue < fMax);
     }
 
-    // 부호얻기(float)
+    // 부호얻기
     public static float Sign(float fVal)
     {
         return Mathf.Sign(fVal);
     }
-    // 부호얻기(Vector3)
     public static Vector3 Sign(Vector3 vVal)
     {
         return new Vector3(Sign(vVal.x), Sign(vVal.y), Sign(vVal.z));
     }
-    // 0 ~ 360 -> 0 ~ 180, 0 ~ -180 변환
-    public static float GetHalfAngle(float fAngle)
-    {
-        return fAngle > 180 ? fAngle - 360 : fAngle;
-    }
+
     // 안전하게 나누기
     public static float Divide(float fNumerator, float fDenominator)
     {
@@ -110,19 +111,18 @@ public static partial class SHMath
 
         return (fNumerator / fDenominator);
     }
+
     // 모듈러
     public static int Modulus(int iNum, int iDiv)
     {
         return iNum % iDiv;
     }
 
-    // Nan체크 : Float
+    // Nan체크
     public static bool IsNan(float f)
     {
         return float.IsNaN(f);
     }
-
-    // Nan체크 : Quaternion
     public static bool IsNan(Quaternion q)
     {
         return float.IsNaN(q.x) || float.IsNaN(q.y) || float.IsNaN(q.z) || float.IsNaN(q.w);

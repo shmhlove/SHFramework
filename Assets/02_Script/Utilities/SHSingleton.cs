@@ -32,17 +32,23 @@ public static class Single
 
 public abstract class SHSingleton<T> : SHMonoBehaviour where T : SHSingleton<T>
 {
+    #region Value Members
     private static T        m_pInstance     = null;
-    
     public static T         Instance        { get { return GetInstance(); } }
     public static bool      IsExists        { get { return (null != m_pInstance); } }
+    #endregion
 
+
+    #region Virtual Functions
     // 다양화 : 초기화( 게임오브젝트에 붙은경우 Awake시, 직접 생성인 경우 Instance에 접근하는 순간 호출 됨 )
     public abstract void OnInitialize();
 
     // 다양화 : 종료( DonDestory가 설정된경우 어플이 종료될때, 아닌 경우에는 씬이 변경될때, 혹은 DoDestory로 명시적으로 제거할때 호출 됨 )
     public abstract void OnFinalize();
+    #endregion
 
+
+    #region System Functions
     // 시스템 : 생성(하이어라키에 올라간 싱글턴)
     public void Awake()
     {
@@ -60,47 +66,10 @@ public abstract class SHSingleton<T> : SHMonoBehaviour where T : SHSingleton<T>
     {
         Destroyed();
     }
+    #endregion
 
-    // 시스템 : 싱글턴 제거
-    void Destroyed()
-    {
-        if (null == m_pInstance)
-            return;
 
-        m_pInstance.OnFinalize();
-        m_pInstance = null;
-    }
-
-    // 유틸 : 객체 초기화
-    static void Initialize(T pInstance)
-    {
-        if (null == pInstance)
-            return;
-
-        // 싱글턴 생성시 Awake에서 호출되고, Instance에서 호출되므로 같으면 무시
-        if ((null != m_pInstance) && (m_pInstance == pInstance))
-            return;
-
-        // 인스턴스 중복체크
-        T pDuplication = SHGameObject.GetDuplication(pInstance);
-        if (null != pDuplication)
-        {
-            m_pInstance = pDuplication;
-            SHGameObject.DestoryObject(pInstance.gameObject);
-            return;
-        }
-
-        m_pInstance = pInstance;
-        m_pInstance.SetParent("SHSingletons(Destroy)");
-        m_pInstance.OnInitialize();
-    }
-
-    // 유틸 : 싱글턴 부모설정
-    GameObject SetParent(string strRootName)
-    {
-        return SHGameObject.SetParent(gameObject, strRootName);
-    }
-
+    #region Interface Functions
     // 인터페이스 : 객체얻기
     private static object m_pLocker = new object();
     public static T GetInstance()
@@ -139,4 +108,48 @@ public abstract class SHSingleton<T> : SHMonoBehaviour where T : SHSingleton<T>
     {
         SHGameObject.DestoryObject(gameObject);
     }
+    #endregion
+
+
+    #region Utility Functions
+    // 유틸 : 싱글턴 제거
+    void Destroyed()
+    {
+        if (null == m_pInstance)
+            return;
+
+        m_pInstance.OnFinalize();
+        m_pInstance = null;
+    }
+
+    // 유틸 : 객체 초기화
+    static void Initialize(T pInstance)
+    {
+        if (null == pInstance)
+            return;
+
+        // 싱글턴 생성시 Awake에서 호출되고, Instance에서 호출되므로 같으면 무시
+        if ((null != m_pInstance) && (m_pInstance == pInstance))
+            return;
+
+        // 인스턴스 중복체크
+        T pDuplication = SHGameObject.GetDuplication(pInstance);
+        if (null != pDuplication)
+        {
+            m_pInstance = pDuplication;
+            SHGameObject.DestoryObject(pInstance.gameObject);
+            return;
+        }
+
+        m_pInstance = pInstance;
+        m_pInstance.SetParent("SHSingletons(Destroy)");
+        m_pInstance.OnInitialize();
+    }
+
+    // 유틸 : 싱글턴 부모설정
+    GameObject SetParent(string strRootName)
+    {
+        return SHGameObject.SetParent(gameObject, strRootName);
+    }
+    #endregion
 }

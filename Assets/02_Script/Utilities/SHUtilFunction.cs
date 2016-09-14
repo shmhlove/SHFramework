@@ -12,8 +12,7 @@ using System.Diagnostics;
 
 public static partial class SHUtil
 {
-    // --------------------------------------------------------------------
-    // 형 변환 관련 ( Enum.Parse 엄청느립니다. 가급적 사용금지!!! )
+    #region 형 변환 관련 ( Enum.Parse 엄청느립니다. 가급적 사용금지!!! )
     // String을 Enum으로
     public static T StringToEnum<T>(string strEnum, string strErrorLog = "")
     {
@@ -36,10 +35,10 @@ public static partial class SHUtil
     {
         return pTime.ToString(strFormat, System.Globalization.CultureInfo.InstalledUICulture);
     }
+    #endregion
 
 
-    // --------------------------------------------------------------------
-    // 컨테이너 관련
+    #region 컨테이너 관련
     // Foreach Array
     public static void ForeachToArray<T>(T[] pArray, Action<T> pLambda)
     {
@@ -114,19 +113,19 @@ public static partial class SHUtil
                 pLambda(iLoop1, iLoop2);
         }
     }
+    #endregion
 
 
-    //-------------------------------------------------------------------------
-    // 디바이스 정보관련
+    #region 디바이스 정보관련
     // UUID
     public static string GetUUID()
     {
         return SystemInfo.deviceUniqueIdentifier;
     }
+    #endregion
 
 
-    //-------------------------------------------------------------------------
-    // 유니티 에디터 관련
+    #region 유니티 에디터 관련
     // Missing컴포넌트 체크
     public static void CheckMissingComponent()
     {
@@ -167,9 +166,10 @@ public static partial class SHUtil
         Process.GetCurrentProcess().Kill();
 #endif
     }
+    #endregion
 
-    //-------------------------------------------------------------------------
-    // 디렉토리 체크
+
+    #region 디렉토리 관련
     public static void Search(string strPath, Action<FileInfo> pCallback)
     {
 #if UNITY_EDITOR
@@ -202,10 +202,38 @@ public static partial class SHUtil
         }
 #endif
     }
+    public static void CreateDirectory(string strPath)
+    {
+        if (false == string.IsNullOrEmpty(Path.GetExtension(strPath)))
+            strPath = Path.GetDirectoryName(strPath);
+
+        DirectoryInfo pDirectoryInfo = new DirectoryInfo(strPath);
+        if (true == pDirectoryInfo.Exists)
+            return;
+
+        pDirectoryInfo.Create();
+    }
+    public static void DeleteDirectory(string strPath)
+    {
+        DirectoryInfo pDirInfo = new DirectoryInfo(strPath);
+        if (false == pDirInfo.Exists)
+            return;
+
+        FileInfo[] pFiles = pDirInfo.GetFiles("*.*", SearchOption.AllDirectories);
+        foreach (FileInfo pFile in pFiles)
+        {
+            if (false == pFile.Exists)
+                continue;
+
+            pFile.Attributes = FileAttributes.Normal;
+        }
+
+        Directory.Delete(strPath, true);
+    }
+    #endregion
 
 
-    //-------------------------------------------------------------------------
-    // 파일저장
+    #region 파일 관련
     public static void SaveFile(string strBuff, string strSavePath)
     {
         SHUtil.CreateDirectory(strSavePath);
@@ -276,38 +304,10 @@ public static partial class SHUtil
         UnityEngine.iOS.Device.SetNoBackupFlag(strDest);
 #endif
     }
-    public static void CreateDirectory(string strPath)
-    {
-        if (false == string.IsNullOrEmpty(Path.GetExtension(strPath)))
-            strPath = Path.GetDirectoryName(strPath);
-
-        DirectoryInfo pDirectoryInfo = new DirectoryInfo(strPath);
-        if (true == pDirectoryInfo.Exists)
-            return;
-
-        pDirectoryInfo.Create();
-    }
-    public static void DeleteDirectory(string strPath)
-    {
-        DirectoryInfo pDirInfo = new DirectoryInfo(strPath);
-        if (false == pDirInfo.Exists)
-            return;
-
-        FileInfo[] pFiles = pDirInfo.GetFiles("*.*", SearchOption.AllDirectories);
-        foreach (FileInfo pFile in pFiles)
-        {
-            if (false == pFile.Exists)
-                continue;
-
-            pFile.Attributes = FileAttributes.Normal;
-        }
-
-        Directory.Delete(strPath, true);
-    }
+    #endregion
 
 
-    //-------------------------------------------------------------------------
-    // 탐색기 열기
+    #region 탐색기 열기
     public static void OpenInFileBrowser(string strPath)
     {
         if (true == string.IsNullOrEmpty(strPath))
@@ -336,10 +336,10 @@ public static partial class SHUtil
         strPath = strPath.Replace("/", "\\");
         System.Diagnostics.Process.Start("explorer.exe", ((true == Directory.Exists(strPath)) ? "/root," : "/select,") + strPath);
     }
+    #endregion
 
 
-    //-------------------------------------------------------------------------
-    // 기타
+    #region 기타
     // Action 함수를 예외처리 후 콜해준다.
     public static void SafeActionCall(Action pAction)
     {
@@ -372,6 +372,7 @@ public static partial class SHUtil
 
         return strCallStack;
     }
+    #endregion
 }
 
 

@@ -36,13 +36,17 @@ using System.Security.Cryptography;
 
 public class SHPlayerPrefs
 {
+    #region Value Members
     private static string  m_strPrivateKey = "df897g995l234slkjskljf";
     public static string[] m_strkeys       = new string[] { "f64fsgrtwer",
                                                             "sdfsdf5dg4w",
                                                             "kk67fgdgewa",
                                                             "fgdfgwjkhh8",
                                                             "drwerwerw34" };
-    #region int
+    #endregion
+
+
+    #region Interface Int
     public static void SetInt(string strKey, int iValue)
     {
         PlayerPrefs.SetInt(strKey, iValue);
@@ -64,7 +68,8 @@ public class SHPlayerPrefs
     }
     #endregion
 
-    #region float
+
+    #region Interface Float
     public static void SetFloat(string strKey, float fValue)
     {
         PlayerPrefs.SetFloat(strKey, fValue);
@@ -86,7 +91,8 @@ public class SHPlayerPrefs
     }
     #endregion
 
-    #region string
+
+    #region Interface String
     public static void SetString(string strKey, string strValue)
     {
         PlayerPrefs.SetString(strKey, strValue);
@@ -108,7 +114,8 @@ public class SHPlayerPrefs
     }
     #endregion
 
-    #region Util
+
+    #region Utility Functions
     public static string Md5(string strEncrypt)
     {
         var pEncoder = new UTF8Encoding();

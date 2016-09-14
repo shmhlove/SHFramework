@@ -13,11 +13,17 @@ public class SHAssetBundle
 
 public partial class SHAssetBundleData : SHBaseData
 {
+    #region Value Members
     public Dictionary<string, SHAssetBundle> m_dicBundles = new Dictionary<string, SHAssetBundle>();
+    #endregion
 
-    // 다양화 : 초기화
+
+    #region System Functions
+    #endregion
+
+
+    #region Virtual Functions
     public override void OnInitialize() { }
-    // 다양화 : 마무리
     public override void OnFinalize()
     {
         foreach(var kvp in m_dicBundles)
@@ -26,16 +32,11 @@ public partial class SHAssetBundleData : SHBaseData
         }
         m_dicBundles.Clear();
     }
-    // 다양화 : 업데이트
     public override void FrameMove() { }
-
-    // 다양화 : 로드할 데이터 리스트 알려주기
     public override Dictionary<string, SHLoadData> GetLoadList(eSceneType eType)
     {
         return new Dictionary<string, SHLoadData>();;
     }
-
-    // 다양화 : 패치할 데이터 리스트 알려주기
     public override Dictionary<string, SHLoadData> GetPatchList()
     {
         var dicLoadList = new Dictionary<string, SHLoadData>();
@@ -55,14 +56,10 @@ public partial class SHAssetBundleData : SHBaseData
 
         return dicLoadList;
     }
-
-    // 다양화 : 로더로 부터 호출될 로드함수
     public override void Load(SHLoadData pInfo, Action<string, SHLoadStartInfo> pStart, 
                                                 Action<string, SHLoadEndInfo> pDone)
     {
     }
-
-    // 다양화 : 로더로 부터 호출될 패치함수( 씬은 패치하려면 번들로 될것이므로 의미없음 )
     public override void Patch(SHLoadData pInfo, Action<string, SHLoadStartInfo> pStart,
                                                  Action<string, SHLoadEndInfo> pDone)
     {
@@ -91,23 +88,16 @@ public partial class SHAssetBundleData : SHBaseData
 
         pStart(pInfo.m_strName, new SHLoadStartInfo(pAsync));
     }
+    #endregion
 
-    // 유틸 : 번들추가
-    void AddBundleData(string strBundleName, AssetBundle pBundle)
-    {
-        SHAssetBundle pBundleData   = new SHAssetBundle();
-        pBundleData.m_pBundleName   = strBundleName;
-        pBundleData.m_pBundle       = pBundle;
-        m_dicBundles[strBundleName] = pBundleData;
-    }
 
-    // 인터페이스 : 로드정보 만들기
+    #region Interface Functions
     public SHLoadData CreatePatchInfo(AssetBundleInfo pInfo)
     {
         return new SHLoadData()
         {
             m_eDataType = eDataType.BundleData,
-            m_strName   = pInfo.m_strBundleName,
+            m_strName = pInfo.m_strBundleName,
             m_pLoadFunc = Patch,
             m_pTriggerLoadCall = () =>
             {
@@ -115,14 +105,6 @@ public partial class SHAssetBundleData : SHBaseData
             },
         };
     }
-
-    // 인터페이스 : 번들이 있는가?
-    public bool IsExist(string strBundleName)
-    {
-        return m_dicBundles.ContainsKey(strBundleName);
-    }
-
-    // 인터페이스 : 번들 데이터 얻기
     public SHAssetBundle GetBundleData(AssetBundleInfo pInfo)
     {
         if (null == pInfo)
@@ -140,4 +122,20 @@ public partial class SHAssetBundleData : SHBaseData
 
         return m_dicBundles[strBundleName];
     }
+    public bool IsExist(string strBundleName)
+    {
+        return m_dicBundles.ContainsKey(strBundleName);
+    }
+    #endregion
+
+
+    #region Utility Functions
+    void AddBundleData(string strBundleName, AssetBundle pBundle)
+    {
+        SHAssetBundle pBundleData = new SHAssetBundle();
+        pBundleData.m_pBundleName = strBundleName;
+        pBundleData.m_pBundle = pBundle;
+        m_dicBundles[strBundleName] = pBundleData;
+    }
+    #endregion
 }

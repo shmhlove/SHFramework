@@ -6,12 +6,16 @@ using System.Collections.Generic;
 
 public class SHTableDataSet
 {
+    #region Value Members
     public string           m_strTableName;
     public int              m_iMaxCol;
     public List<string>     m_ColumnNames = new List<string>();
     public List<string>     m_ColumnTypes = new List<string>();
     public List<string>     m_pDatas      = new List<string>();
+    #endregion
 
+
+    #region Interface Functions
     public void AddData(string strTableName, string strColName, string strColType, string strData)
     {
         m_strTableName = strTableName;
@@ -26,4 +30,5 @@ public class SHTableDataSet
 
         m_iMaxCol++;
     }
+    #endregion
 }

@@ -6,25 +6,29 @@ using System.Collections.Generic;
 
 public class SHLoadPrograss
 {
+    #region Value Members
     // 로드 카운트 : <Total, Current>
     private SHPair<int, int> m_pLoadCount               = new SHPair<int, int>(0, 0);
 
-    // 로드 데이터 리스트(큐)
+    // 남은 데이터 정보
     private Queue<SHLoadData> m_qLoadQueue              = new Queue<SHLoadData>();
 
-    // 로드 데이터 정보 : <데이터타입, <파일명, 파일정보>>
-    private Dictionary<eDataType, Dictionary<string, SHLoadData>> m_dicTotalLoadData = new Dictionary<eDataType, Dictionary<string, SHLoadData>>();
-
-    // 로드 중인 파일 리스트
+    // 로드 중인 데이터 정보
     private Dictionary<string, SHLoadStartInfo> m_dicLoadingFiles = new Dictionary<string, SHLoadStartInfo>();
     public Dictionary<string, SHLoadStartInfo> LoadingFiles { get { return m_dicLoadingFiles; } }
+
+    // 전체 데이터 정보 : <데이터타입, <파일명, 파일정보>>
+    private Dictionary<eDataType, Dictionary<string, SHLoadData>> m_dicTotalLoadData = new Dictionary<eDataType, Dictionary<string, SHLoadData>>();
 
     // 실패한 파일이 하나라도 있는가?
     public bool m_bIsFail = false;
 
     // 로드를 완료했는가?
     public bool m_bIsDone = false;
+    #endregion
 
+
+    #region Virtual Functions
     public void Initialize()
     {
         m_pLoadCount.Initialize();
@@ -34,7 +38,10 @@ public class SHLoadPrograss
         m_bIsFail = false;
         m_bIsDone = false;
     }
+    #endregion
 
+
+    #region Interface Functions
     public void AddLoadInfo(Dictionary<string, SHLoadData> dicLoadList)
     {
         foreach(var kvp in dicLoadList)
@@ -181,4 +188,5 @@ public class SHLoadPrograss
 
         return true;
     }
+    #endregion
 }

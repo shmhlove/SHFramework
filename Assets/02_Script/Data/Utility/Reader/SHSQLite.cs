@@ -10,8 +10,12 @@ using Community.CsharpSqlite;
 
 public class SHSQLite
 {
+    #region Value Members
     private SQLiteDB m_pSQLiteDB = null;
+    #endregion
 
+
+    #region System Functions
     public SHSQLite() { }
     public SHSQLite(string strFileName)
     {
@@ -38,7 +42,10 @@ public class SHSQLite
     {
         Clear();
     }
+    #endregion
 
+
+    #region Interface Functions
     public void Clear()
     {
         if (null == m_pSQLiteDB)
@@ -53,40 +60,46 @@ public class SHSQLite
         return (null != m_pSQLiteDB);
     }
 
-    byte[] LoadWWW(string strFilePath)
+#if UNITY_EDITOR
+    public void Write(string strFileName, Dictionary<string, List<SHTableDataSet>> dicData)
     {
-        WWW pWWW = Single.Coroutine.WWWOfSync(new WWW(strFilePath));
-        if (true != string.IsNullOrEmpty(pWWW.error))
+        if (null == dicData)
         {
-            Debug.LogError(string.Format("SQLite(*.db)파일을 읽는 중 오류발생!!(Path:{0}, Error:{1})", strFilePath, pWWW.error));
-            return null;
+            Debug.LogError(string.Format("SQLite로 저장할 데이터가 없습니다!!"));
+            return;
+        }   
+
+        string strSavePath  = string.Format("{0}/{1}.db", SHPath.GetPathToSQLite(), Path.GetFileNameWithoutExtension(strFileName));
+
+        File.Delete(strSavePath);
+
+        try
+        {
+            m_pSQLiteDB = new SQLiteDB();
+            m_pSQLiteDB.Open(strSavePath);
+            foreach (KeyValuePair<string, List<SHTableDataSet>> kvp in dicData)
+            {
+                // 테이블 생성
+                if (false == CreateTable(kvp.Key, kvp.Value[0]))
+                    break;
+
+                // 생성한 테이블에 데이터 인설트
+                if (false == InsertData(kvp.Key, kvp.Value))
+                    break;
+            }
         }
-
-        return pWWW.bytes;
+        catch (System.Exception e)
+        {
+            Debug.LogError(string.Format("SQLite Read Fail : {0}", e.ToString()));
+        }
     }
-
-    string GetPersistentPath(string strFileName)
-    {
-        return string.Format("{0}/{1}.db", SHPath.GetPathToPersistentSQLite(), Path.GetFileNameWithoutExtension(strFileName));
-    }
-
-    string GetStreamingPath(string strFileName)
-    {
-        string strPath = string.Empty;
-
-#if UNITY_EDITOR || UNITY_STANDALONE
-        strPath = string.Format("{0}{1}",       "file://", SHPath.GetPathToStreamingAssets());
-#elif UNITY_ANDROID
-        strPath = string.Format("{0}{1}{2}",    "jar:file://", SHPath.GetPathToAssets(), "!/assets");
-#elif UNITY_IOS
-        strPath = string.Format("{0}{1}{2}",    "file://", SHPath.GetPathToAssets(), "/Raw");
 #endif
+    #endregion
 
-        return string.Format("{0}/SQLite/{1}.db", strPath, Path.GetFileNameWithoutExtension(strFileName));
-    }
 
+    #region Query Functions
     // 쿼리 : 테이블 생성("CREATE TABLE `TableName` (`FieldName1` INTEGER, `FieldName2` INTEGER, `FieldName3` INTEGER);")
-    bool CreateTable(string strTableName, SHTableDataSet pRowDataSet)
+    public bool CreateTable(string strTableName, SHTableDataSet pRowDataSet)
     {
         if (null == pRowDataSet)
             return false;
@@ -112,7 +125,7 @@ public class SHSQLite
     }
 
     // 쿼리 : 데이터 추가("INSERT INTO 'TableName' VALUES(strValue1, 1);")
-    bool InsertData(string strTableName, List<SHTableDataSet> pRowDataSets)
+    public bool InsertData(string strTableName, List<SHTableDataSet> pRowDataSets)
     {
         if (null == pRowDataSets)
             return false;
@@ -150,7 +163,7 @@ public class SHSQLite
 	}
 
     // 읽는 쿼리
-    SQLiteQuery ReadQuery(string strQuery)
+    public SQLiteQuery ReadQuery(string strQuery)
     {
         if (null == m_pSQLiteDB)
             return null;
@@ -162,7 +175,7 @@ public class SHSQLite
     }
 
     // 쓰는 쿼리
-    bool WriteQuery(string strQuery)
+    public bool WriteQuery(string strQuery)
     {
         if (null == m_pSQLiteDB)
             return false;
@@ -181,7 +194,41 @@ public class SHSQLite
 
         return true;
     }
+    #endregion
 
+
+    #region Utility Functions
+    byte[] LoadWWW(string strFilePath)
+    {
+        WWW pWWW = Single.Coroutine.WWWOfSync(new WWW(strFilePath));
+        if (true != string.IsNullOrEmpty(pWWW.error))
+        {
+            Debug.LogError(string.Format("SQLite(*.db)파일을 읽는 중 오류발생!!(Path:{0}, Error:{1})", strFilePath, pWWW.error));
+            return null;
+        }
+
+        return pWWW.bytes;
+    }
+
+    string GetPersistentPath(string strFileName)
+    {
+        return string.Format("{0}/{1}.db", SHPath.GetPathToPersistentSQLite(), Path.GetFileNameWithoutExtension(strFileName));
+    }
+
+    string GetStreamingPath(string strFileName)
+    {
+        string strPath = string.Empty;
+
+#if UNITY_EDITOR || UNITY_STANDALONE
+        strPath = string.Format("{0}{1}",       "file://", SHPath.GetPathToStreamingAssets());
+#elif UNITY_ANDROID
+        strPath = string.Format("{0}{1}{2}",    "jar:file://", SHPath.GetPathToAssets(), "!/assets");
+#elif UNITY_IOS
+        strPath = string.Format("{0}{1}{2}",    "file://", SHPath.GetPathToAssets(), "/Raw");
+#endif
+
+        return string.Format("{0}/SQLite/{1}.db", strPath, Path.GetFileNameWithoutExtension(strFileName));
+    }
     void SaveDBToBytes(string strFilePath, byte[] pBytes)
     {
         if (null == pBytes)
@@ -243,42 +290,7 @@ public class SHSQLite
         }
         return pDataList;
     }
-
-    // .DB파일에 데이터 셋 쓰기
-#if UNITY_EDITOR
-    public void Write(string strFileName, Dictionary<string, List<SHTableDataSet>> dicData)
-    {
-        if (null == dicData)
-        {
-            Debug.LogError(string.Format("SQLite로 저장할 데이터가 없습니다!!"));
-            return;
-        }   
-
-        string strSavePath  = string.Format("{0}/{1}.db", SHPath.GetPathToSQLite(), Path.GetFileNameWithoutExtension(strFileName));
-
-        File.Delete(strSavePath);
-
-        try
-        {
-            m_pSQLiteDB = new SQLiteDB();
-            m_pSQLiteDB.Open(strSavePath);
-            foreach (KeyValuePair<string, List<SHTableDataSet>> kvp in dicData)
-            {
-                // 테이블 생성
-                if (false == CreateTable(kvp.Key, kvp.Value[0]))
-                    break;
-
-                // 생성한 테이블에 데이터 인설트
-                if (false == InsertData(kvp.Key, kvp.Value))
-                    break;
-            }
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError(string.Format("SQLite Read Fail : {0}", e.ToString()));
-        }
-    }
-#endif
+    #endregion
 }
 
 // 자주 사용하는 Query

@@ -11,6 +11,7 @@ using LitJson;
 // class : 번들 매이커
 public static class SHAssetBundleMaker
 {
+    #region Interface Functions
     // 인터페이스 : 번들패킹
     public static bool PackingAssetBundle(BuildTarget eTarget, eBundlePackType ePackType)
     {
@@ -46,7 +47,10 @@ public static class SHAssetBundleMaker
 
         return true;
     }
+    #endregion
 
+
+    #region Utility Functions
     // 유틸 : 패킹할 번들 리스트 만들기
     static Dictionary<string, AssetBundleInfo> GetPackingBundleList(SHTableData pTableData, eBundlePackType ePackingType)
     {
@@ -206,4 +210,5 @@ public static class SHAssetBundleMaker
     {
         return pTableData.GetTable<JsonResourcesTable>();
     }
+    #endregion
 }

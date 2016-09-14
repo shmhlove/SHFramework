@@ -15,8 +15,12 @@ public class SHReleaseTimer
 
 public class SHTimer : SHSingleton<SHTimer>
 {
+    #region Value Members
     Dictionary<string, DateTime> m_dicDeltaTimer = new Dictionary<string, DateTime>();
+    #endregion
 
+
+    #region Virtual Functions
     public override void OnInitialize()
     {
         SetDontDestroy();
@@ -26,6 +30,8 @@ public class SHTimer : SHSingleton<SHTimer>
     {
 
     }
+    #endregion
+
 
     #region 델타타임 기능
     public void StartDeltaTime(string strKey)
@@ -49,6 +55,7 @@ public class SHTimer : SHSingleton<SHTimer>
         return ((float)(DateTime.Now - GetDeltaTime(strKey)).TotalMilliseconds / 1000.0f);
     }
     #endregion
+
 
     #region 배포제한 기능
     //----------------------------------------------------------------------------

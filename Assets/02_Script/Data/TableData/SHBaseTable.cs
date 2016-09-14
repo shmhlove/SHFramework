@@ -8,6 +8,7 @@ using System.Xml;
 
 public abstract class SHBaseTable
 {
+    #region Value Members
     // 파일이름
     public string       m_strFileName;
     public string       m_strByteFileName;
@@ -17,8 +18,10 @@ public abstract class SHBaseTable
 
     // SQL 데이터 Reader
     SQLiteQuery         m_pSQLiteReader  = null;
+    #endregion
 
-    #region abstract
+
+    #region Virtual Functions
     public virtual void Initialize() { }
     public abstract bool IsLoadTable();
     // 다양화(로드) : 서버 웹 데이터
@@ -39,6 +42,8 @@ public abstract class SHBaseTable
     public virtual ICollection GetData()                                        { return null; }
     #endregion
 
+
+    #region Interface Functions
     // 인터페이스 : Hard한 데이터 로드
     public bool? LoadStatic()
     {
@@ -182,7 +187,10 @@ public abstract class SHBaseTable
 
         return Return(LoadBytesTable(pBytes.GetBytes()));
     }
+    #endregion
 
+
+    #region Utility Functions
     // 유틸 : 로드함수가 종료될때 Reader객체를 초기화하고, 리턴될 수 있도록
     bool? Return(bool? bReturnValue)
     {
@@ -204,8 +212,10 @@ public abstract class SHBaseTable
 
         return eTableType.None;
     }
+    #endregion
 
-    #region SQLite Interface
+
+    #region Interface : SQLite
     // 유틸함수 : DB에서 String데이터 얻기
     public string GetStrToSQL(string strKey)
     {
@@ -239,7 +249,8 @@ public abstract class SHBaseTable
     }
     #endregion
 
-    #region Json Interface
+
+    #region Interface : Json
     // 유틸함수 : Json에서 String데이터 얻기
     public string GetStrToJson(JSONNode pNode, string strKey)
     {
@@ -293,7 +304,8 @@ public abstract class SHBaseTable
     }
     #endregion
 
-    #region XML Interface
+
+    #region Interface : XML
     // 유틸함수 : XML에서 Value데이터 얻기(형변환이 안된 데이터)
     public string GetValue(XmlNode pNode, string strKey)
     {

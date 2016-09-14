@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SHSceneMainToLoading : MonoBehaviour 
+public class SHSceneMainToLoading : MonoBehaviour
 {
-	void Start () 
+    #region System Functions
+    void Start() 
     {
         
 	}
 	
 	void Update () 
     {
-	
-	}
+
+    }
+    #endregion
 }

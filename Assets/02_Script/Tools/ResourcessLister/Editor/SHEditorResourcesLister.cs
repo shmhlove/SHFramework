@@ -7,12 +7,16 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
-public class SHEditorResourcesLister : Editor 
+public class SHEditorResourcesLister : Editor
 {
+    #region Value Members
     public static string m_strMsg_1 = "리소스 폴더를 뒤질껍니다!!\n\n완료되면 완료 메시지 출력됩니다.\n\n조금만 기다려 주세요!! 싫으면 취소...ㅠ";
     public static string m_strMsg_2 = "선택한 리소스를 뒤질껍니다!!\n\n완료되면 완료 메시지 출력됩니다.\n\n조금만 기다려 주세요!! 싫으면 취소...ㅠ";
     public static string m_strMsg_3 = "{0}개의 리소스 파일이 리스팅 되었습니다.!!\n\n저장경로 : {1}\n\n리스팅 시간 : {2:F2}sec";
+    #endregion
 
+
+    #region Interface Functions
     // 인터페이스 : 리소스 폴더 전체파일 리스팅 : ResourcesTable.json, AssetBundleInfo.json, DuplicationResourcesList.txt
     [MenuItem("SHTools/Resources Listing/All Files In Resources Folder", false, 0)]
     [MenuItem("Assets/SHTools/Resources Listing/All Files In ResourcesFolder", false, 0)]
@@ -133,7 +137,10 @@ public class SHEditorResourcesLister : Editor
 
         System.Diagnostics.Process.Start(strSavePath);
     }
-    
+    #endregion
+
+
+    #region Utility Functions
     // 유틸 : 팝업
     static bool ShowDialog(string strTitle, string strMessage, string strOkBtn, string strCancleBtn = "")
     {
@@ -142,5 +149,6 @@ public class SHEditorResourcesLister : Editor
         else
             return EditorUtility.DisplayDialog(strTitle, strMessage, strOkBtn);
     }
+    #endregion
 }
 #endif

@@ -6,7 +6,8 @@ using System.Collections.Generic;
 
 public partial class SHLoader
 {
-	void CoroutineToLoad()
+    #region Utility Functions
+    void CoroutineToLoad()
     {
         // 로드 실행(LoadCall()의 반환값 false의 의미는 Load함수 호출이 완료되었다는 의미)
         if (false == LoadCall())
@@ -15,7 +16,7 @@ public partial class SHLoader
         Single.Coroutine.WaitTime(CoroutineToLoad, 0.05f);
     }
 
-    public void ThreadToLoad()
+    void ThreadToLoad()
     {
         while (true == LoadCall()) ;
     }
@@ -168,7 +169,10 @@ public partial class SHLoader
         pEvent.m_bIsAsyncPrograss   = false;
         EventToError.Callback<SHLoadEvent>(this, pEvent);
     }
+    #endregion
 
+
+    #region Interface Functions
     // 로드가 완료되었는가?(성공/실패유무가 아님)
     public bool IsLoadDone()
     {
@@ -202,4 +206,5 @@ public partial class SHLoader
 
         return true;
     }
+    #endregion
 }

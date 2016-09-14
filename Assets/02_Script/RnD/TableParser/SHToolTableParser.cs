@@ -7,18 +7,25 @@ using System.Collections.Generic;
 
 public class SHToolTableParser : MonoBehaviour
 {
+    #region Value Members
     public  string m_strFileName    = "파일명을 기입하면 그 파일만 파싱합니다.";
     private string m_strDescription = "파일명을 기입하면 그 파일만 파싱합니다.";
 
     private SHLoader    m_pLoader    = new SHLoader();
     private SHTableData m_pTableData = new SHTableData();
-    
+    #endregion
+
+
+    #region System Functions
     void Awake()
     {
         m_pTableData.OnInitialize();
         m_pLoader.Initialize();
     }
+    #endregion
 
+
+    #region Interface Functions
     [SHAttributeToShowFunc]
     void StartParse()
     {
@@ -46,5 +53,6 @@ public class SHToolTableParser : MonoBehaviour
             m_pLoader.LoadStart(pLoadInfo);
         }
     }
+    #endregion
 }
 #endif
