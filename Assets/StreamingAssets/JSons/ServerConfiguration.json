@@ -51,6 +51,7 @@
         [
             "Run",
             "Check"
+			"ConnectMarket",
         ]
     }
 }

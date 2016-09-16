@@ -140,7 +140,7 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
     {
         return SHHard.GetStrToPlatform(GetRuntimePlatform());
     }
-
+    
     // 인터페이스 : 현재 서비스 상태 체크
     public void CheckServiceState(Action<eServiceState> pCallback)
     {
@@ -268,7 +268,7 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
         pStyle.fontSize = GetRatioW(20);
 
         GUI.Box(new Rect(0, (Screen.height - GetRatioH(30)), GetRatioW(250), GetRatioH(30)),
-            string.Format("{0} : {1}", Single.Table.GetServiceMode(), GetRuntimePlatform()), pStyle);
+            string.Format("{0} : {1} : {2} Scene", Single.Table.GetServiceMode(), GetRuntimePlatform(), Single.Scene.GetCurrentScene()), pStyle);
 
         GUI.Box(new Rect((Screen.width * 0.5f) - (GetRatioW(120) * 0.5f), (Screen.height - GetRatioH(30)), GetRatioW(120), GetRatioH(30)),
             string.Format("Ver {0}", Single.Table.GetClientVersion()), pStyle);

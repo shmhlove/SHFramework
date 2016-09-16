@@ -127,4 +127,13 @@ public static partial class SHMath
     {
         return float.IsNaN(q.x) || float.IsNaN(q.y) || float.IsNaN(q.z) || float.IsNaN(q.w);
     }
+
+    // LoopingNumber
+    public static int LoopingNumber(int iCur, int iInit, int iMax)
+    {
+        if (iCur >= iMax)
+            iCur = iInit;
+        return iCur;
+    }
+
 }
