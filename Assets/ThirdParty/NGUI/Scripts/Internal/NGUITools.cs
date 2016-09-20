@@ -54,8 +54,7 @@ static public class NGUITools
 	{
 		get
 		{
-			return Application.platform != RuntimePlatform.WindowsWebPlayer &&
-				Application.platform != RuntimePlatform.OSXWebPlayer;
+			return true;
 		}
 	}
 
@@ -1447,12 +1446,12 @@ static public class NGUITools
 		{
 			TextEditor te = new TextEditor();
 			te.Paste();
-			return te.content.text;
+			return te.text;
 		}
 		set
 		{
 			TextEditor te = new TextEditor();
-			te.content = new GUIContent(value);
+			te.text = value;
 			te.OnFocus();
 			te.Copy();
 		}
