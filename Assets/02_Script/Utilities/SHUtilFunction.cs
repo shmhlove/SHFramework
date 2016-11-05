@@ -243,7 +243,7 @@ public static partial class SHUtil
     {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-//#else
+#else
         var pThreads = Process.GetCurrentProcess().Threads;
         foreach(ProcessThread pThread in pThreads)
         {

@@ -55,7 +55,7 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
         if (eBOOL.True != (m_eIsFocus = bIsFocus ? eBOOL.True : eBOOL.False))
             return;
 
-        // 서비스상태 체크 후 RunGame이 아니면 인트로로 보낸다.
+        // 서비스상태 체크 후 Run이 아니면 인트로로 보낸다.
         CheckServiceState((eResult) =>
         {
             if (eServiceState.Run != eResult)

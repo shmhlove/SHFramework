@@ -19,9 +19,9 @@ public enum eServiceMode
 public enum eServiceState
 {
     None,
-    Run,
-    Check,
-    ConnectMarket,
+    Run,            // 서비스 중
+    Check,          // 점검 중
+    ConnectMarket,  // 마켓연결
 }
 
 // Enum : 번들 패킹 타입
