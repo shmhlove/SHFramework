@@ -243,12 +243,12 @@ public static partial class SHUtil
     {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-#else
-        ProcessThreadCollection pThreads = Process.GetCurrentProcess().Threads;
-        SHUtil.ForToList(pThreads, (pThread) =>
+//#else
+        var pThreads = Process.GetCurrentProcess().Threads;
+        foreach(ProcessThread pThread in pThreads)
         {
             pThread.Dispose();
-        });
+        }
 
         Process.GetCurrentProcess().Kill();
 #endif
