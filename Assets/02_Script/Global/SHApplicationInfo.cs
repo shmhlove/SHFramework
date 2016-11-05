@@ -8,11 +8,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
+using DicRealLoadInfo = System.Collections.Generic.Dictionary<eSceneType, System.Collections.Generic.List<string>>;
+
 public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
 {
     #region Members
-    // 앱 종료 여부
-    public bool                 m_bIsAppQuit        = false;
+    // 버전정보
+    public string               m_strVersion        = "0.0.0";
 
     // 배포제한 시간정보
     public SHReleaseTimer       m_pReleaseTime      = new SHReleaseTimer();
@@ -24,7 +26,10 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
     private float               m_fDeltaTime        = 0.0f;
 
     // 기타(디버그) : 로드 시도된 리소스 리스트
-    private Dictionary<eSceneType, List<string>> m_dicRealLoadInfo = new Dictionary<eSceneType, List<string>>();
+    private DicRealLoadInfo     m_dicRealLoadInfo = new DicRealLoadInfo();
+
+    // 기타 : 앱 종료 여부
+    public bool                 m_bIsAppQuit        = false;
     #endregion
 
 

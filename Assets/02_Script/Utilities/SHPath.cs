@@ -57,10 +57,16 @@ public static partial class SHPath
         return Application.streamingAssetsPath;
     }
 
-    // 경로 : (Root : ExportAssetBundles)
+    // 경로 : (Root : Build)
+    public static string GetPathToBuild()
+    {
+        return string.Format("{0}{1}", GetPathToRoot(), "/Build");
+    }
+
+    // 경로 : (Root : Build/AssetBundles)
     public static string GetPathToExportAssetBundle()
     {
-        return string.Format("{0}{1}", GetPathToRoot(), "/ExportAssetBundles");
+        return string.Format("{0}{1}", GetPathToBuild(), "/AssetBundles");
     }
 
 #if UNITY_EDITOR

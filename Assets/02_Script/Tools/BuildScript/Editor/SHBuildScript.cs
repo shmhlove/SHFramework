@@ -73,6 +73,9 @@ class SHBuildScript
 
         // App Build
         BuildApplication(SCENES, eTarget, BuildOptions.None);
+
+        // 후처리
+        PostProcess();
     }
 
     // 유틸 : App Build + BundlePacking
@@ -89,6 +92,9 @@ class SHBuildScript
 
         // App Build
         BuildApplication(SCENES, eTarget, BuildOptions.None);
+
+        // 후처리
+        PostProcess();
     }
 
     // 유틸 : Only Bundle Packing
@@ -99,6 +105,9 @@ class SHBuildScript
 
         // Asset Bundle Packing
         PackingAssetBundles(eTarget, ePackType, false);
+
+        // 후처리
+        PostProcess();
     }
 
     // 유틸 : 국가별 설정 처리
@@ -146,18 +155,26 @@ class SHBuildScript
     // 유틸 : App 빌드
     static void BuildApplication(string[] strScenes, BuildTarget eTarget, BuildOptions eOptions)
     {
-        Debug.LogFormat("** Build Start({0}) -> {1}", eTarget, DateTime.Now.ToString("yyyy-MM-dd [ HH:mm:ss ]"));
+        string strBuildName = GetBuildName(eTarget, Single.AppInfo.GetAppName(), Single.AppInfo.m_strVersion);
+        Debug.LogFormat("** Build Start({0}) -> {1}", strBuildName, DateTime.Now.ToString("yyyy-MM-dd [ HH:mm:ss ]"));
         {
             EditorUserBuildSettings.SwitchActiveBuildTarget(eTarget);
 
-            string strFileName = (BuildTarget.Android == eTarget) ? string.Format("{0}.apk", Single.AppInfo.GetAppName()) : Single.AppInfo.GetAppName();
+            string strFileName = string.Format("{0}/{1}", SHPath.GetPathToBuild(), strBuildName);
             string strResult = BuildPipeline.BuildPlayer(strScenes, strFileName, eTarget, eOptions);
             if (0 < strResult.Length)
                 throw new Exception("BuildPlayer failure: " + strResult);
         }
-        Debug.LogFormat("** Build End({0}) -> {1}", eTarget, DateTime.Now.ToString("yyyy-MM-dd [ HH:mm:ss ]"));
+        Debug.LogFormat("** Build End({0}) -> {1}", strBuildName, DateTime.Now.ToString("yyyy-MM-dd [ HH:mm:ss ]"));
     }
-
+    // 유틸 : 빌드이름
+    static string GetBuildName(BuildTarget eTarget, string strAppName, string strVersion)
+    {
+        if (BuildTarget.Android == eTarget)
+            return string.Format("{0}({1}_{2}).apk", strAppName, eTarget, strVersion);
+        else
+            return string.Format("{0}({1}_{2}).pck", strAppName, eTarget, strVersion);
+    }
     // 유틸 : PackingAssetBundles 패킹
     static void PackingAssetBundles(BuildTarget eTarget, eBundlePackType eType, bool bIsDelOriginal)
     {
@@ -174,7 +191,7 @@ class SHBuildScript
     {
         var pConfigFile = new JsonClientConfiguration();
         pConfigFile.LoadJson(pConfigFile.m_strFileName);
-        pConfigFile.m_strConfigurationCDN   = strConfigurationCDN;
+        pConfigFile.m_strConfigurationCDN = strConfigurationCDN;
 
         if (eServiceMode.None != eMode)
             pConfigFile.m_strServiceMode = eMode.ToString();
@@ -188,6 +205,13 @@ class SHBuildScript
     static string GetURLToConfigurationCDNOfKorea(eServiceMode eMode)
     {
         return string.Format("{0}/{1}", "http://blueasa.synology.me/home/shmhlove/KOR", eMode);
+    }
+
+    // 후처리
+    static void PostProcess()
+    {
+        SHGameObject.DestoryObject(GameObject.Find("SHSingletons(Destroy)"));
+        SHGameObject.DestoryObject(GameObject.Find("SHSingletons(DontDestroy)"));
     }
     #endregion
 }
