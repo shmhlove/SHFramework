@@ -10,7 +10,7 @@ using System.Xml;
 
 public class SHXML
 {
-    #region Value Members
+    #region Members
     public string m_strXMLData = string.Empty;
     #endregion
 

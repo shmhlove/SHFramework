@@ -22,10 +22,10 @@ public class SHConvertToByte
         if (null == pTableData)
             return;
 
-        foreach(var kvp in pTableData.Tables)
+        SHUtil.ForToDic(pTableData.Tables, (pKey, pValue) =>
         {
-            ConvertByteFile(kvp.Value, strSavePath);
-        }
+            ConvertByteFile(pValue, strSavePath);
+        });
 
         Debug.Log("<color=yellow>ConvertByteFiles Finish!!!</color>");
     }

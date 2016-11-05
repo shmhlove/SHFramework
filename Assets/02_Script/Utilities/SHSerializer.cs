@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class SHSerializer
 {
-    #region Value Members
+    #region Members
     private int         m_iIndex = 0;
     private byte[]      m_pByteArray;
     private List<byte>  m_pStream = new List<byte>();

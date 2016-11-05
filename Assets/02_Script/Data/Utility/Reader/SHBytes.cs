@@ -9,7 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class SHBytes
 {
-    #region Value Members
+    #region Members
     public byte[] m_pBytes = null;
     #endregion
 

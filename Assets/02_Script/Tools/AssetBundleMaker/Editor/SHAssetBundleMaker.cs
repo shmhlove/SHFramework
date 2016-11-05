@@ -74,19 +74,19 @@ public static class SHAssetBundleMaker
 
         // 번들 빌드 정보 만들기
         List<AssetBundleBuild> pBuildList = new List<AssetBundleBuild>();
-        foreach (var kvpForBundle in dicBundles)
+        SHUtil.ForToDic(dicBundles, (pKey, pValue) =>
         {
             List<string> pAssets = new List<string>();
-            foreach (var kvpForRes in kvpForBundle.Value.m_dicResources)
+            SHUtil.ForToDic(pValue.m_dicResources, (pResKey, pResValue) =>
             {
-                pAssets.Add(string.Format("{0}/{1}{2}", "Assets/Resources", kvpForRes.Value.m_strPath, kvpForRes.Value.m_strExtension));
-            }
+                pAssets.Add(string.Format("{0}/{1}{2}", "Assets/Resources", pResValue.m_strPath, pResValue.m_strExtension));
+            });
 
             AssetBundleBuild pAssetInfo = new AssetBundleBuild();
-            pAssetInfo.assetBundleName  = string.Format("{0}.unity3d", kvpForBundle.Value.m_strBundleName);
+            pAssetInfo.assetBundleName  = string.Format("{0}.unity3d", pValue.m_strBundleName);
             pAssetInfo.assetNames       = pAssets.ToArray();
             pBuildList.Add(pAssetInfo);
-        }
+        });
         
         // 빌드할 번들이 없으면 종료
         if (0 == pBuildList.Count)
@@ -101,7 +101,7 @@ public static class SHAssetBundleMaker
         }
 
         // 후 처리
-        foreach(var pBundle in pBuildList)
+        SHUtil.ForToList(pBuildList, (pBundle) =>
         {
             // 번들 크기와 해시코드 기록
             string strKey = pBundle.assetBundleName.Substring(0, pBundle.assetBundleName.Length - ".unity3d".Length).ToLower();
@@ -113,7 +113,7 @@ public static class SHAssetBundleMaker
 
             // Manifest제거 ( 사용하지 않는 불필요한 파일이라 그냥 제거시킴 )
             SHUtil.DeleteFile(string.Format("{0}/{1}.manifest", strOutputPath, pBundle.assetBundleName));
-        }
+        });
         SHUtil.DeleteFile(string.Format("{0}/{1}", strOutputPath, SHHard.GetStrToPlatform(eTarget)));
         SHUtil.DeleteFile(string.Format("{0}/{1}.manifest", strOutputPath, SHHard.GetStrToPlatform(eTarget)));
         
@@ -124,14 +124,14 @@ public static class SHAssetBundleMaker
     static void DeleteOriginalResource(SHTableData pTableData)
     {
         var pBundleInfo = GetBundleTable(pTableData);
-        foreach (var kvpForBundle in pBundleInfo.GetContainer())
+        SHUtil.ForToDic(pBundleInfo.GetContainer(), (pKey, pValue) =>
         {
-            foreach (var kvpForRes in kvpForBundle.Value.m_dicResources)
+            SHUtil.ForToDic(pValue.m_dicResources, (pResKey, pResValue) =>
             {
-                SHUtil.DeleteFile(string.Format("{0}/{1}{2}", SHPath.GetPathToResources(), kvpForRes.Value.m_strPath, kvpForRes.Value.m_strExtension));
-                SHUtil.DeleteFile(string.Format("{0}/{1}{2}", SHPath.GetPathToResources(), kvpForRes.Value.m_strPath, ".meta"));
-            }
-        }
+                SHUtil.DeleteFile(string.Format("{0}/{1}{2}", SHPath.GetPathToResources(), pResValue.m_strPath, pResValue.m_strExtension));
+                SHUtil.DeleteFile(string.Format("{0}/{1}{2}", SHPath.GetPathToResources(), pResValue.m_strPath, ".meta"));
+            });
+        });
     }
 
     // 유틸 : 번들정보 스크립트 아웃풋
@@ -139,18 +139,18 @@ public static class SHAssetBundleMaker
     {
         var pBundleTable   = GetBundleTable(pTableData);
         var pResourceTable = GetResourceTable(pTableData);
-        foreach (var kvpForMakeBundle in dicMakeBundles)
+        SHUtil.ForToDic(dicMakeBundles, (pKey, pValue) =>
         {
-            AssetBundleInfo pData = pBundleTable.GetBundleInfo(kvpForMakeBundle.Value.m_strBundleName);
-            pData.m_lBundleSize   = kvpForMakeBundle.Value.m_lBundleSize;
-            pData.m_pHash128      = kvpForMakeBundle.Value.m_pHash128;
-            pData.CopyResourceInfo(kvpForMakeBundle.Value.m_dicResources);
+            AssetBundleInfo pData = pBundleTable.GetBundleInfo(pValue.m_strBundleName);
+            pData.m_lBundleSize   = pValue.m_lBundleSize;
+            pData.m_pHash128      = pValue.m_pHash128;
+            pData.CopyResourceInfo(pValue.m_dicResources);
 
-            foreach (var kvpForRes in pData.m_dicResources)
+            SHUtil.ForToDic(pData.m_dicResources, (pResKey, pResValue) =>
             {
-                kvpForRes.Value.CopyTo(pResourceTable.GetResouceInfo(kvpForRes.Key));
-            }
-        }
+                pResValue.CopyTo(pResourceTable.GetResouceInfo(pResKey));
+            });
+        });
 
         pBundleTable.SaveJsonFileByDic(
             string.Format("{0}/{1}.json", strOutputPath, pBundleTable.m_strFileName));

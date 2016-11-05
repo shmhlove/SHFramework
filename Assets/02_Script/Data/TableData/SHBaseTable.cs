@@ -8,7 +8,7 @@ using System.Xml;
 
 public abstract class SHBaseTable
 {
-    #region Value Members
+    #region Members
     // 파일이름
     public string       m_strFileName;
     public string       m_strByteFileName;

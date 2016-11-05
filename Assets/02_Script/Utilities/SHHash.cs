@@ -115,4 +115,10 @@ public static partial class SHHash
             return BitConverter.ToString(pDSA.SignData(pStream)).Replace("-", string.Empty);
         }
     }
+
+    // Hash128
+    public static Hash128 GetHash128(string strBuff)
+    {
+        return Hash128.Parse(strBuff);
+    }
 }

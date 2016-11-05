@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class SHTableDataSet
 {
-    #region Value Members
+    #region Members
     public string           m_strTableName;
     public int              m_iMaxCol;
     public List<string>     m_ColumnNames = new List<string>();

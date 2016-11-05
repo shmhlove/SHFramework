@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SHSceneMainToLogin : MonoBehaviour 
 {
-    #region Value Members
+    #region Members
     #endregion
 
 

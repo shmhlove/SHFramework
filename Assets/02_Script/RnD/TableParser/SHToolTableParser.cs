@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class SHToolTableParser : MonoBehaviour
 {
-    #region Value Members
+    #region Members
     public  string m_strFileName    = "파일명을 기입하면 그 파일만 파싱합니다.";
     private string m_strDescription = "파일명을 기입하면 그 파일만 파싱합니다.";
 

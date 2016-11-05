@@ -28,8 +28,8 @@ public class SHNativeInputManager : SHSingleton<SHNativeInputManager>
     { get { return m_pTouchOrders; } }
 
     public SHEvent EventToEnter = new SHEvent();
-    public SHEvent EventToDrag = new SHEvent();
-    public SHEvent EventToEnd = new SHEvent();
+    public SHEvent EventToDrag  = new SHEvent();
+    public SHEvent EventToEnd   = new SHEvent();
 
     public override void OnInitialize() { }
     public override void OnFinalize() { }
@@ -78,8 +78,8 @@ public class SHNativeInputManager : SHSingleton<SHNativeInputManager>
     void OnTouchEnter(int iFingerID, Vector2 vTouchPos)
     {
         Vector3 vScreenPos = Vector3.zero;
-        vScreenPos.x = (vTouchPos.x / Screen.width);// * Single.Global.m_iResolutionToWidth;
-        vScreenPos.y = (vTouchPos.y / Screen.height);// *Single.Global.m_iResolutionToHeight;
+        vScreenPos.x = (vTouchPos.x / Screen.width);
+        vScreenPos.y = (vTouchPos.y / Screen.height);
 
         m_dicTouchEnter[iFingerID] = vScreenPos;
         m_dicTouchMove[iFingerID] = vScreenPos;
@@ -96,8 +96,8 @@ public class SHNativeInputManager : SHSingleton<SHNativeInputManager>
     void OnTouchEnd(int iFingerID, Vector2 vTouchPos)
     {
         Vector3 vScreenPos = Vector3.zero;
-        vScreenPos.x = (vTouchPos.x / Screen.width);// *Single.Global.m_iResolutionToWidth;
-        vScreenPos.y = (vTouchPos.y / Screen.height);// * Single.Global.m_iResolutionToHeight;
+        vScreenPos.x = (vTouchPos.x / Screen.width);
+        vScreenPos.y = (vTouchPos.y / Screen.height);
 
         m_dicTouchEnd[iFingerID] = vScreenPos;
         m_dicTouchEnter.Remove(iFingerID);
@@ -114,8 +114,8 @@ public class SHNativeInputManager : SHSingleton<SHNativeInputManager>
     void OnTouchMove(int iFingerID, Vector2 vTouchPos)
     {
         Vector3 vScreenPos = Vector3.zero;
-        vScreenPos.x = (vTouchPos.x / Screen.width);// * Single.Global.m_iResolutionToWidth;
-        vScreenPos.y = (vTouchPos.y / Screen.height);// * Single.Global.m_iResolutionToHeight;
+        vScreenPos.x = (vTouchPos.x / Screen.width);
+        vScreenPos.y = (vTouchPos.y / Screen.height);
 
         m_dicTouchMove[iFingerID] = vScreenPos;
 

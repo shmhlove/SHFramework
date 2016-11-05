@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class SHLoadPrograss
 {
-    #region Value Members
+    #region Members
     // 로드 카운트 : <Total, Current>
     private SHPair<int, int> m_pLoadCount               = new SHPair<int, int>(0, 0);
 
@@ -44,24 +44,24 @@ public class SHLoadPrograss
     #region Interface Functions
     public void AddLoadInfo(Dictionary<string, SHLoadData> dicLoadList)
     {
-        foreach(var kvp in dicLoadList)
+        SHUtil.ForToDic(dicLoadList, (pKey, pValue) => 
         {
             // 무결성체크
-            if (null == kvp.Value)
-                continue;
+            if (null == pValue)
+                return;
 
             // 중복파일체크
-            SHLoadData pLoadData = GetLoadDataInfo(kvp.Value.m_strName);
+            SHLoadData pLoadData = GetLoadDataInfo(pValue.m_strName);
             if (null != pLoadData)
             {
-                Debug.LogError(string.Format("중복파일 발견!!!(FileName : {0})", kvp.Value.m_strName));
-                continue;
+                Debug.LogError(string.Format("중복파일 발견!!!(FileName : {0})", pValue.m_strName));
+                return;
             }
 
             // 초기화 및 등록
-            SetLoadData(kvp.Value);
+            SetLoadData(pValue);
             m_pLoadCount.Value1++;
-        }
+        });
     }
 
     public SHLoadData GetLoadDataInfo(string strName)

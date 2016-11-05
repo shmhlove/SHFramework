@@ -11,7 +11,7 @@ using SimpleJSON;
 
 public class SHJson
 {
-    #region Value Members
+    #region Members
     private JSONNode m_pJsonNode = null;
     public JSONNode Node { get { return m_pJsonNode; } }
     #endregion
@@ -125,25 +125,25 @@ public class SHJson
 
         string strNewLine = "\r\n";
         string strBuff = "{" + strNewLine;
-        foreach (var kvp in dicData)
+        SHUtil.ForToDic(dicData, (pKey, pValue) =>
         {
-            strBuff += string.Format("\t\"{0}\": [{1}", kvp.Key, strNewLine);
-            foreach (SHTableDataSet pData in kvp.Value)
+            strBuff += string.Format("\t\"{0}\": [{1}", pKey, strNewLine);
+            SHUtil.ForToList(pValue, (pData) =>
             {
                 strBuff += "\t\t{" + strNewLine;
-                for (int iCol = 0; iCol < pData.m_iMaxCol; ++iCol)
+                SHUtil.For(0, pData.m_iMaxCol, (iCol) =>
                 {
                     strBuff += string.Format("\t\t\t\"{0}\": {1},{2}",
                         pData.m_ColumnNames[iCol],
                         pData.m_pDatas[iCol],
                         strNewLine);
-                }
+                });
                 strBuff = string.Format("{0}{1}", strBuff.Substring(0, strBuff.Length - (strNewLine.Length + 1)), strNewLine);
                 strBuff += "\t\t}," + strNewLine;
-            }
+            });
             strBuff = string.Format("{0}{1}", strBuff.Substring(0, strBuff.Length - (strNewLine.Length + 1)), strNewLine);
             strBuff += string.Format("\t],{0}", strNewLine);
-        }
+        });
         strBuff = string.Format("{0}{1}", strBuff.Substring(0, strBuff.Length - (strNewLine.Length + 1)), strNewLine);
         strBuff += "}";
 

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 public partial class SHResourceData : SHBaseData
 {
-    #region Value Members
+    #region Members
     // 리소스 리스트
     private Dictionary<string, Object> m_dicResources = new Dictionary<string, Object>();
     #endregion
@@ -36,16 +36,14 @@ public partial class SHResourceData : SHBaseData
     // 다양화 : 로드할 데이터 리스트 알려주기
     public override Dictionary<string, SHLoadData> GetLoadList(eSceneType eType)
     {
-        var pPreLoadList = Single.Table.GetPreLoadResourcesList(eType);
         var dicLoadList  = new Dictionary<string, SHLoadData>();
-
-        foreach (string strFileName in pPreLoadList)
+        SHUtil.ForToList(Single.Table.GetPreLoadResourcesList(eType), (pValue) =>
         {
-            if (true == IsLoadResource(strFileName))
-                continue;
+            if (true == IsLoadResource(pValue))
+                return;
 
-            dicLoadList.Add(strFileName, CreateLoadInfo(strFileName));
-        }
+            dicLoadList.Add(pValue, CreateLoadInfo(pValue));
+        });
 
         return dicLoadList;
     }

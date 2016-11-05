@@ -52,7 +52,7 @@ public partial class SHLoader
 
     void AddLoadList(List<Dictionary<string, SHLoadData>> pLoadList)
     {
-        SHUtil.ForeachToList<Dictionary<string, SHLoadData>>(
+        SHUtil.ForToList<Dictionary<string, SHLoadData>>(
         pLoadList, (dicLoadList) =>
         {
             m_pPrograss.AddLoadInfo(dicLoadList);
@@ -78,7 +78,7 @@ public partial class SHLoader
             return 100.0f;
 
         float iProgress = 0.0f;
-        SHUtil.ForeachToDic<string, SHLoadStartInfo>(m_pPrograss.LoadingFiles, (pKey, pValue) => 
+        SHUtil.ForToDic<string, SHLoadStartInfo>(m_pPrograss.LoadingFiles, (pKey, pValue) => 
         {
             if (true == m_pPrograss.IsDone(pKey))
                 return;
@@ -138,9 +138,6 @@ public partial class SHLoader
 
     void CallEventToComplate()
     {
-        if (false == EventToComplate.IsAddEvent())
-            return;
-
         var pEvent                  = new SHLoadEvent();
         pEvent.m_bIsFail            = m_pPrograss.m_bIsFail;
         pEvent.m_pCount             = m_pPrograss.GetCountInfo();

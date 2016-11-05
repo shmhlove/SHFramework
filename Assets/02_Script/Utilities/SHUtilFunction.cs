@@ -14,7 +14,7 @@ public static partial class SHUtil
 {
     #region 형 변환 관련 ( Enum.Parse 엄청느립니다. 가급적 사용금지!!! )
     // String을 Enum으로
-    public static T StringToEnum<T>(string strEnum, string strErrorLog = "")
+    public static T GetStringToEnum<T>(string strEnum, string strErrorLog = "")
     {
         if ((true == string.IsNullOrEmpty(strEnum)) || 
             (false == Enum.IsDefined(typeof(T), strEnum)))
@@ -38,79 +38,147 @@ public static partial class SHUtil
     #endregion
 
 
-    #region 컨테이너 관련
-    // Foreach Array
-    public static void ForeachToArray<T>(T[] pArray, Action<T> pLambda)
+    #region 반복문 관련
+    // For Array
+    public static void ForToArray<T>(T[] pArray, Action<T> pCallback)
     {
-        foreach (T tArray in pArray)
-            pLambda(tArray);
-    }
-    // Foreach Enum
-    public static void ForeachToEnum<T>(Action<T> pLambda)
-    {
-        foreach (T eEnum in Enum.GetValues(typeof(T)))
-            pLambda(eEnum);
-    }
-    // Foreach List
-    public static void ForeachToList<T>(List<T> pList, Action<T> pLambda)
-    {        
-        foreach (T tList in pList)
-            pLambda(tList);
-    }
-    // Foreach Condition List
-    public static bool ForeachToListOfBreak<T>(List<T> pList, bool bBreakCondition, Func<T, bool> pLambda)
-    {
-        foreach (T tList in pList)
+        if (null == pArray)
+            return;
+
+        if (null == pCallback)
+            return;
+
+        int iMaxCount = pArray.Length;
+        for (int iLoop=0; iLoop < iMaxCount; ++iLoop)
         {
-            if (bBreakCondition == pLambda(tList))
-                return bBreakCondition;
+            pCallback(pArray[iLoop]);
         }
-        return !bBreakCondition;
     }
-    // Foreach Dictionary
-    public static void ForeachToDic<TKey, TValue>(Dictionary<TKey, TValue> pDic, Action<TKey, TValue> pLambda)
+    // For Enum
+    public static void ForToEnum<T>(Action<T> pCallback)
     {
-        foreach (KeyValuePair<TKey, TValue> kvp in pDic)
-            pLambda(kvp.Key, kvp.Value);
-    }
-    // Foreach Condition Dictionary
-    public static bool ForeachToDicOfBreak<TKey, TValue>(Dictionary<TKey, TValue> pDic, bool bBreakCondition, Func<TKey, TValue, bool> pLambda)
-    {
-        foreach (KeyValuePair<TKey, TValue> kvp in pDic)
+        var pEnumerator = Enum.GetValues(typeof(T)).GetEnumerator();
+        while (pEnumerator.MoveNext())
         {
-            if (bBreakCondition == pLambda(kvp.Key, kvp.Value))
-                return bBreakCondition;
+            pCallback((T)pEnumerator.Current);
         }
-        return !bBreakCondition;
     }
-    // for Double
-    public static void ForToDouble(int iMaxToFirst, int iMaxToSecond, Action<int, int> pLambda)
+    // For List
+    public static void ForToList<T>(List<T> pList, Action<T> pCallback)
+    {
+        if (null == pList)
+            return;
+
+        if (null == pCallback)
+            return;
+
+        int iMaxCount = pList.Count;
+        for (int iLoop = 0; iLoop < iMaxCount; ++iLoop)
+        {
+            pCallback(pList[iLoop]);
+        }
+    }
+    public static void ForToList<T>(List<T> pList, Func<T, bool> pCallback)
+    {
+        if (null == pList)
+            return;
+
+        if (null == pCallback)
+            return;
+
+        int iMaxCount = pList.Count;
+        for (int iLoop = 0; iLoop < iMaxCount; ++iLoop)
+        {
+            if (true == pCallback(pList[iLoop]))
+                break;
+        }
+    }
+    // For Dictionary
+    public static void ForToDic<TKey, TValue>(Dictionary<TKey, TValue> pDic, Action<TKey, TValue> pCallback)
+    {
+        if (null == pDic)
+            return;
+
+        if (null == pCallback)
+            return;
+
+        var pEnumerator = pDic.GetEnumerator();
+        while (pEnumerator.MoveNext())
+        {
+            var kvp = pEnumerator.Current;
+            pCallback(kvp.Key, kvp.Value);
+        }
+    }
+    public static void ForToDic<TKey, TValue>(Dictionary<TKey, TValue> pDic, Func<TKey, TValue, bool> pCallback)
+    {
+        if (null == pDic)
+            return;
+
+        if (null == pCallback)
+            return;
+
+        var pEnumerator = pDic.GetEnumerator();
+        while (pEnumerator.MoveNext())
+        {
+            var kvp = pEnumerator.Current;
+            if (true == pCallback(kvp.Key, kvp.Value))
+                break;
+        }
+    }
+    // For One
+    public static void For(int iStartIndex, int iMaxIndex, Action<int> pCallback)
+    {
+        for (int iLoop = iStartIndex; iLoop<iMaxIndex; ++iLoop)
+        {
+            pCallback(iLoop);
+        }
+    }
+    public static void For(int iStartIndex, int iMaxIndex, Func<int, bool> pCallback)
+    {
+        for (int iLoop = iStartIndex; iLoop < iMaxIndex; ++iLoop)
+        {
+            if (true == pCallback(iLoop))
+                break;
+        }
+    }
+    // For Double
+    public static void ForToDouble(int iMaxToFirst, int iMaxToSecond, Action<int, int> pCallback)
     {
         for (int iLoop1 = 0; iLoop1 < iMaxToFirst; ++iLoop1)
         {
             for (int iLoop2 = 0; iLoop2 < iMaxToSecond; ++iLoop2)
-                pLambda(iLoop1, iLoop2);
+                pCallback(iLoop1, iLoop2);
         }
     }
-    public static bool ForToDoubleOfBreak(int iMaxToFirst, int iMaxToSecond, bool bBreakCondition, Func<int, int, bool> pLambda)
+    public static void ForToDouble(int iMaxToFirst, int iMaxToSecond, Func<int, int, bool> pCallback)
     {
         for (int iLoop1 = 0; iLoop1 < iMaxToFirst; ++iLoop1)
         {
             for (int iLoop2 = 0; iLoop2 < iMaxToSecond; ++iLoop2)
             {
-                if (bBreakCondition == pLambda(iLoop1, iLoop2))
-                    return bBreakCondition;
+                if (true == pCallback(iLoop1, iLoop2))
+                    return;
             }
         }
-        return !bBreakCondition;
     }
-    // Inverse for Double
-    public static void ForInverseToDouble(int iMaxToFirst, int iMaxToSecond, Action<int, int> pLambda)
+    // Inverse For Double
+    public static void ForInverseToDouble(int iMaxToFirst, int iMaxToSecond, Action<int, int> pCallback)
     {
         for (int iLoop1 = iMaxToFirst; iLoop1 >= 0; --iLoop1)
         {
             for (int iLoop2 = iMaxToSecond; iLoop2 >= 0; --iLoop2)
-                pLambda(iLoop1, iLoop2);
+                pCallback(iLoop1, iLoop2);
+        }
+    }
+    public static void ForInverseToDouble(int iMaxToFirst, int iMaxToSecond, Func<int, int, bool> pCallback)
+    {
+        for (int iLoop1 = iMaxToFirst; iLoop1 >= 0; --iLoop1)
+        {
+            for (int iLoop2 = iMaxToSecond; iLoop2 >= 0; --iLoop2)
+            {
+                if (true == pCallback(iLoop1, iLoop2))
+                    return;
+            }
         }
     }
     #endregion
@@ -118,31 +186,50 @@ public static partial class SHUtil
 
     #region 디바이스 정보관련
     // UUID
-    public static string GetUUID()
+    public static string GetDeviceID()
     {
         return SystemInfo.deviceUniqueIdentifier;
+    }
+    public static string GetDeviceName()
+    {
+        return SystemInfo.deviceName;
+    }
+    public static string GetDeviceModel()
+    {
+        return SystemInfo.deviceModel;
+    }
+    public static int GetSystemMemorySize()
+    {
+        return SystemInfo.systemMemorySize;
+    }
+    public static int GetGraphiceMemorySize()
+    {
+        return SystemInfo.graphicsMemorySize;
+    }
+    public static int GetMaxTextureSize()
+    {
+        return SystemInfo.maxTextureSize;
     }
     #endregion
 
 
     #region 유니티 에디터 관련
-    // Missing컴포넌트 체크
+    // Component Missing 체크
     public static void CheckMissingComponent()
     {
 #if UNITY_EDITOR
         var pObjects = Resources.FindObjectsOfTypeAll(typeof(GameObject));
-        foreach (var pObject in pObjects)
+        SHUtil.ForToArray(pObjects, (pObject) =>
         {
             if (null == pObject)
-                continue;
+                return;
 
-            var pComponents = (pObject as GameObject).GetComponents<Component>();
-            foreach (var pComponent in pComponents)
+            SHUtil.ForToArray((pObject as GameObject).GetComponents<Component>(), (pComponent) => 
             {
                 if (null == pComponent)
                     UnityEngine.Debug.Log(string.Format("<color=red>MissingComponent!!(GameObject{0})</color>", pObject.name));
-            }
-        }
+            });
+        });
 #endif
     }
     // 유니티 에디터의 Pause를 Toggle합니다.
@@ -158,10 +245,10 @@ public static partial class SHUtil
         UnityEditor.EditorApplication.isPlaying = false;
 #else
         ProcessThreadCollection pThreads = Process.GetCurrentProcess().Threads;
-        foreach (ProcessThread pThread in pThreads)
+        SHUtil.ForToList(pThreads, (pThread) =>
         {
             pThread.Dispose();
-        }
+        });
 
         Process.GetCurrentProcess().Kill();
 #endif
@@ -183,23 +270,21 @@ public static partial class SHUtil
 #if UNITY_EDITOR
         if (false == pDirInfo.Exists)
             return;
-
-        DirectoryInfo[] pDirs = pDirInfo.GetDirectories();
-        foreach (DirectoryInfo pDir in pDirs)
+        
+        SHUtil.ForToArray(pDirInfo.GetDirectories(), (pDir) =>
         {
             SearchFiles(pDir, pCallback);
             SearchDirs(pDir, pCallback);
-        }
+        });
 #endif
     }
     static void SearchFiles(DirectoryInfo pDirInfo, Action<FileInfo> pCallback)
     {
 #if UNITY_EDITOR
-        FileInfo[] pFiles = pDirInfo.GetFiles();
-        foreach (FileInfo pFile in pFiles)
+        SHUtil.ForToArray(pDirInfo.GetFiles(), (pFile) =>
         {
             pCallback(pFile);
-        }
+        });
 #endif
     }
     public static void CreateDirectory(string strPath)
@@ -220,13 +305,13 @@ public static partial class SHUtil
             return;
 
         FileInfo[] pFiles = pDirInfo.GetFiles("*.*", SearchOption.AllDirectories);
-        foreach (FileInfo pFile in pFiles)
+        SHUtil.ForToArray(pFiles, (pFile) =>
         {
             if (false == pFile.Exists)
-                continue;
+                return;
 
             pFile.Attributes = FileAttributes.Normal;
-        }
+        });
 
         Directory.Delete(strPath, true);
     }
@@ -251,7 +336,6 @@ public static partial class SHUtil
 
         UnityEngine.Debug.Log(string.Format("{0} File 저장", strSavePath));
     }
-
     public static string ReadFile(string strReadPath)
     {
         var pFile   = new FileStream(strReadPath, FileMode.Open, FileAccess.Read);
@@ -262,7 +346,6 @@ public static partial class SHUtil
 
         return strBuff;
     }
-
     public static void SaveByte(byte[] pBytes, string strSavePath)
     {
         SHUtil.CreateDirectory(strSavePath);
@@ -364,11 +447,11 @@ public static partial class SHUtil
     {
         var pCallStack      = new StackTrace();
         var strCallStack    = string.Empty;
-        foreach (var pFrame in pCallStack.GetFrames())
+        SHUtil.ForToArray(pCallStack.GetFrames(), (pFrame) =>
         {
             strCallStack += string.Format("{0}({1}) : {2}\n",
                 pFrame.GetMethod(), pFrame.GetFileLineNumber(), pFrame.GetFileName());
-        }
+        });
 
         return strCallStack;
     }

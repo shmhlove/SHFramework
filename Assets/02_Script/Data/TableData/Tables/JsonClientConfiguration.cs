@@ -9,7 +9,7 @@ using SimpleJSON;
 
 public class JsonClientConfiguration : SHBaseTable
 {
-    #region Value Members
+    #region Members
     public string        m_strConfigurationCDN  = string.Empty;
     public string        m_strServiceMode       = string.Empty;
     public string        m_strVersion           = string.Empty;

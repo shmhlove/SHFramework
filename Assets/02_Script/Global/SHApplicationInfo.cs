@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
 {
-    #region Value Members
+    #region Members
     // 앱 종료 여부
     public bool                 m_bIsAppQuit        = false;
 
@@ -235,14 +235,14 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
     public void SaveLoadResourceList()
     {
         string strBuff = string.Empty;
-        foreach (var kvp in m_dicRealLoadInfo)
+        SHUtil.ForToDic(m_dicRealLoadInfo, (pKey, pValue) =>
         {
-            strBuff += string.Format("Scene : {0}\n", kvp.Key);
-            foreach (var pInfo in kvp.Value)
+            strBuff += string.Format("Scene : {0}\n", pKey);
+            SHUtil.ForToList(pValue, (pInfo) =>
             {
                 strBuff += string.Format("\t{0}\n", pInfo);
-            }
-        }
+            });
+        });
 
         string strSavePath = string.Format("{0}/{1}", SHPath.GetPathToAssets(), "RealTimeLoadResource.txt");
         SHUtil.SaveFile(strBuff, strSavePath);

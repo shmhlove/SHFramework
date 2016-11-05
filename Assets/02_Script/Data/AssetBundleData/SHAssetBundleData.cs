@@ -13,7 +13,7 @@ public class SHAssetBundle
 
 public partial class SHAssetBundleData : SHBaseData
 {
-    #region Value Members
+    #region Members
     public Dictionary<string, SHAssetBundle> m_dicBundles = new Dictionary<string, SHAssetBundle>();
     #endregion
 
@@ -26,10 +26,11 @@ public partial class SHAssetBundleData : SHBaseData
     public override void OnInitialize() { }
     public override void OnFinalize()
     {
-        foreach(var kvp in m_dicBundles)
+        SHUtil.ForToDic(m_dicBundles, (pKey, pValue) =>
         {
-            kvp.Value.m_pBundle.Unload(false);
-        }
+            pValue.m_pBundle.Unload(false);
+        });
+        
         m_dicBundles.Clear();
     }
     public override void FrameMove() { }
@@ -45,14 +46,13 @@ public partial class SHAssetBundleData : SHBaseData
         if (true == string.IsNullOrEmpty(SHPath.GetURLToBundleCDN()))
             return dicLoadList;
 
-        var dicBundles  = Single.Table.GetAssetBundleInfo();
-        foreach (var kvp in dicBundles)
+        SHUtil.ForToDic(Single.Table.GetAssetBundleInfo(), (pKey, pValue) =>
         {
-            if (true == IsExist(kvp.Key))
-                continue;
+            if (true == IsExist(pKey))
+                return;
 
-            dicLoadList.Add(kvp.Key, CreatePatchInfo(kvp.Value));
-        }
+            dicLoadList.Add(pKey, CreatePatchInfo(pValue));
+        });
 
         return dicLoadList;
     }

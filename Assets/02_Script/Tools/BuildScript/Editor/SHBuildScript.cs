@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 class SHBuildScript
 {
-    #region Value Members
+    #region Members
     static string[] SCENES    = FindEnabledEditorScenes();
     #endregion
 
@@ -133,13 +133,13 @@ class SHBuildScript
     static string[] FindEnabledEditorScenes()
     {
         var pScenes = new List<string>();
-        foreach (var pScene in EditorBuildSettings.scenes)
+        SHUtil.ForToArray (EditorBuildSettings.scenes, (pScene) =>
         {
             if (false == pScene.enabled) 
-                continue;
+                return;
 
             pScenes.Add(pScene.path);
-        }
+        });
         return pScenes.ToArray();
     }
 

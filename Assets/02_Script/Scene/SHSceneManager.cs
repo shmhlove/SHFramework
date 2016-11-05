@@ -5,6 +5,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using HistoryList   = System.Collections.Generic.List<SHSceneHistory>;
+using EventList     = System.Collections.Generic.List<System.Action<eSceneType, eSceneType>>;
+
 public class SHSceneHistory
 {
     public eSceneType m_eTo;
@@ -19,17 +22,16 @@ public class SHSceneHistory
 
 public class SHSceneManager : SHSingleton<SHSceneManager>
 {
-    #region Value Members
+    #region Members
     // 씬 상태
     private eSceneType      m_eCurrentScene   = eSceneType.None;
     private eSceneType      m_eBeforeScene    = eSceneType.None;
 
     // 히스토리
-    public List<SHSceneHistory> m_pHistory    = new List<SHSceneHistory>();
+    public HistoryList      m_pHistory        = new HistoryList();
 
     // 이벤트
-    private List<Action<eSceneType, eSceneType>> m_pEventToChangeScene = 
-        new List<Action<eSceneType, eSceneType>>();
+    private EventList       m_pEventToChangeScene = new EventList();
     #endregion
 
 
@@ -99,7 +101,7 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
     // 인터페이스 : X씬을 거친적이 있는가?
     public bool IsPassedScene(eSceneType eType)
     {
-        foreach(SHSceneHistory pHistory in m_pHistory)
+        foreach (var pHistory in m_pHistory)
         {
             if (eType == pHistory.m_eFrom)
                 return true;
@@ -186,13 +188,13 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
     // 유틸 : 씬 변경될때 알려달라고 한 곳에 알려주자
     void SendCallback(eSceneType eCurrent, eSceneType eChange)
     {
-        foreach (var pAction in m_pEventToChangeScene)
+        SHUtil.ForToList(m_pEventToChangeScene, (pAction) =>
         {
             if (null == pAction)
-                continue;
+                return;
 
             pAction(eCurrent, eChange);
-        }
+        });
     }
 
     // 유틸 : 씬 변경시 처리해야할 하드한 작업들

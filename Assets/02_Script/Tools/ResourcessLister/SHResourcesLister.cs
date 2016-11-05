@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 public class SHResourcesLister
 {
-    #region Value Members
+    #region Members
     // 멤버 : 리스팅된 리소스 리스트
     public Dictionary<string, SHResourcesTableInfo> m_dicResources      = new Dictionary<string, SHResourcesTableInfo>();
 
@@ -83,12 +83,12 @@ public class SHResourcesLister
         
         // 테이블별 내용작성
         strBuff += string.Format("\t\"{0}\": [{1}", "ResourcesList", strNewLine);
-        foreach (var kvp in dicTable)
+        SHUtil.ForToDic(dicTable, (pKey, pValue) =>
         {
             strBuff += "\t\t{" + strNewLine;
-            strBuff += SHResourcesLister.MakeSaveFormat(kvp.Value, "\t\t");            
+            strBuff += SHResourcesLister.MakeSaveFormat(pValue, "\t\t");
             strBuff += "\t\t}," + strNewLine;
-        }
+        });
         strBuff = string.Format("{0}{1}", strBuff.Substring(0, strBuff.Length - (strNewLine.Length + 1)), strNewLine);
         strBuff += string.Format("\t]{0}", strNewLine);
         strBuff += "}";
@@ -108,12 +108,12 @@ public class SHResourcesLister
 
         // 테이블별 내용작성
         strBuff += string.Format("\t\"{0}\": [{1}", "ResourcesList", strNewLine);
-        foreach (var kvp in dicTable)
+        SHUtil.ForToDic(dicTable, (pKey, pValue) =>
         {
             strBuff += "\t\t{" + strNewLine;
 
             strBuff += string.Format("\t\t\t\"s_BundleName\": \"{0}\",{1}",
-                kvp.Value.m_strName,
+                pValue.m_strName,
                 strNewLine);
 
             strBuff += string.Format("\t\t\t\"s_BundleSize\": \"{0}\",{1}",
@@ -123,15 +123,15 @@ public class SHResourcesLister
             strBuff += string.Format("\t\t\t\"s_BundleHash\": \"{0}\",{1}",
                 0,
                 strNewLine);
-            
-            strBuff += string.Format("\t\t\t\"p_Resources\": {0}",strNewLine);
+
+            strBuff += string.Format("\t\t\t\"p_Resources\": {0}", strNewLine);
             strBuff += "\t\t\t[" + strNewLine;
             strBuff += "\t\t\t\t{" + strNewLine;
-            strBuff += SHResourcesLister.MakeSaveFormat(kvp.Value, "\t\t\t\t");
+            strBuff += SHResourcesLister.MakeSaveFormat(pValue, "\t\t\t\t");
             strBuff += "\t\t\t\t}" + strNewLine;
             strBuff += "\t\t\t]" + strNewLine;
             strBuff += "\t\t}," + strNewLine;
-        }
+        });
         strBuff = string.Format("{0}{1}", strBuff.Substring(0, strBuff.Length - (strNewLine.Length + 1)), strNewLine);
         strBuff += string.Format("\t]{0}", strNewLine);
         strBuff += "}";
@@ -151,36 +151,36 @@ public class SHResourcesLister
 
         // 테이블별 내용작성
         strBuff += string.Format("\t\"{0}\": [{1}", "AssetBundleInfo", strNewLine);
-        foreach (var kvp in dicTable)
+        SHUtil.ForToDic(dicTable, (pKey, pValue) =>
         {
             strBuff += "\t\t{" + strNewLine;
 
             strBuff += string.Format("\t\t\t\"s_BundleName\": \"{0}\",{1}",
-                kvp.Value.m_strBundleName,
+                pValue.m_strBundleName,
                 strNewLine);
 
             strBuff += string.Format("\t\t\t\"s_BundleSize\": \"{0}\",{1}",
-                kvp.Value.m_lBundleSize,
+                pValue.m_lBundleSize,
                 strNewLine);
 
             strBuff += string.Format("\t\t\t\"s_BundleHash\": \"{0}\",{1}",
-                kvp.Value.m_pHash128.ToString(),
+                pValue.m_pHash128.ToString(),
                 strNewLine);
 
             strBuff += string.Format("\t\t\t\"p_Resources\": {0}", strNewLine);
             strBuff += "\t\t\t[" + strNewLine;
-            
-            foreach(var kvpToRes in kvp.Value.m_dicResources)
+
+            SHUtil.ForToDic(pValue.m_dicResources, (pResKey, pResValue) =>
             {
                 strBuff += "\t\t\t\t{" + strNewLine;
-                strBuff += MakeSaveFormat(kvpToRes.Value, "\t\t\t\t");
+                strBuff += MakeSaveFormat(pResValue, "\t\t\t\t");
                 strBuff += "\t\t\t\t}," + strNewLine;
-            }
+            });
             strBuff = string.Format("{0}{1}", strBuff.Substring(0, strBuff.Length - (strNewLine.Length + 1)), strNewLine);
-            
+
             strBuff += "\t\t\t]" + strNewLine;
             strBuff += "\t\t}," + strNewLine;
-        }
+        });
         strBuff = string.Format("{0}{1}", strBuff.Substring(0, strBuff.Length - (strNewLine.Length + 1)), strNewLine);
         strBuff += string.Format("\t]{0}", strNewLine);
         strBuff += "}";
@@ -197,15 +197,15 @@ public class SHResourcesLister
 
         string strNewLine = "\r\n";
         string strBuff    = string.Empty;
-        foreach(var kvp in dicDuplications)
+        SHUtil.ForToDic(dicDuplications, (pKey, pValue) =>
         {
-            strBuff += string.Format("FileName : {0}{1}", kvp.Key, strNewLine);
-            foreach(string strPath in kvp.Value)
+            strBuff += string.Format("FileName : {0}{1}", pKey, strNewLine);
+            SHUtil.ForToList(pValue, (strPath) =>
             {
                 strBuff += string.Format("\tPath : Resources/{0}{1}", strPath, strNewLine);
-            }
+            });
             strBuff += string.Format("{0}", strNewLine);
-        }
+        });
 
         SHUtil.SaveFile(strBuff, strSaveFilePath);
     }

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SHSceneMainToIntro : MonoBehaviour
 {
-    #region Value Members
+    #region Members
     #endregion
 
 

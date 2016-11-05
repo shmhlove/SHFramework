@@ -46,7 +46,7 @@ using System.Collections.Generic;
 
 public class SHEventUtil : SHSingleton<SHEventUtil>
 {
-    #region Value Members
+    #region Members
     private SHEvent pEvent = new SHEvent();
     #endregion
 
@@ -102,9 +102,8 @@ public class SHEventParam<T> : EventArgs
 
 public sealed class SHEvent
 {
-    #region Value Members
+    #region Members
     private event EventHandler m_pHandler = null;
-    private Dictionary<EventHandler, string> m_dicHandler = new Dictionary<EventHandler, string>();
     #endregion
 
 
@@ -118,63 +117,44 @@ public sealed class SHEvent
 
 
     #region Interface Functions
-    public void Add(EventHandler pObserver, bool bCheckInstance = false)
+    public void Add(EventHandler pObserver)
     {
-        if (true == bCheckInstance)
-        {
-            if (true == m_dicHandler.ContainsKey(pObserver))
-                return;
-        }
-        else
-        {
-            if (true == m_dicHandler.ContainsValue(pObserver.Method.ToString()))
-                return;
-        }
-
+        m_pHandler -= pObserver;
         m_pHandler += pObserver;
-        m_dicHandler.Add(pObserver, pObserver.Method.ToString());
     }
 
     public void Del(EventHandler pObserver)
     {
-        if (false == m_dicHandler.ContainsKey(pObserver))
-            return;
-
         m_pHandler -= pObserver;
-        m_dicHandler.Remove(pObserver);
     }
 
     public void Clear()
     {
         m_pHandler = null;
-        m_dicHandler.Clear();
-    }
-
-    public bool IsAddEvent()
-    {
-        return (0 != m_dicHandler.Count);
-    }
-    public bool IsAddEvent(EventHandler pObserver)
-    {
-        return m_dicHandler.ContainsKey(pObserver);
     }
 
     public void Callback(object pSender)
     {
-        if (null != m_pHandler)
-            m_pHandler(pSender, null);
+        if (null == m_pHandler)
+            return;
+
+        m_pHandler(pSender, null);
     }
 
     public void Callback<T>(object pSender, T pArgs)
     {
-        if (null != m_pHandler)
-            m_pHandler(pSender, new SHEventParam<T>(pArgs));
+        if (null == m_pHandler)
+            return;
+
+        m_pHandler(pSender, new SHEventParam<T>(pArgs));
     }
 
     public void Callback(object pSender, EventArgs pArgs)
     {
-        if (null != m_pHandler)
-            m_pHandler(pSender, pArgs);
+        if (null == m_pHandler)
+            return;
+
+        m_pHandler(pSender, pArgs);
     }
     #endregion
 }

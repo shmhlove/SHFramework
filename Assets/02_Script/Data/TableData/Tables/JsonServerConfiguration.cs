@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 using SimpleJSON;
 
+using DicData = System.Collections.Generic.Dictionary<eServiceMode, JsonServerConfigurationData>;
+
 public class JsonServerConfigurationData
 {
     public eServiceMode m_eServiceMode        = eServiceMode.Dev;
@@ -19,11 +21,10 @@ public class JsonServerConfigurationData
 
 public class JsonServerConfiguration : SHBaseTable
 {
-    #region Value Members
-    private string                                                m_strAOSMarketURL  = string.Empty;
-    private string                                                m_strIOSMarketURL  = string.Empty;
-    
-    private Dictionary<eServiceMode, JsonServerConfigurationData> m_dicServerInfo    = new Dictionary<eServiceMode, JsonServerConfigurationData>();
+    #region Members
+    private string  m_strAOSMarketURL = string.Empty;
+    private string  m_strIOSMarketURL = string.Empty;
+    private DicData m_dicServerInfo   = new DicData();
     #endregion
 
 
@@ -60,20 +61,20 @@ public class JsonServerConfiguration : SHBaseTable
         m_strIOSMarketURL = GetStrToJson(pDataNode, "IOS_MarketURL");
 
         // 모드별 정보
-        foreach (eServiceMode eMode in Enum.GetValues(typeof(eServiceMode)))
+        SHUtil.ForToEnum<eServiceMode>((eMode) => 
         {
             if (eServiceMode.None == eMode)
-                continue;
+                return;
 
-            var pData                         = new JsonServerConfigurationData();
-            pData.m_strClientVersion          = GetStrToJson(pDataNode[eMode.ToString()], "ClientVersion");
-            pData.m_strGameServerURL          = GetStrToJson(pDataNode[eMode.ToString()], "GameServerURL");
-            pData.m_strBundleCDN              = GetStrToJson(pDataNode[eMode.ToString()], "BundleCDN");
-            pData.m_strCheckMessage           = GetStrToJson(pDataNode[eMode.ToString()], "CheckMessage");
-            pData.m_strServiceState           = GetStrToJson(pDataNode[eMode.ToString()], "ServiceState");
-            pData.m_eServiceMode              = eMode;
-            m_dicServerInfo[eMode]            = pData;
-        }
+            var pData                = new JsonServerConfigurationData();
+            pData.m_strClientVersion = GetStrToJson(pDataNode[eMode.ToString()], "ClientVersion");
+            pData.m_strGameServerURL = GetStrToJson(pDataNode[eMode.ToString()], "GameServerURL");
+            pData.m_strBundleCDN     = GetStrToJson(pDataNode[eMode.ToString()], "BundleCDN");
+            pData.m_strCheckMessage  = GetStrToJson(pDataNode[eMode.ToString()], "CheckMessage");
+            pData.m_strServiceState  = GetStrToJson(pDataNode[eMode.ToString()], "ServiceState");
+            pData.m_eServiceMode     = eMode;
+            m_dicServerInfo[eMode]   = pData;
+        });
         
         return true;
     }
@@ -140,7 +141,7 @@ public class JsonServerConfiguration : SHBaseTable
             eServiceMode.DevQA,
             eServiceMode.Dev,
         };
-
+        
         foreach (eServiceMode eMode in pFindOrder)
         {
             if (eServiceMode.None == eMode)
@@ -284,10 +285,10 @@ public class JsonServerConfiguration : SHBaseTable
                 strNewLine);
 
             // 모드별 정보
-            foreach (eServiceMode eMode in Enum.GetValues(typeof(eServiceMode)))
+            SHUtil.ForToEnum<eServiceMode>((eMode) =>
             {
                 if (eServiceMode.None == eMode)
-                    continue;
+                    return;
 
                 strBuff += string.Format("\t\t\"{0}\":{1}",
                     eMode.ToString(),
@@ -317,7 +318,8 @@ public class JsonServerConfiguration : SHBaseTable
                         strNewLine);
                 }
                 strBuff += "\t\t}," + strNewLine;
-            }
+            });
+
             strBuff = string.Format("{0}{1}", strBuff.Substring(0, strBuff.Length - (strNewLine.Length + 1)), strNewLine);
         }
         strBuff += "\t}";

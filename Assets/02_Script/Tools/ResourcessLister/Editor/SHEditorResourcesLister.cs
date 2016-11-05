@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 public class SHEditorResourcesLister : Editor
 {
-    #region Value Members
+    #region Members
     public static string m_strMsg_1 = "리소스 폴더를 뒤질껍니다!!\n\n완료되면 완료 메시지 출력됩니다.\n\n조금만 기다려 주세요!! 싫으면 취소...ㅠ";
     public static string m_strMsg_2 = "선택한 리소스를 뒤질껍니다!!\n\n완료되면 완료 메시지 출력됩니다.\n\n조금만 기다려 주세요!! 싫으면 취소...ㅠ";
     public static string m_strMsg_3 = "{0}개의 리소스 파일이 리스팅 되었습니다.!!\n\n저장경로 : {1}\n\n리스팅 시간 : {2:F2}sec";

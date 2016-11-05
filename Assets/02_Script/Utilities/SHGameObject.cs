@@ -102,7 +102,7 @@ public static class SHGameObject
     // 유틸 : 객체 중복체크
     public static T GetDuplication<T>(T pInstance) where T : UnityEngine.Object
     {
-        T[] pList = SHGameObject.FindObjectsOfType<T>();
+        var pList = SHGameObject.FindObjectsOfType<T>();
         if (null == pList)
             return null;
         

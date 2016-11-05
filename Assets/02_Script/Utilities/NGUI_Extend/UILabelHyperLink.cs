@@ -24,7 +24,7 @@ using System.Collections.Generic;
 
 public class UILabelHyperLink : MonoBehaviour
 {
-    #region Value Members
+    #region Members
     public bool         m_bIsAutoOpenURL    = true; // 터치 시 URL로 자동 연결합니다.
     public bool         m_bAddUnderLine     = true; // Link문자에 UnderLine을 추가합니다.
 
@@ -87,10 +87,10 @@ public class UILabelHyperLink : MonoBehaviour
         if (true == m_bIsAutoOpenURL)
             Application.OpenURL(strURL);
 
-        foreach(var pEvent in m_pEvent)
+        SHUtil.ForToList(m_pEvent, (pEvent) =>
         {
             pEvent(strURL);
-        }
+        });
     }
     #endregion
 

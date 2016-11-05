@@ -9,7 +9,7 @@ using SimpleJSON;
 
 public class JsonPreLoadResourcesTable : SHBaseTable
 {
-    #region Value Members
+    #region Members
     Dictionary<eSceneType, List<string>> m_pData = new Dictionary<eSceneType, List<string>>();
     #endregion
 
@@ -35,21 +35,18 @@ public class JsonPreLoadResourcesTable : SHBaseTable
     {
         if (null == pJson)
             return false;
-
-        int iMaxNodeCount = pJson["PreLoadResourcesList"].Count;
-        for (int iNodeLoop = 0; iNodeLoop < iMaxNodeCount; ++iNodeLoop)
+        
+        SHUtil.For(0, pJson["PreLoadResourcesList"].Count, (iLoop) => 
         {
-            JSONNode pDataNode = pJson["PreLoadResourcesList"][iNodeLoop];
-            foreach (eSceneType eType in Enum.GetValues(typeof(eSceneType)))
+            var pDataNode = pJson["PreLoadResourcesList"][iLoop];
+            SHUtil.ForToEnum<eSceneType>((eType) => 
             {
-                string strSceneType = eType.ToString();
-                int iMaxNode        = pDataNode[strSceneType].Count;
-                for (int iDataLoop = 0; iDataLoop < iMaxNode; ++iDataLoop)
+                SHUtil.For(0, pDataNode[eType.ToString()].Count, (iDataIndex) => 
                 {
-                    AddData(eType, pDataNode[strSceneType][iDataLoop].Value);
-                }
-            }
-        }
+                    AddData(eType, pDataNode[eType.ToString()][iDataIndex].Value);
+                });
+            });
+        });
 
         return true;
     }

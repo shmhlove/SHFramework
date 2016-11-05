@@ -12,7 +12,7 @@ using SimpleJSON;
 
 public class AssetBundleInfo
 {
-    #region Value Members
+    #region Members
     public string                                   m_strBundleName = string.Empty;
     public long                                     m_lBundleSize   = 0;
     public Hash128                                  m_pHash128;
@@ -71,7 +71,7 @@ public class AssetBundleInfo
 
 public class JsonAssetBundleInfo : SHBaseTable
 {
-    #region Value Members
+    #region Members
     Dictionary<string, AssetBundleInfo> m_pData = new Dictionary<string, AssetBundleInfo>();
     #endregion
 
@@ -107,7 +107,7 @@ public class JsonAssetBundleInfo : SHBaseTable
             AssetBundleInfo    pData     = new AssetBundleInfo();
             pData.m_strBundleName        = GetStrToJson(pDataNode, "s_BundleName");
             pData.m_lBundleSize          = (long)GetIntToJson(pDataNode, "s_BundleSize");
-            pData.m_pHash128             = Hash128.Parse(GetStrToJson(pDataNode, "s_BundleHash"));
+            pData.m_pHash128             = SHHash.GetHash128(GetStrToJson(pDataNode, "s_BundleHash"));
             
             int iMaxUnit = pDataNode["p_Resources"].Count;
             for(int iLoopUnit = 0; iLoopUnit < iMaxUnit; ++iLoopUnit)
@@ -220,38 +220,38 @@ public class JsonAssetBundleInfo : SHBaseTable
             return dicBundleInfo;
 
         var pResult = new Dictionary<string, AssetBundleInfo>();
-        foreach (var kvpForBundle in dicBundleInfo)
+        SHUtil.ForToDic(dicBundleInfo, (pBundleKey, pBundleValue) =>
         {
             // 체크 : 번들파일크기
-            if (0 == kvpForBundle.Value.m_lBundleSize)
+            if (0 == pBundleValue.m_lBundleSize)
             {
-                pResult.Add(kvpForBundle.Key, kvpForBundle.Value);
-                continue;
+                pResult.Add(pBundleKey, pBundleValue);
+                return;
             }
-
+            
             // 체크 : 추가/제거/변경된 리소스(존재확인/파일크기/해시코드)
-            foreach (var kvpForRes in kvpForBundle.Value.m_dicResources)
+            SHUtil.ForToDic(pBundleValue.m_dicResources, (pResKey, pResValue) => 
             {
-                SHResourcesTableInfo pResourceUnit = pResourceInfo.GetResouceInfo(kvpForRes.Value.m_strName);
+                var pResourceUnit = pResourceInfo.GetResouceInfo(pResValue.m_strName);
 
                 // 제거된 리소스 확인
                 if (null == pResourceUnit)
                 {
-                    AssetBundleInfo pCopyInfo = new AssetBundleInfo(kvpForBundle.Value);
-                    pCopyInfo.DelResourceInfo(kvpForRes.Value.m_strName);
-                    pResult.Add(kvpForBundle.Key, pCopyInfo);
-                    break;
+                    var pCopyInfo = new AssetBundleInfo(pBundleValue);
+                    pCopyInfo.DelResourceInfo(pResValue.m_strName);
+                    pResult.Add(pBundleKey, pCopyInfo);
+                    return;
                 }
 
                 // 추가 및 변경된 리소스 확인
-                if ((pResourceUnit.m_strSize != kvpForRes.Value.m_strSize) ||
-                    (pResourceUnit.m_strHash != kvpForRes.Value.m_strHash))
+                if ((pResourceUnit.m_strSize != pResValue.m_strSize) ||
+                    (pResourceUnit.m_strHash != pResValue.m_strHash))
                 {
-                    pResult.Add(kvpForBundle.Key, kvpForBundle.Value);
-                    break;
+                    pResult.Add(pBundleKey, pBundleValue);
+                    return;
                 }
-            }
-        }
+            });
+        });
 
         return pResult;
     }
@@ -261,60 +261,60 @@ public class JsonAssetBundleInfo : SHBaseTable
     public Dictionary<string, AssetBundleInfo> UpdateAssetBundlesMakeInfoByStreamingPath(string strCDN, BuildTarget eTarget)
     {
         // Download 경로
-        string strDownloadPath = string.Format("{0}/{1}/{2}.json", strCDN, SHHard.GetStrToPlatform(eTarget), m_strFileName);
+        var strDownloadPath = string.Format("{0}/{1}/{2}.json", strCDN, SHHard.GetStrToPlatform(eTarget), m_strFileName);
         
         // CDN에 있는 AssetBundleInfo.Json 다운로드
-        JsonAssetBundleInfo pCDNInfo = new JsonAssetBundleInfo();
+        var pCDNInfo = new JsonAssetBundleInfo();
         pCDNInfo.LoadJsonTable((new SHJson()).LoadWWW(strDownloadPath), m_strFileName);
         
         // 로컬 Streaming에 저장된 AssetBundleInfo 로드
-        JsonAssetBundleInfo pStreamingInfo = new JsonAssetBundleInfo();
+        var pStreamingInfo = new JsonAssetBundleInfo();
         pStreamingInfo.LoadJsonTable((new SHJson()).LoadToStreamingForLocal(m_strFileName), m_strFileName);
-        
+
         // StreamingPath기준으로 목록 갱신
-        foreach (var kvpToStreaming in pStreamingInfo.GetContainer())
+        SHUtil.ForToDic(pStreamingInfo.GetContainer(), (pStreamingKey, pStreamingValue) =>
         {
-            var pCDNBundleInfo = pCDNInfo.GetBundleInfo(kvpToStreaming.Key);
+            var pCDNBundleInfo = pCDNInfo.GetBundleInfo(pStreamingKey);
 
             // 추가 : 번들자체가 CDN에는 없고, Streaming에는 있는 경우
             if (null == pCDNBundleInfo)
             {
-                kvpToStreaming.Value.m_lBundleSize  = 0;
-                kvpToStreaming.Value.m_pHash128     = Hash128.Parse("0");
-                continue;
+                pStreamingValue.m_lBundleSize = 0;
+                pStreamingValue.m_pHash128    = SHHash.GetHash128("0");
+                return;
             }
 
             // 변경 : 번들자체가 CDN과 Streaming이 다르다면 비교할 수 있게 CDN내용을 복사
-            kvpToStreaming.Value.m_lBundleSize = pCDNBundleInfo.m_lBundleSize;
-            kvpToStreaming.Value.m_pHash128    = pCDNBundleInfo.m_pHash128;
+            pStreamingValue.m_lBundleSize = pCDNBundleInfo.m_lBundleSize;
+            pStreamingValue.m_pHash128    = pCDNBundleInfo.m_pHash128;
 
             // 리소스 업데이트 체크
-            foreach (var kvpToStreamingRes in kvpToStreaming.Value.m_dicResources)
+            SHUtil.ForToDic(pStreamingValue.m_dicResources, (pResKey, pResValue) =>
             {
-                var pCDNResInfo = pCDNBundleInfo.GetResourceInfo(kvpToStreamingRes.Key);
+                var pCDNResInfo = pCDNBundleInfo.GetResourceInfo(pStreamingKey);
 
                 // 추가 : 리소스가 CDN에는 없고, Streaming에는 있는 경우
                 if (null == pCDNResInfo)
                 {
-                    kvpToStreamingRes.Value.m_strSize = "0";
-                    kvpToStreamingRes.Value.m_strHash = "0";
+                    pResValue.m_strSize = "0";
+                    pResValue.m_strHash = "0";
                 }
                 // 변경 : 리소스가 CDN과 Streaming이 다르다면 비교할 수 있게 CDN내용을 복사
                 else
                 {
-                    kvpToStreamingRes.Value.CopyTo(pCDNResInfo);
+                    pResValue.CopyTo(pCDNResInfo);
                 }
-            }
+            });
 
             // 추가 : 리소스가 CDN에는 있고, Streaming 에는 없는 경우 비교할 수 있게 CDN내용 추가
-            foreach(var kvpToCDNRes in pCDNBundleInfo.m_dicResources)
+            SHUtil.ForToDic(pCDNBundleInfo.m_dicResources, (pResKey, pResValue) =>
             {
-                if (true == kvpToStreaming.Value.IsIncludeResource(kvpToCDNRes.Key))
-                    continue;
+                if (true == pStreamingValue.IsIncludeResource(pResKey))
+                    return;
 
-                kvpToStreaming.Value.AddResourceInfo(kvpToCDNRes.Value);
-            }
-        }
+                pStreamingValue.AddResourceInfo(pResValue);
+            });
+        });
 
         return pStreamingInfo.GetContainer();
     }

@@ -4,7 +4,7 @@ using System.Collections;
 
 public class SHMonoBehaviour : MonoBehaviour
 {
-    #region Value Members
+    #region Members
     private Vector3     m_vPosition         = Vector3.zero;
     private Vector3     m_vLocalPosition    = Vector3.zero;
 

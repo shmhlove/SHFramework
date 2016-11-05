@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public partial class SHUserData : SHBaseData
 {
-    #region Value Members
+    #region Members
     #endregion
 
 

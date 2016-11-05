@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 public class SHPrefabDependencyChecker
 {
-    #region Value Members
+    #region Members
     Dictionary<string, string> m_dicGUID = new Dictionary<string, string>();
     #endregion
 
@@ -48,14 +48,14 @@ public class SHPrefabDependencyChecker
 
         var pResult     = new List<string>();
         var strPrefab   = SHUtil.ReadFile(strPrefabPath);
-        foreach(var kvp in m_dicGUID)
+        SHUtil.ForToDic(m_dicGUID, (pKey, pValue) =>
         {
-            int iIndex = strPrefab.IndexOf(kvp.Value);
+            int iIndex = strPrefab.IndexOf(pValue);
             if (-1 == iIndex)
-                continue;
+                return;
 
-            pResult.Add(kvp.Key);
-        }
+            pResult.Add(pKey);
+        });
 
         return (0 == pResult.Count) ? null : pResult;
     }

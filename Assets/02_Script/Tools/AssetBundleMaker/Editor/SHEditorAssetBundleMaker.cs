@@ -7,7 +7,7 @@ using System.Collections;
 
 public class SHEditorAssetBundleMaker : EditorWindow
 {
-    #region Value Members
+    #region Members
     public enum PlatformType { ALL, AOS, IOS, PC };
 
     private static EditorWindow m_pEditorWindow;

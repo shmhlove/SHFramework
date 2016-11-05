@@ -36,7 +36,7 @@ using System.Security.Cryptography;
 
 public class SHPlayerPrefs
 {
-    #region Value Members
+    #region Members
     private static string  m_strPrivateKey = "df897g995l234slkjskljf";
     public static string[] m_strkeys       = new string[] { "f64fsgrtwer",
                                                             "sdfsdf5dg4w",

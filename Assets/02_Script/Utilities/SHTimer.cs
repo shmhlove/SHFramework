@@ -15,7 +15,7 @@ public class SHReleaseTimer
 
 public class SHTimer : SHSingleton<SHTimer>
 {
-    #region Value Members
+    #region Members
     Dictionary<string, DateTime> m_dicDeltaTimer = new Dictionary<string, DateTime>();
     #endregion
 

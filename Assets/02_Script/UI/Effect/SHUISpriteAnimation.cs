@@ -4,7 +4,7 @@ using System.Collections;
 
 public class SHUISpriteAnimation : MonoBehaviour
 {
-    #region Value Members
+    #region Members
     public enum eWrapMode
     {
         Once,

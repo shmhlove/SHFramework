@@ -9,7 +9,7 @@ using SimpleJSON;
 
 public class SHResourcesTableInfo
 {
-    #region Value Members
+    #region Members
     public string           m_strName;             // 확장자가 없는 이름
     public string           m_strFileName;         // 확장자가 있는 이름
     public string           m_strExtension;        // 확장자
@@ -41,7 +41,7 @@ public class SHResourcesTableInfo
 
 public class JsonResourcesTable : SHBaseTable
 {
-    #region Value Members
+    #region Members
     Dictionary<string, SHResourcesTableInfo> m_pData = new Dictionary<string, SHResourcesTableInfo>();
     #endregion
 
@@ -131,12 +131,12 @@ public class JsonResourcesTable : SHBaseTable
             LoadJson(m_strFileName);
 
         var pList = new List<SHResourcesTableInfo>();
-        foreach(var kvp in m_pData)
+        SHUtil.ForToDic(m_pData, (pKey, pValue) =>
         {
-            if (eType == kvp.Value.m_eResourceType)
-                pList.Add(kvp.Value);
-        }
-
+            if (eType == pValue.m_eResourceType)
+                pList.Add(pValue);
+        });
+        
         return pList;
     }
 

@@ -10,7 +10,7 @@ using Community.CsharpSqlite;
 
 public class SHSQLite
 {
-    #region Value Members
+    #region Members
     private SQLiteDB m_pSQLiteDB = null;
     #endregion
 
@@ -77,16 +77,16 @@ public class SHSQLite
         {
             m_pSQLiteDB = new SQLiteDB();
             m_pSQLiteDB.Open(strSavePath);
-            foreach (KeyValuePair<string, List<SHTableDataSet>> kvp in dicData)
+            SHUtil.ForToDic(dicData, (pKey, pValue) =>
             {
                 // 테이블 생성
-                if (false == CreateTable(kvp.Key, kvp.Value[0]))
-                    break;
+                if (false == CreateTable(pKey, pValue[0]))
+                    return;
 
                 // 생성한 테이블에 데이터 인설트
-                if (false == InsertData(kvp.Key, kvp.Value))
-                    break;
-            }
+                if (false == InsertData(pKey, pValue))
+                    return;
+            });
         }
         catch (System.Exception e)
         {
@@ -258,14 +258,14 @@ public class SHSQLite
         pQuery.Release();
 
         // 테이블별 데이터 생성
-        foreach(var pTable in pTableList)
+        SHUtil.ForToList(pTableList, (pTable) =>
         {
             string strTableName     = pTable.m_pDatas[0];
             pQuery                  = GetTable(strTableName);
             strTableName            = strTableName.Trim('"');
             dicData[strTableName]   = GetTableDataSet(pQuery, strTableName);;
             pQuery.Release();
-        }
+        });
         return dicData;
     }
 

@@ -32,7 +32,7 @@ public static class Single
 
 public abstract class SHSingleton<T> : SHMonoBehaviour where T : SHSingleton<T>
 {
-    #region Value Members
+    #region Members
     private static T        m_pInstance     = null;
     public static T         Instance        { get { return GetInstance(); } }
     public static bool      IsExists        { get { return (null != m_pInstance); } }
@@ -43,7 +43,7 @@ public abstract class SHSingleton<T> : SHMonoBehaviour where T : SHSingleton<T>
     // 다양화 : 초기화( 게임오브젝트에 붙은경우 Awake시, 직접 생성인 경우 Instance에 접근하는 순간 호출 됨 )
     public abstract void OnInitialize();
 
-    // 다양화 : 종료( DonDestory가 설정된경우 어플이 종료될때, 아닌 경우에는 씬이 변경될때, 혹은 DoDestory로 명시적으로 제거할때 호출 됨 )
+    // 다양화 : 종료( DontDestory가 설정된경우 어플이 종료될때, 아닌 경우에는 씬이 변경될때, 혹은 DoDestory로 명시적으로 제거할때 호출 됨 )
     public abstract void OnFinalize();
     #endregion
 

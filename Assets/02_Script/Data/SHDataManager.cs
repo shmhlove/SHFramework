@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class SHDataManager : SHSingleton<SHDataManager>
 {
-    #region Value Members
+    #region Members
     // 테이블 데이터 : Excel, SQLite, Json, Byte, XML
     private SHTableData     m_pTableData = new SHTableData();
     public SHTableData      TableData { get { return m_pTableData; } }
