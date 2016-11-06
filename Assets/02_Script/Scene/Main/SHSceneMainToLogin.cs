@@ -10,10 +10,7 @@ public class SHSceneMainToLogin : MonoBehaviour
     #region System Functions
     void Start()
     {
-    }
-
-    void Update()
-    {
+        Single.AppInfo.CreateSingleton();
     }
     #endregion
 

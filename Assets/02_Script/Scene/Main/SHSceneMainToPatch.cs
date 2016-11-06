@@ -3,15 +3,30 @@ using System.Collections;
 
 public class SHSceneMainToPatch : MonoBehaviour
 {
+    #region Members
+    #endregion
+
+
     #region System Functions
-    void Start() 
+    void Start()
     {
         Single.AppInfo.CreateSingleton();
-	}
-	
-	void Update () 
-    {
-
     }
+    #endregion
+
+
+    #region Virtual Functions
+    #endregion
+
+
+    #region Interface Functions
+    #endregion
+
+
+    #region Utility Functions
+    #endregion
+
+
+    #region Event Handler
     #endregion
 }
