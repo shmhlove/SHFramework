@@ -23,8 +23,11 @@ public class SHUIRoot : MonoBehaviour
             Single.UI.AddPanel(pPanel);
         });
 
-        m_pRoot   = transform;
-        m_pCamera = m_pRoot.GetComponentInChildren<UICamera>();
+        if (null == m_pRoot)
+        {
+            m_pRoot   = transform;
+            m_pCamera = m_pRoot.GetComponentInChildren<UICamera>();
+        }
     }
     void OnDestroy()
     {
