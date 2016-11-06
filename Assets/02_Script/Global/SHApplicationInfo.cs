@@ -13,23 +13,23 @@ using DicRealLoadInfo = System.Collections.Generic.Dictionary<eSceneType, System
 public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
 {
     #region Members
-    // 버전정보
-    public string               m_strVersion        = "0.0.0";
-
+    [Header("Release")]
     // 배포제한 시간정보
-    public SHReleaseTimer       m_pReleaseTime      = new SHReleaseTimer();
+    [SerializeField] private SHReleaseTimer     m_pReleaseTime      = new SHReleaseTimer();
 
+    [Header("Debug")]
     // 컴포넌트(디버그) : 디버그용 정보출력 
-    public GUIText              m_pText             = null;
+    [SerializeField] private GUIText            m_pDebugText        = null;
 
     // 기타(디버그) : FPS 출력용 델타타임
-    private float               m_fDeltaTime        = 0.0f;
+    [ReadOnlyField]
+    [SerializeField] private float              m_fDeltaTime        = 0.0f;
 
     // 기타(디버그) : 로드 시도된 리소스 리스트
-    private DicRealLoadInfo     m_dicRealLoadInfo = new DicRealLoadInfo();
+    [HideInInspector] private DicRealLoadInfo   m_dicRealLoadInfo   = new DicRealLoadInfo();
 
     // 기타 : 앱 종료 여부
-    public bool                 m_bIsAppQuit        = false;
+    [HideInInspector] public bool               m_bIsAppQuit        = false;
     #endregion
 
 
@@ -236,7 +236,7 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
 
     #region 에디터 테스트
     // 디버그 : 실시간 로드 리소스 리스트 파일로 출력
-    [SHAttributeToShowFunc]
+    [FuncButton]
     public void SaveLoadResourceList()
     {
         string strBuff = string.Empty;
@@ -253,7 +253,7 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
         SHUtil.SaveFile(strBuff, strSavePath);
         System.Diagnostics.Process.Start(strSavePath);
     }
-    [SHAttributeToShowFunc]
+    [FuncButton]
     public void ClearLoadResourceList()
     {
         m_dicRealLoadInfo.Clear();
@@ -291,7 +291,7 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
     // 디버그 : 게임정보 출력
     IEnumerator PrintGameInfo()
     {
-        if (null == m_pText)
+        if (null == m_pDebugText)
             yield break;
 
         yield return new WaitForSeconds(1.0f);
@@ -299,9 +299,9 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
         Profiler.BeginSample("CheckMemory");
 
         float fMemory       = Profiler.GetTotalAllocatedMemory() / 1024.0f / 1024.0f;
-        m_pText.text        = string.Format("UsedMemory : {0:F2}MB\nFPS : {1:F2}", fMemory, (1.0f / m_fDeltaTime));
-        m_pText.fontSize    = GetRatioW(20);
-        m_pText.pixelOffset = new Vector2(0.0f, Screen.height * 0.7f);
+        m_pDebugText.text        = string.Format("UsedMemory : {0:F2}MB\nFPS : {1:F2}", fMemory, (1.0f / m_fDeltaTime));
+        m_pDebugText.fontSize    = GetRatioW(20);
+        m_pDebugText.pixelOffset = new Vector2(0.0f, Screen.height * 0.7f);
 
         Profiler.EndSample();
         StartCoroutine(PrintGameInfo());

@@ -8,11 +8,11 @@ public enum eNationType
 public enum eServiceMode
 {
     None,
-    Live,
-    Review,
-    QA,
-    DevQA,
-    Dev,
+    Live,           // Live
+    Review,         // 리뷰제출용
+    QA,             // QA용
+    DevQA,          // 개발QA용
+    Dev,            // 개발용
 }
 
 // 서비스 상태
@@ -27,9 +27,9 @@ public enum eServiceState
 // Enum : 번들 패킹 타입
 public enum eBundlePackType
 {
-    None,   // 아무것도 안함
-    All,    // 전체 번들 리패킹
-    Update, // 변경된 리소스가 포함되는 번들만 패킹
+    None,           // 아무것도 안함
+    All,            // 전체 번들 리패킹
+    Update,         // 변경된 리소스가 포함되는 번들만 패킹
 }
 
 // 씬 종류
@@ -73,6 +73,13 @@ public enum eResourceType
     Sound,
     Material,
     Text,
+}
+
+// 오브젝트 제거타입
+public enum eObjectDestoryType
+{
+    Never,          // 제거 안함
+    ChangeScene,    // 씬이 바뀔 때
 }
 
 // Bool

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class SHSceneMainToIntro : MonoBehaviour
@@ -11,6 +12,7 @@ public class SHSceneMainToIntro : MonoBehaviour
     void Start() 
     {
         Single.AppInfo.CreateSingleton();
+        Single.UI.Show("Panel - Intro", (Action)OnEventToNextScene);
 	}
 	
 	void Update () 
@@ -33,5 +35,9 @@ public class SHSceneMainToIntro : MonoBehaviour
 
 
     #region Event Handler
+    void OnEventToNextScene()
+    {
+        Single.Scene.GoTo(eSceneType.Login);
+    }
     #endregion
 }

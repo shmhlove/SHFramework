@@ -105,7 +105,7 @@ public partial class SHRenderTextureManager : SHSingleton<SHRenderTextureManager
     }
 
     // 테스트 : 렌더 텍스쳐 찍기
-    [SHAttributeToShowFunc]
+    [FuncButton]
     void Test_ContinueShotting_Texture()
     {
         if (null == m_pTestTarget)
@@ -117,7 +117,7 @@ public partial class SHRenderTextureManager : SHSingleton<SHRenderTextureManager
         m_pTestRawImage.texture = 
             RenderTextureOfContinue(m_pTestTarget);
     }
-    [SHAttributeToShowFunc]
+    [FuncButton]
     void Test_OneShotting_Texture()
     {
         if (null == m_pTestTarget)
@@ -130,7 +130,7 @@ public partial class SHRenderTextureManager : SHSingleton<SHRenderTextureManager
             RenderTextureOfOneShot(m_pTestTarget);
     }
     // 테스트 : 사용 종료
-    [SHAttributeToShowFunc]
+    [FuncButton]
     void Test_EndUse_Texture()
     {
         if (null == m_pTestTarget)

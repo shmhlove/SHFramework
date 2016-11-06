@@ -82,10 +82,20 @@ public static class SHGameObject
         if (null == pChild)
             return null;
 
-        pChild.transform.SetParent(pParent.transform);
+        SetParent(pChild.transform, pParent.transform);
+        
         return pParent;
     }
+    public static Transform SetParent(Transform pChild, Transform pParent)
+    {
+        if (null == pChild)
+            return null;
+        if (null == pParent)
+            return null;
 
+        pChild.SetParent(pParent);
+        return pParent;
+    }
     // 컴포넌트 얻기
     public static T GetComponent<T>(GameObject pObject) where T : Component
     {

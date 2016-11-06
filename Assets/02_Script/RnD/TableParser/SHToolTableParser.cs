@@ -26,7 +26,7 @@ public class SHToolTableParser : MonoBehaviour
 
 
     #region Interface Functions
-    [SHAttributeToShowFunc]
+    [FuncButton]
     void StartParse()
     {
         if (true == m_pLoader.IsReMainLoadFiles())

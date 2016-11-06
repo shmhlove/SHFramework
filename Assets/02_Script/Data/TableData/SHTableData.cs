@@ -101,6 +101,9 @@ public partial class SHTableData : SHBaseData
     }
     public SHBaseTable GetTable(Type pType)
     {
+        if (0 == m_dicTables.Count)
+            OnInitialize();
+
         if (false == m_dicTables.ContainsKey(pType))
             return null;
 

@@ -221,8 +221,10 @@ public partial class SHResourceData : SHBaseData
         DateTime pStartTime = DateTime.Now;
 #endif
 
-        T pGameObject = Object.Instantiate<T>(pObject);
-
+        T pGameObject    = Object.Instantiate<T>(pObject);
+        var strName      = pGameObject.name;
+        pGameObject.name = strName.Substring(0, strName.IndexOf("(Clone)"));
+        
 #if UNITY_EDITOR
         Single.AppInfo.SetLoadResource(string.Format("Instantiate : {0}({1}sec)", pObject.name, ((DateTime.Now - pStartTime).TotalMilliseconds / 1000.0f)));
 #endif

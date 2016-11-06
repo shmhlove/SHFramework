@@ -61,6 +61,10 @@ public class JsonClientConfiguration : SHBaseTable
 
 
     #region Interface Functions
+    public void SaveJsonFile()
+    {
+        SaveJsonFile(SHPath.GetPathToJson());
+    }
     public void SaveJsonFile(string strSavePath)
     {
         string strNewLine = "\r\n";
@@ -99,6 +103,20 @@ public class JsonClientConfiguration : SHBaseTable
 
         // 저장
         SHUtil.SaveFile(strBuff, string.Format("{0}/{1}.json", strSavePath, m_strFileName));
+    }
+    public void SetConfigurationCDN(string strCDN)
+    {
+        if (false == IsLoadTable())
+            LoadJson(m_strFileName);
+
+        m_strConfigurationCDN = strCDN;
+    }
+    public void SetServiceMode(string strServiceMode)
+    {
+        if (false == IsLoadTable())
+            LoadJson(m_strFileName);
+
+        m_strServiceMode = strServiceMode;
     }
     public string GetConfigurationCDN()
     {

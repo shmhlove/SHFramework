@@ -75,7 +75,7 @@ class SHBuildScript
         BuildApplication(SCENES, eTarget, BuildOptions.None);
 
         // 후처리
-        PostProcess();
+        PostProcessor();
     }
 
     // 유틸 : App Build + BundlePacking
@@ -94,7 +94,7 @@ class SHBuildScript
         BuildApplication(SCENES, eTarget, BuildOptions.None);
 
         // 후처리
-        PostProcess();
+        PostProcessor();
     }
 
     // 유틸 : Only Bundle Packing
@@ -107,7 +107,7 @@ class SHBuildScript
         PackingAssetBundles(eTarget, ePackType, false);
 
         // 후처리
-        PostProcess();
+        PostProcessor();
     }
 
     // 유틸 : 국가별 설정 처리
@@ -155,12 +155,14 @@ class SHBuildScript
     // 유틸 : App 빌드
     static void BuildApplication(string[] strScenes, BuildTarget eTarget, BuildOptions eOptions)
     {
-        string strBuildName = GetBuildName(eTarget, Single.AppInfo.GetAppName(), Single.AppInfo.m_strVersion);
+        string strBuildName = GetBuildName(eTarget, Single.AppInfo.GetAppName(), Single.Table.GetClientVersion());
         Debug.LogFormat("** Build Start({0}) -> {1}", strBuildName, DateTime.Now.ToString("yyyy-MM-dd [ HH:mm:ss ]"));
         {
             EditorUserBuildSettings.SwitchActiveBuildTarget(eTarget);
 
             string strFileName = string.Format("{0}/{1}", SHPath.GetPathToBuild(), strBuildName);
+            SHUtil.CreateDirectory(strFileName);
+
             string strResult = BuildPipeline.BuildPlayer(strScenes, strFileName, eTarget, eOptions);
             if (0 < strResult.Length)
                 throw new Exception("BuildPlayer failure: " + strResult);
@@ -189,16 +191,11 @@ class SHBuildScript
     // 유틸 : ClientConfiguration파일 업데이트
     static void WriteClientConfiguration(string strConfigurationCDN, eServiceMode eMode)
     {
-        var pConfigFile = new JsonClientConfiguration();
-        pConfigFile.LoadJson(pConfigFile.m_strFileName);
-        pConfigFile.m_strConfigurationCDN = strConfigurationCDN;
-
-        if (eServiceMode.None != eMode)
-            pConfigFile.m_strServiceMode = eMode.ToString();
-        else
-            pConfigFile.m_strServiceMode = string.Empty;
-
-        pConfigFile.SaveJsonFile(SHPath.GetPathToJson());
+        var pConfigFile = Single.Table.GetTable<JsonClientConfiguration>();
+        
+        pConfigFile.SetServiceMode(eMode.ToString());
+        pConfigFile.SetConfigurationCDN(strConfigurationCDN);
+        pConfigFile.SaveJsonFile();
     }
 
     // 유틸 : 한국 ServerConfiguration CDN 주소
@@ -206,9 +203,9 @@ class SHBuildScript
     {
         return string.Format("{0}/{1}", "http://blueasa.synology.me/home/shmhlove/KOR", eMode);
     }
-
+    
     // 후처리
-    static void PostProcess()
+    static void PostProcessor()
     {
         SHGameObject.DestoryObject(GameObject.Find("SHSingletons(Destroy)"));
         SHGameObject.DestoryObject(GameObject.Find("SHSingletons(DontDestroy)"));

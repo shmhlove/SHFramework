@@ -17,7 +17,7 @@ public class SHMonoBehaviour : MonoBehaviour
     #endregion
 
 
-    #region Interface Active
+    #region Interface : Active
     public void SetActive(bool bIsActive)
     {
         if (bIsActive == IsActive())
@@ -36,7 +36,7 @@ public class SHMonoBehaviour : MonoBehaviour
     #endregion
 
 
-    #region Interface Position
+    #region Interface : Position
     public void SetPosition(Vector3 vPos)
     {
         gameObject.transform.position = m_vPosition = vPos;
@@ -47,6 +47,12 @@ public class SHMonoBehaviour : MonoBehaviour
         vPos.x = fX;
         SetPosition(vPos);
     }
+    public void SetPositionY(float fY)
+    {
+        Vector3 vPos = GetPosition();
+        vPos.y = fY;
+        SetPosition(vPos);
+    }
     public void SetLocalPosition(Vector3 vPos)
     {
         gameObject.transform.localPosition = m_vLocalPosition = vPos;
@@ -55,6 +61,12 @@ public class SHMonoBehaviour : MonoBehaviour
     {
         Vector3 vPos = GetLocalPosition();
         vPos.x = fX;
+        SetLocalPosition(vPos);
+    }
+    public void SetLocalPositionY(float fY)
+    {
+        Vector3 vPos = GetLocalPosition();
+        vPos.y = fY;
         SetLocalPosition(vPos);
     }
     public Vector3 GetPosition()
@@ -72,7 +84,7 @@ public class SHMonoBehaviour : MonoBehaviour
     #endregion
 
 
-    #region Interface Scale
+    #region Interface : Scale
     public void SetLocalScale(Vector3 vScale)
     {
         gameObject.transform.localScale = m_vLocalScale = vScale;
@@ -97,7 +109,7 @@ public class SHMonoBehaviour : MonoBehaviour
     #endregion
 
 
-    #region Interface Rotate
+    #region Interface : Rotate
     public void SetRotate(Quaternion qRotate)
     {
         gameObject.transform.rotation = m_qRotate = qRotate;
@@ -117,6 +129,61 @@ public class SHMonoBehaviour : MonoBehaviour
         return (Quaternion.identity == m_qLocalRotate) ?
                (m_qLocalRotate = gameObject.transform.localRotation) :
                 m_qLocalRotate;
+    }
+    #endregion
+
+
+    #region Interface : Animation
+    public IEnumerator CoroutineToPlayAnim(GameObject pTarget, AnimationClip pClip, Action pEndCallback)
+    {
+        if (null == pClip)
+        {
+            pEndCallback();
+            yield break;
+        }
+
+        if (null == pTarget)
+            pTarget = gameObject;
+
+        var pAnimation = SHGameObject.GetComponent<Animation>(pTarget);
+        if (null == pAnimation)
+        {
+            pEndCallback();
+            yield break;
+        }
+        
+        if (null == pAnimation.GetClip(pClip.name))
+            pAnimation.AddClip(pClip, pClip.name);
+
+        yield return StartCoroutine(
+            CoroutineToPlayAnim(pTarget, pAnimation[pClip.name], pEndCallback));
+    }
+    public IEnumerator CoroutineToPlayAnim(GameObject pTarget, AnimationState pAnimState, Action pEndCallback)
+    {
+        float fStartTime = Time.unscaledTime;
+
+        if (null == pTarget)
+            pTarget = gameObject;
+
+        while (null != pAnimState)
+        {
+            float fElapsed = Time.unscaledTime - fStartTime;
+            pAnimState.clip.SampleAnimation(pTarget, Time.unscaledTime - fStartTime);
+
+            if (fElapsed >= pAnimState.length)
+            {
+                fStartTime = Time.unscaledTime;
+                if (WrapMode.Loop != pAnimState.wrapMode)
+                    break;
+            }
+
+            yield return null;
+        }
+
+        if (null != pAnimState)
+            pAnimState.clip.SampleAnimation(pTarget, pAnimState.length);
+
+        pEndCallback();
     }
     #endregion
 }

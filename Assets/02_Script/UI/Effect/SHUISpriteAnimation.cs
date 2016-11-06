@@ -85,7 +85,7 @@ public class SHUISpriteAnimation : MonoBehaviour
         m_fTimeGap = fSpeed;
     }
 
-    [SHAttributeToShowFunc]
+    [FuncButton]
     void Reset()
     {
         Initialize();
