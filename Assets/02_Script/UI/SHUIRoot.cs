@@ -8,17 +8,13 @@ public class SHUIRoot : MonoBehaviour
     private static Transform    m_pRoot     = null;
     private static UICamera     m_pCamera   = null;
     #endregion
-
-
-    #region Members : Panels
-    [SerializeField] private List<SHUIBasePanel> m_pPanels = null;
-    #endregion
-
+    
 
     #region System Functions
     void Awake()
     {
-        SHUtil.ForToList(m_pPanels, (pPanel) =>
+        var pPanels = gameObject.GetComponentsInChildren<SHUIBasePanel>();
+        SHUtil.ForToArray(pPanels, (pPanel) =>
         {
             Single.UI.AddPanel(pPanel);
         });
