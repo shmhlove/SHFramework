@@ -172,7 +172,7 @@ class SHBuildScript
         if (BuildTarget.Android == eTarget)
             return string.Format("{0}({1}_{2}).apk", strAppName, eTarget, strVersion);
         else
-            return string.Format("{0}({1}_{2}).pck", strAppName, eTarget, strVersion);
+            return string.Format("{0}({1}_{2})", strAppName, eTarget, strVersion);
     }
     // 유틸 : PackingAssetBundles 패킹
     static void PackingAssetBundles(BuildTarget eTarget, eBundlePackType eType, bool bIsDelOriginal)
