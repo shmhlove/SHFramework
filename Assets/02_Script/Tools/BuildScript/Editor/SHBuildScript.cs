@@ -160,7 +160,7 @@ class SHBuildScript
             string strFileName = string.Format("{0}/{1}", SHPath.GetPathToBuild(), strBuildName);
             SHUtil.CreateDirectory(strFileName);
 
-            string strResult = BuildPipeline.BuildPlayer(strScenes, strFileName, eTarget, eOptions);
+			string strResult = BuildPipeline.BuildPlayer(strScenes, strFileName, eTarget, eOptions);
             if (0 < strResult.Length)
                 throw new Exception("BuildPlayer failure: " + strResult);
         }
@@ -172,7 +172,7 @@ class SHBuildScript
         if (BuildTarget.Android == eTarget)
             return string.Format("{0}({1}_{2}).apk", strAppName, eTarget, strVersion);
         else
-            return string.Format("{0}({1}_{2})", strAppName, eTarget, strVersion);
+            return "xcode";
     }
     // 유틸 : PackingAssetBundles 패킹
     static void PackingAssetBundles(BuildTarget eTarget, eBundlePackType eType, bool bIsDelOriginal)
