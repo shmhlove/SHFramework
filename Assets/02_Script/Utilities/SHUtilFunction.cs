@@ -315,6 +315,14 @@ public static partial class SHUtil
 
         Directory.Delete(strPath, true);
     }
+	public static bool IsExistsDirectory(string strPath)
+	{
+		if (false == string.IsNullOrEmpty(Path.GetExtension(strPath)))
+			strPath = Path.GetDirectoryName(strPath);
+		
+		DirectoryInfo pDirectoryInfo = new DirectoryInfo(strPath);
+		return pDirectoryInfo.Exists;
+	}
     #endregion
 
 
