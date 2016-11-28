@@ -174,7 +174,7 @@ class SHBuildScript
     static string GetBuildName(BuildTarget eTarget, string strAppName, string strVersion)
     {
         if (BuildTarget.Android == eTarget)
-            return string.Format("{0}({1}_{2}).apk", strAppName, eTarget, strVersion);
+            return string.Format("{0}.apk", strAppName);
         else
             return "xcode";
     }
