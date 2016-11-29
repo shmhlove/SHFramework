@@ -52,7 +52,7 @@ public partial class SHLoader
 
     void AddLoadList(List<Dictionary<string, SHLoadData>> pLoadList)
     {
-        SHUtil.ForToList<Dictionary<string, SHLoadData>>(
+        SHUtils.ForToList<Dictionary<string, SHLoadData>>(
         pLoadList, (dicLoadList) =>
         {
             m_pPrograss.AddLoadInfo(dicLoadList);
@@ -78,7 +78,7 @@ public partial class SHLoader
             return 100.0f;
 
         float iProgress = 0.0f;
-        SHUtil.ForToDic<string, SHLoadStartInfo>(m_pPrograss.LoadingFiles, (pKey, pValue) => 
+        SHUtils.ForToDic<string, SHLoadStartInfo>(m_pPrograss.LoadingFiles, (pKey, pValue) => 
         {
             if (true == m_pPrograss.IsDone(pKey))
                 return;

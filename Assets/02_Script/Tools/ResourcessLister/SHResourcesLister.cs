@@ -34,7 +34,7 @@ public class SHResourcesLister
     // 인터페이스 : Resources폴더 내에 있는 파일을 SHResourceTableData형식에 맞게 Json으로 리스팅
     public int SetListing(string strSearchPath)
     {
-        SHUtil.Search(strSearchPath, 
+        SHUtils.Search(strSearchPath, 
         (pFileInfo) => 
         {
             // 파일 정보 생성
@@ -83,7 +83,7 @@ public class SHResourcesLister
         
         // 테이블별 내용작성
         strBuff += string.Format("\t\"{0}\": [{1}", "ResourcesList", strNewLine);
-        SHUtil.ForToDic(dicTable, (pKey, pValue) =>
+        SHUtils.ForToDic(dicTable, (pKey, pValue) =>
         {
             strBuff += "\t\t{" + strNewLine;
             strBuff += SHResourcesLister.MakeSaveFormat(pValue, "\t\t");
@@ -94,7 +94,7 @@ public class SHResourcesLister
         strBuff += "}";
 
         // 저장
-        SHUtil.SaveFile(strBuff, strSaveFilePath);
+        SHUtils.SaveFile(strBuff, strSaveFilePath);
     }
 
     // 인터페이스 : 리소스 리스트를 Json형태로 번들정보파일포맷으로 쓰기
@@ -108,7 +108,7 @@ public class SHResourcesLister
 
         // 테이블별 내용작성
         strBuff += string.Format("\t\"{0}\": [{1}", "ResourcesList", strNewLine);
-        SHUtil.ForToDic(dicTable, (pKey, pValue) =>
+        SHUtils.ForToDic(dicTable, (pKey, pValue) =>
         {
             strBuff += "\t\t{" + strNewLine;
 
@@ -137,7 +137,7 @@ public class SHResourcesLister
         strBuff += "}";
 
         // 저장
-        SHUtil.SaveFile(strBuff, strSaveFilePath);
+        SHUtils.SaveFile(strBuff, strSaveFilePath);
     }
 
     // 인터페이스 : 번들 리스트를 Json형태로 번들정보파일포맷으로 쓰기
@@ -151,7 +151,7 @@ public class SHResourcesLister
 
         // 테이블별 내용작성
         strBuff += string.Format("\t\"{0}\": [{1}", "AssetBundleInfo", strNewLine);
-        SHUtil.ForToDic(dicTable, (pKey, pValue) =>
+        SHUtils.ForToDic(dicTable, (pKey, pValue) =>
         {
             strBuff += "\t\t{" + strNewLine;
 
@@ -170,7 +170,7 @@ public class SHResourcesLister
             strBuff += string.Format("\t\t\t\"p_Resources\": {0}", strNewLine);
             strBuff += "\t\t\t[" + strNewLine;
 
-            SHUtil.ForToDic(pValue.m_dicResources, (pResKey, pResValue) =>
+            SHUtils.ForToDic(pValue.m_dicResources, (pResKey, pResValue) =>
             {
                 strBuff += "\t\t\t\t{" + strNewLine;
                 strBuff += MakeSaveFormat(pResValue, "\t\t\t\t");
@@ -186,7 +186,7 @@ public class SHResourcesLister
         strBuff += "}";
 
         // 저장
-        SHUtil.SaveFile(strBuff, strSaveFilePath);
+        SHUtils.SaveFile(strBuff, strSaveFilePath);
     }
 
     // 인터페이스 : 중복파일 리스트 내보내기
@@ -197,17 +197,17 @@ public class SHResourcesLister
 
         string strNewLine = "\r\n";
         string strBuff    = string.Empty;
-        SHUtil.ForToDic(dicDuplications, (pKey, pValue) =>
+        SHUtils.ForToDic(dicDuplications, (pKey, pValue) =>
         {
             strBuff += string.Format("FileName : {0}{1}", pKey, strNewLine);
-            SHUtil.ForToList(pValue, (strPath) =>
+            SHUtils.ForToList(pValue, (strPath) =>
             {
                 strBuff += string.Format("\tPath : Resources/{0}{1}", strPath, strNewLine);
             });
             strBuff += string.Format("{0}", strNewLine);
         });
 
-        SHUtil.SaveFile(strBuff, strSaveFilePath);
+        SHUtils.SaveFile(strBuff, strSaveFilePath);
     }
 
     // 인터페이스 : 파일정보 Json 포맷으로 만들어주기

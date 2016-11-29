@@ -188,7 +188,7 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
     // 유틸 : 씬 변경될때 알려달라고 한 곳에 알려주자
     void SendCallback(eSceneType eCurrent, eSceneType eChange)
     {
-        SHUtil.ForToList(m_pEventToChangeScene, (pAction) =>
+        SHUtils.ForToList(m_pEventToChangeScene, (pAction) =>
         {
             if (null == pAction)
                 return;

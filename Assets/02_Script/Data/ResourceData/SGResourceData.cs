@@ -37,7 +37,7 @@ public partial class SHResourceData : SHBaseData
     public override Dictionary<string, SHLoadData> GetLoadList(eSceneType eType)
     {
         var dicLoadList  = new Dictionary<string, SHLoadData>();
-        SHUtil.ForToList(Single.Table.GetPreLoadResourcesList(eType), (pValue) =>
+        SHUtils.ForToList(Single.Table.GetPreLoadResourcesList(eType), (pValue) =>
         {
             if (true == IsLoadResource(pValue))
                 return;

@@ -35,7 +35,7 @@ public class SHEditorCleanner : Editor
     [MenuItem("Assets/SHTools/Editor/Delete PersistentData", false, 102)]
     static void SelectToDeletePersistentData()
     {
-        SHUtil.DeleteDirectory(Application.persistentDataPath);
+        SHUtils.DeleteDirectory(Application.persistentDataPath);
         EditorUtility.DisplayDialog("알림", "PersistentData가 삭제되었습니다.", "확인");
     }
 }

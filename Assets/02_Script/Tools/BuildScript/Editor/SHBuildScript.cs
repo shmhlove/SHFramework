@@ -139,7 +139,7 @@ class SHBuildScript
     static string[] FindEnabledEditorScenes()
     {
         var pScenes = new List<string>();
-        SHUtil.ForToArray (EditorBuildSettings.scenes, (pScene) =>
+        SHUtils.ForToArray (EditorBuildSettings.scenes, (pScene) =>
         {
             if (false == pScene.enabled) 
                 return;
@@ -159,10 +159,10 @@ class SHBuildScript
 
             string strFileName = string.Format("{0}/{1}", SHPath.GetPathToBuild(), strBuildName);
 
-			if (false == SHUtil.IsExistsDirectory(strFileName))
+			if (false == SHUtils.IsExistsDirectory(strFileName))
 				eOptions = BuildOptions.None;
 
-            SHUtil.CreateDirectory(strFileName);
+            SHUtils.CreateDirectory(strFileName);
 
 			string strResult = BuildPipeline.BuildPlayer(strScenes, strFileName, eTarget, eOptions);
             if (0 < strResult.Length)

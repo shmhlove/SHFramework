@@ -22,7 +22,7 @@ public class SHConvertToByte
         if (null == pTableData)
             return;
 
-        SHUtil.ForToDic(pTableData.Tables, (pKey, pValue) =>
+        SHUtils.ForToDic(pTableData.Tables, (pKey, pValue) =>
         {
             ConvertByteFile(pValue, strSavePath);
         });
@@ -40,7 +40,7 @@ public class SHConvertToByte
         if (null == pBytes)
             return;
         
-        SHUtil.SaveByte(pBytes, string.Format("{0}/{1}{2}", strSavePath, pTable.m_strByteFileName, ".bytes"));
+        SHUtils.SaveByte(pBytes, string.Format("{0}/{1}{2}", strSavePath, pTable.m_strByteFileName, ".bytes"));
 
         Debug.Log(string.Format("{0} To Convert Byte Files : {1}",
                     (true == pTable.IsLoadTable() ? "<color=yellow>Success</color>" : "<color=red>Fail!!</color>"),

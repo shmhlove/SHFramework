@@ -36,7 +36,7 @@ public partial class SHTableData : SHBaseData
         var dicLoadList = new Dictionary<string, SHLoadData>();
 
         // 로컬 테이블 데이터
-        SHUtil.ForToDic<Type, SHBaseTable>(m_dicTables,
+        SHUtils.ForToDic<Type, SHBaseTable>(m_dicTables,
         (pKey, pValue) =>
         {
             // 이미 로드된 데이터인지 체크
@@ -63,7 +63,7 @@ public partial class SHTableData : SHBaseData
             return;
         }
 
-        SHUtil.ForToList(GetLoadOrder(pTable), (pLambda) =>
+        SHUtils.ForToList(GetLoadOrder(pTable), (pLambda) =>
         {
             bool? bIsSuccess = pLambda();
             if (null != bIsSuccess)

@@ -131,7 +131,7 @@ public class JsonResourcesTable : SHBaseTable
             LoadJson(m_strFileName);
 
         var pList = new List<SHResourcesTableInfo>();
-        SHUtil.ForToDic(m_pData, (pKey, pValue) =>
+        SHUtils.ForToDic(m_pData, (pKey, pValue) =>
         {
             if (eType == pValue.m_eResourceType)
                 pList.Add(pValue);

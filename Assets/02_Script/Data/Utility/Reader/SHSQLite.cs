@@ -77,7 +77,7 @@ public class SHSQLite
         {
             m_pSQLiteDB = new SQLiteDB();
             m_pSQLiteDB.Open(strSavePath);
-            SHUtil.ForToDic(dicData, (pKey, pValue) =>
+            SHUtils.ForToDic(dicData, (pKey, pValue) =>
             {
                 // 테이블 생성
                 if (false == CreateTable(pKey, pValue[0]))
@@ -236,7 +236,7 @@ public class SHSQLite
 
         try
         {
-            SHUtil.SaveByte(pBytes, strFilePath);
+            SHUtils.SaveByte(pBytes, strFilePath);
         }
         catch (System.Exception e)
         {
@@ -258,7 +258,7 @@ public class SHSQLite
         pQuery.Release();
 
         // 테이블별 데이터 생성
-        SHUtil.ForToList(pTableList, (pTable) =>
+        SHUtils.ForToList(pTableList, (pTable) =>
         {
             string strTableName     = pTable.m_pDatas[0];
             pQuery                  = GetTable(strTableName);

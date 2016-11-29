@@ -220,7 +220,7 @@ public class JsonAssetBundleInfo : SHBaseTable
             return dicBundleInfo;
 
         var pResult = new Dictionary<string, AssetBundleInfo>();
-        SHUtil.ForToDic(dicBundleInfo, (pBundleKey, pBundleValue) =>
+        SHUtils.ForToDic(dicBundleInfo, (pBundleKey, pBundleValue) =>
         {
             // 체크 : 번들파일크기
             if (0 == pBundleValue.m_lBundleSize)
@@ -230,7 +230,7 @@ public class JsonAssetBundleInfo : SHBaseTable
             }
             
             // 체크 : 추가/제거/변경된 리소스(존재확인/파일크기/해시코드)
-            SHUtil.ForToDic(pBundleValue.m_dicResources, (pResKey, pResValue) => 
+            SHUtils.ForToDic(pBundleValue.m_dicResources, (pResKey, pResValue) => 
             {
                 var pResourceUnit = pResourceInfo.GetResouceInfo(pResValue.m_strName);
 
@@ -272,7 +272,7 @@ public class JsonAssetBundleInfo : SHBaseTable
         pStreamingInfo.LoadJsonTable((new SHJson()).LoadToStreamingForLocal(m_strFileName), m_strFileName);
 
         // StreamingPath기준으로 목록 갱신
-        SHUtil.ForToDic(pStreamingInfo.GetContainer(), (pStreamingKey, pStreamingValue) =>
+        SHUtils.ForToDic(pStreamingInfo.GetContainer(), (pStreamingKey, pStreamingValue) =>
         {
             var pCDNBundleInfo = pCDNInfo.GetBundleInfo(pStreamingKey);
 
@@ -289,7 +289,7 @@ public class JsonAssetBundleInfo : SHBaseTable
             pStreamingValue.m_pHash128    = pCDNBundleInfo.m_pHash128;
 
             // 리소스 업데이트 체크
-            SHUtil.ForToDic(pStreamingValue.m_dicResources, (pResKey, pResValue) =>
+            SHUtils.ForToDic(pStreamingValue.m_dicResources, (pResKey, pResValue) =>
             {
                 var pCDNResInfo = pCDNBundleInfo.GetResourceInfo(pStreamingKey);
 
@@ -307,7 +307,7 @@ public class JsonAssetBundleInfo : SHBaseTable
             });
 
             // 추가 : 리소스가 CDN에는 있고, Streaming 에는 없는 경우 비교할 수 있게 CDN내용 추가
-            SHUtil.ForToDic(pCDNBundleInfo.m_dicResources, (pResKey, pResValue) =>
+            SHUtils.ForToDic(pCDNBundleInfo.m_dicResources, (pResKey, pResValue) =>
             {
                 if (true == pStreamingValue.IsIncludeResource(pResKey))
                     return;

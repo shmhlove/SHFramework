@@ -69,15 +69,15 @@ public static class SHAssetBundleMaker
     static bool MakeAssetBundle(BuildTarget eTarget, string strOutputPath, Dictionary<string, AssetBundleInfo> dicBundles)
     {
         // 디렉토리 정리
-        SHUtil.DeleteDirectory(strOutputPath);
-        SHUtil.CreateDirectory(strOutputPath);
+        SHUtils.DeleteDirectory(strOutputPath);
+        SHUtils.CreateDirectory(strOutputPath);
 
         // 번들 빌드 정보 만들기
         List<AssetBundleBuild> pBuildList = new List<AssetBundleBuild>();
-        SHUtil.ForToDic(dicBundles, (pKey, pValue) =>
+        SHUtils.ForToDic(dicBundles, (pKey, pValue) =>
         {
             List<string> pAssets = new List<string>();
-            SHUtil.ForToDic(pValue.m_dicResources, (pResKey, pResValue) =>
+            SHUtils.ForToDic(pValue.m_dicResources, (pResKey, pResValue) =>
             {
                 pAssets.Add(string.Format("{0}/{1}{2}", "Assets/Resources", pResValue.m_strPath, pResValue.m_strExtension));
             });
@@ -101,7 +101,7 @@ public static class SHAssetBundleMaker
         }
 
         // 후 처리
-        SHUtil.ForToList(pBuildList, (pBundle) =>
+        SHUtils.ForToList(pBuildList, (pBundle) =>
         {
             // 번들 크기와 해시코드 기록
             string strKey = pBundle.assetBundleName.Substring(0, pBundle.assetBundleName.Length - ".unity3d".Length).ToLower();
@@ -112,10 +112,10 @@ public static class SHAssetBundleMaker
             }
 
             // Manifest제거 ( 사용하지 않는 불필요한 파일이라 그냥 제거시킴 )
-            SHUtil.DeleteFile(string.Format("{0}/{1}.manifest", strOutputPath, pBundle.assetBundleName));
+            SHUtils.DeleteFile(string.Format("{0}/{1}.manifest", strOutputPath, pBundle.assetBundleName));
         });
-        SHUtil.DeleteFile(string.Format("{0}/{1}", strOutputPath, SHHard.GetStrToPlatform(eTarget)));
-        SHUtil.DeleteFile(string.Format("{0}/{1}.manifest", strOutputPath, SHHard.GetStrToPlatform(eTarget)));
+        SHUtils.DeleteFile(string.Format("{0}/{1}", strOutputPath, SHHard.GetStrToPlatform(eTarget)));
+        SHUtils.DeleteFile(string.Format("{0}/{1}.manifest", strOutputPath, SHHard.GetStrToPlatform(eTarget)));
         
         return true;
     }
@@ -124,12 +124,12 @@ public static class SHAssetBundleMaker
     static void DeleteOriginalResource(SHTableData pTableData)
     {
         var pBundleInfo = GetBundleTable(pTableData);
-        SHUtil.ForToDic(pBundleInfo.GetContainer(), (pKey, pValue) =>
+        SHUtils.ForToDic(pBundleInfo.GetContainer(), (pKey, pValue) =>
         {
-            SHUtil.ForToDic(pValue.m_dicResources, (pResKey, pResValue) =>
+            SHUtils.ForToDic(pValue.m_dicResources, (pResKey, pResValue) =>
             {
-                SHUtil.DeleteFile(string.Format("{0}/{1}{2}", SHPath.GetPathToResources(), pResValue.m_strPath, pResValue.m_strExtension));
-                SHUtil.DeleteFile(string.Format("{0}/{1}{2}", SHPath.GetPathToResources(), pResValue.m_strPath, ".meta"));
+                SHUtils.DeleteFile(string.Format("{0}/{1}{2}", SHPath.GetPathToResources(), pResValue.m_strPath, pResValue.m_strExtension));
+                SHUtils.DeleteFile(string.Format("{0}/{1}{2}", SHPath.GetPathToResources(), pResValue.m_strPath, ".meta"));
             });
         });
     }
@@ -139,14 +139,14 @@ public static class SHAssetBundleMaker
     {
         var pBundleTable   = GetBundleTable(pTableData);
         var pResourceTable = GetResourceTable(pTableData);
-        SHUtil.ForToDic(dicMakeBundles, (pKey, pValue) =>
+        SHUtils.ForToDic(dicMakeBundles, (pKey, pValue) =>
         {
             AssetBundleInfo pData = pBundleTable.GetBundleInfo(pValue.m_strBundleName);
             pData.m_lBundleSize   = pValue.m_lBundleSize;
             pData.m_pHash128      = pValue.m_pHash128;
             pData.CopyResourceInfo(pValue.m_dicResources);
 
-            SHUtil.ForToDic(pData.m_dicResources, (pResKey, pResValue) =>
+            SHUtils.ForToDic(pData.m_dicResources, (pResKey, pResValue) =>
             {
                 pResValue.CopyTo(pResourceTable.GetResouceInfo(pResKey));
             });

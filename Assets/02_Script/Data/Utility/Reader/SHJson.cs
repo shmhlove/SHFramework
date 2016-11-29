@@ -125,13 +125,13 @@ public class SHJson
 
         string strNewLine = "\r\n";
         string strBuff = "{" + strNewLine;
-        SHUtil.ForToDic(dicData, (pKey, pValue) =>
+        SHUtils.ForToDic(dicData, (pKey, pValue) =>
         {
             strBuff += string.Format("\t\"{0}\": [{1}", pKey, strNewLine);
-            SHUtil.ForToList(pValue, (pData) =>
+            SHUtils.ForToList(pValue, (pData) =>
             {
                 strBuff += "\t\t{" + strNewLine;
-                SHUtil.For(0, pData.m_iMaxCol, (iCol) =>
+                SHUtils.For(0, pData.m_iMaxCol, (iCol) =>
                 {
                     strBuff += string.Format("\t\t\t\"{0}\": {1},{2}",
                         pData.m_ColumnNames[iCol],
@@ -147,7 +147,7 @@ public class SHJson
         strBuff = string.Format("{0}{1}", strBuff.Substring(0, strBuff.Length - (strNewLine.Length + 1)), strNewLine);
         strBuff += "}";
 
-        SHUtil.SaveFile(strBuff, string.Format("{0}/{1}.json", SHPath.GetPathToJson(), Path.GetFileNameWithoutExtension(strFileName)));
+        SHUtils.SaveFile(strBuff, string.Format("{0}/{1}.json", SHPath.GetPathToJson(), Path.GetFileNameWithoutExtension(strFileName)));
         #endif
     }
     #endregion

@@ -114,7 +114,7 @@ public class ReadOnlyFieldDrawer : PropertyDrawer
                 break;
 
             case SerializedPropertyType.Bounds:
-                EditorGUI.BoundsField(position, label.text, prop.boundsValue);
+                EditorGUI.BoundsField(position, prop.boundsValue);
                 break;
 
             case SerializedPropertyType.Gradient:

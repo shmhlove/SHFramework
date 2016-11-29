@@ -61,7 +61,7 @@ public class JsonServerConfiguration : SHBaseTable
         m_strIOSMarketURL = GetStrToJson(pDataNode, "IOS_MarketURL");
 
         // 모드별 정보
-        SHUtil.ForToEnum<eServiceMode>((eMode) => 
+        SHUtils.ForToEnum<eServiceMode>((eMode) => 
         {
             if (eServiceMode.None == eMode)
                 return;
@@ -285,7 +285,7 @@ public class JsonServerConfiguration : SHBaseTable
                 strNewLine);
 
             // 모드별 정보
-            SHUtil.ForToEnum<eServiceMode>((eMode) =>
+            SHUtils.ForToEnum<eServiceMode>((eMode) =>
             {
                 if (eServiceMode.None == eMode)
                     return;
@@ -327,7 +327,7 @@ public class JsonServerConfiguration : SHBaseTable
         strBuff += "}";
 
         // 저장
-        SHUtil.SaveFile(strBuff, string.Format("{0}/{1}.json", strSavePath, m_strFileName));
+        SHUtils.SaveFile(strBuff, string.Format("{0}/{1}.json", strSavePath, m_strFileName));
     }
     #endregion
 

@@ -87,7 +87,7 @@ public class UILabelHyperLink : MonoBehaviour
         if (true == m_bIsAutoOpenURL)
             Application.OpenURL(strURL);
 
-        SHUtil.ForToList(m_pEvent, (pEvent) =>
+        SHUtils.ForToList(m_pEvent, (pEvent) =>
         {
             pEvent(strURL);
         });

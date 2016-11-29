@@ -240,17 +240,17 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
     public void SaveLoadResourceList()
     {
         string strBuff = string.Empty;
-        SHUtil.ForToDic(m_dicRealLoadInfo, (pKey, pValue) =>
+        SHUtils.ForToDic(m_dicRealLoadInfo, (pKey, pValue) =>
         {
             strBuff += string.Format("Scene : {0}\n", pKey);
-            SHUtil.ForToList(pValue, (pInfo) =>
+            SHUtils.ForToList(pValue, (pInfo) =>
             {
                 strBuff += string.Format("\t{0}\n", pInfo);
             });
         });
 
         string strSavePath = string.Format("{0}/{1}", SHPath.GetPathToAssets(), "RealTimeLoadResource.txt");
-        SHUtil.SaveFile(strBuff, strSavePath);
+        SHUtils.SaveFile(strBuff, strSavePath);
         System.Diagnostics.Process.Start(strSavePath);
     }
     [FuncButton]
@@ -316,7 +316,7 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
         yield return new WaitForSeconds(1.0f);
 
         if (true == Single.Timer.IsPastTimeToLocal(m_pReleaseTime))
-            SHUtil.GameQuit();
+            SHUtils.GameQuit();
         else
             StartCoroutine(CheckReleaseTime());
     }
@@ -328,7 +328,7 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
             m_dicRealLoadInfo.Add(Single.Scene.GetActiveScene(), new List<string>());
 
         //// 콜스택 남기기
-        //strInfo += string.Format("\n< CallStack >\n{0}", SHUtil.GetCallStack());
+        //strInfo += string.Format("\n< CallStack >\n{0}", SHUtils.GetCallStack());
 
         m_dicRealLoadInfo[Single.Scene.GetActiveScene()].Add(strInfo);
     }

@@ -26,7 +26,7 @@ public partial class SHAssetBundleData : SHBaseData
     public override void OnInitialize() { }
     public override void OnFinalize()
     {
-        SHUtil.ForToDic(m_dicBundles, (pKey, pValue) =>
+        SHUtils.ForToDic(m_dicBundles, (pKey, pValue) =>
         {
             pValue.m_pBundle.Unload(false);
         });
@@ -46,7 +46,7 @@ public partial class SHAssetBundleData : SHBaseData
         if (true == string.IsNullOrEmpty(SHPath.GetURLToBundleCDN()))
             return dicLoadList;
 
-        SHUtil.ForToDic(Single.Table.GetAssetBundleInfo(), (pKey, pValue) =>
+        SHUtils.ForToDic(Single.Table.GetAssetBundleInfo(), (pKey, pValue) =>
         {
             if (true == IsExist(pKey))
                 return;

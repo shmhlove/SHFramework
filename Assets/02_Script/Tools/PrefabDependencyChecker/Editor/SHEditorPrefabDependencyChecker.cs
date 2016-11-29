@@ -36,17 +36,17 @@ public class SHEditorPrefabDependencyChecker : Editor
 
         // 종속체크
         string strBuff = string.Empty;
-        SHUtil.ForToList(pObjects, (pObject) =>
+        SHUtils.ForToList(pObjects, (pObject) =>
         {
             string strSearchPath = string.Format("{0}/{1}", strAbsolutePath, AssetDatabase.GetAssetPath(pObject));
-            SHUtil.Search(strSearchPath, (pFileInfo) =>
+            SHUtils.Search(strSearchPath, (pFileInfo) =>
             {
                 var pDependencys = pChecker.GetDependency(pFileInfo.FullName);
                 if (null == pDependencys)
                     return;
 
                 strBuff += string.Format("< Prefab : {0} >\n", Path.GetFileNameWithoutExtension(pFileInfo.FullName));
-                SHUtil.ForToList(pDependencys, (pDependency) =>
+                SHUtils.ForToList(pDependencys, (pDependency) =>
                 {
                     strBuff += string.Format("    Dependency : {0}\n", pDependency);
                 });
@@ -54,7 +54,7 @@ public class SHEditorPrefabDependencyChecker : Editor
         });
 
         string strSavePath = string.Format("{0}/{1}", strAbsolutePath, "DependencyList.txt");
-        SHUtil.SaveFile(strBuff, strSavePath);
+        SHUtils.SaveFile(strBuff, strSavePath);
         System.Diagnostics.Process.Start(strSavePath);
     }
 

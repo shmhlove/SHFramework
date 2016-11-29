@@ -102,7 +102,7 @@ public class JsonClientConfiguration : SHBaseTable
         strBuff += "}";
 
         // 저장
-        SHUtil.SaveFile(strBuff, string.Format("{0}/{1}.json", strSavePath, m_strFileName));
+        SHUtils.SaveFile(strBuff, string.Format("{0}/{1}.json", strSavePath, m_strFileName));
     }
     public void SetConfigurationCDN(string strCDN)
     {

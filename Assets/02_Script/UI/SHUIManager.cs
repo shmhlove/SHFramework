@@ -87,7 +87,7 @@ public partial class SHUIManager : SHSingleton<SHUIManager>
         if (null == dicPanels)
             return;
 
-        SHUtil.ForToDic(new DicPanels(dicPanels), (pKey, pValue) =>
+        SHUtils.ForToDic(new DicPanels(dicPanels), (pKey, pValue) =>
         {
             DestroyPanel(pValue);
             m_dicPanels.Remove(pKey);
@@ -107,7 +107,7 @@ public partial class SHUIManager : SHSingleton<SHUIManager>
     public void OnEventToChangeScene(eSceneType eCurrentScene, eSceneType eNextScene)
     {
         var pDestroyPanels = new DicPanels();
-        SHUtil.ForToDic(m_dicPanels, (pKey, pValue) =>
+        SHUtils.ForToDic(m_dicPanels, (pKey, pValue) =>
         {
             if (eObjectDestoryType.ChangeScene != pValue.m_eDestroyType)
                 return;

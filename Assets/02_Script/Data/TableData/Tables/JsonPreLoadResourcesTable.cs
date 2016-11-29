@@ -36,12 +36,12 @@ public class JsonPreLoadResourcesTable : SHBaseTable
         if (null == pJson)
             return false;
         
-        SHUtil.For(0, pJson["PreLoadResourcesList"].Count, (iLoop) => 
+        SHUtils.For(0, pJson["PreLoadResourcesList"].Count, (iLoop) => 
         {
             var pDataNode = pJson["PreLoadResourcesList"][iLoop];
-            SHUtil.ForToEnum<eSceneType>((eType) => 
+            SHUtils.ForToEnum<eSceneType>((eType) => 
             {
-                SHUtil.For(0, pDataNode[eType.ToString()].Count, (iDataIndex) => 
+                SHUtils.For(0, pDataNode[eType.ToString()].Count, (iDataIndex) => 
                 {
                     AddData(eType, pDataNode[eType.ToString()][iDataIndex].Value);
                 });

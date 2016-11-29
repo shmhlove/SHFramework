@@ -14,7 +14,7 @@ public class SHUIRoot : MonoBehaviour
     void Awake()
     {
         var pPanels = gameObject.GetComponentsInChildren<SHUIBasePanel>();
-        SHUtil.ForToArray(pPanels, (pPanel) =>
+        SHUtils.ForToArray(pPanels, (pPanel) =>
         {
             Single.UI.AddPanel(pPanel);
         });

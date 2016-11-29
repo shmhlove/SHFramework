@@ -44,7 +44,7 @@ public class SHLoadPrograss
     #region Interface Functions
     public void AddLoadInfo(Dictionary<string, SHLoadData> dicLoadList)
     {
-        SHUtil.ForToDic(dicLoadList, (pKey, pValue) => 
+        SHUtils.ForToDic(dicLoadList, (pKey, pValue) => 
         {
             // 무결성체크
             if (null == pValue)

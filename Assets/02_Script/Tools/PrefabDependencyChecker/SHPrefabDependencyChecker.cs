@@ -19,7 +19,7 @@ public class SHPrefabDependencyChecker
     public void ReadyGUID()
     {
         m_dicGUID.Clear();
-        SHUtil.Search(SHPath.GetPathToResources(), (pFileInfo) =>
+        SHUtils.Search(SHPath.GetPathToResources(), (pFileInfo) =>
         {
             string strExtension = Path.GetExtension(pFileInfo.FullName);
             if (".meta" == strExtension.ToLower())
@@ -47,8 +47,8 @@ public class SHPrefabDependencyChecker
             ReadyGUID();
 
         var pResult     = new List<string>();
-        var strPrefab   = SHUtil.ReadFile(strPrefabPath);
-        SHUtil.ForToDic(m_dicGUID, (pKey, pValue) =>
+        var strPrefab   = SHUtils.ReadFile(strPrefabPath);
+        SHUtils.ForToDic(m_dicGUID, (pKey, pValue) =>
         {
             int iIndex = strPrefab.IndexOf(pValue);
             if (-1 == iIndex)

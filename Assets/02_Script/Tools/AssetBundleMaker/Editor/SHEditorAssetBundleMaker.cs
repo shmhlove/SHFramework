@@ -92,7 +92,7 @@ public class SHEditorAssetBundleMaker : EditorWindow
         }
 
         if (true == GUILayout.Button("Open Output Path"))
-            SHUtil.OpenInFileBrowser(m_strOutputPath);
+            SHUtils.OpenInFileBrowser(m_strOutputPath);
 
         GUILayout.EndVertical();
         return m_strOutputPath;
