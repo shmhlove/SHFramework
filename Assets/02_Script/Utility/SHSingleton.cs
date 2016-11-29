@@ -30,7 +30,7 @@ public static class Single
     public static SHTimer                   Timer               { get { return SHTimer.Instance; } }
 }
 
-public abstract class SHSingleton<T> : SHMonoBehaviour where T : SHSingleton<T>
+public abstract class SHSingleton<T> : SHMonoWrapper where T : SHSingleton<T>
 {
     #region Members
     private static T        m_pInstance     = null;
@@ -50,7 +50,7 @@ public abstract class SHSingleton<T> : SHMonoBehaviour where T : SHSingleton<T>
 
     #region System Functions
     // 시스템 : 생성(하이어라키에 올라간 싱글턴)
-    public void Awake()
+    public override void Awake()
     {
         Initialize(this as T);
     }

@@ -22,7 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UILabelHyperLink : MonoBehaviour
+public class SHUILabelHyperLink : MonoBehaviour
 {
     #region Members
     public bool         m_bIsAutoOpenURL    = true; // 터치 시 URL로 자동 연결합니다.

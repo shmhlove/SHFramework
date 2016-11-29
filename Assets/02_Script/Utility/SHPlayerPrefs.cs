@@ -131,22 +131,24 @@ public class SHPlayerPrefs
 
     public static void SaveEncryption(string strKey, string strType, string strValue)
     {
-        int iKeyIndex = (int)UnityEngine.Mathf.Floor(UnityEngine.Random.value * m_strkeys.Length);
-        string strSecretKey = m_strkeys[iKeyIndex];
-        string strCheck = Md5(string.Format("{0}_{1}_{2}_{3}", strType, m_strPrivateKey, strSecretKey, strValue));
-        PlayerPrefs.SetString(strKey + "_Encryption_Check", strCheck);
-        PlayerPrefs.SetInt(strKey + "_Used_Key", iKeyIndex);
+        var iKeyIndex    = (int)UnityEngine.Mathf.Floor(UnityEngine.Random.value * m_strkeys.Length);
+        var strSecretKey = m_strkeys[iKeyIndex];
+        var strCheck     = Md5(string.Format("{0}_{1}_{2}_{3}", strType, m_strPrivateKey, strSecretKey, strValue));
+        PlayerPrefs.SetString(string.Format("{0}_Encryption_Check", strKey), strCheck);
+        PlayerPrefs.SetInt(string.Format("{0}_Used_Key", strKey), iKeyIndex);
     }
 
     public static bool CheckEncryption(string strKey, string strType, string strValue)
     {
-        int iKeyIndex = PlayerPrefs.GetInt(strKey + "_Used_Key");
-        string strSecretKey = m_strkeys[iKeyIndex];
-        string strCheck = Md5(string.Format("{0}_{1}_{2}_{3}", strType, m_strPrivateKey, strSecretKey, strValue));
-        if (false == PlayerPrefs.HasKey(strKey + "_Encryption_Check"))
+        int iKeyIndex       = PlayerPrefs.GetInt(strKey + "_Used_Key");
+        var strSecretKey    = m_strkeys[iKeyIndex];
+        var strCheck        = Md5(string.Format("{0}_{1}_{2}_{3}", strType, m_strPrivateKey, strSecretKey, strValue));
+
+        strKey = string.Format("{0}_Encryption_Check", strKey);
+        if (false == PlayerPrefs.HasKey(strKey))
             return false;
 
-        return (PlayerPrefs.GetString(strKey + "_Encryption_Check") == strCheck);
+        return (PlayerPrefs.GetString(strKey) == strCheck);
     }
     
     public static bool HasKey(string strKey)
@@ -157,8 +159,8 @@ public class SHPlayerPrefs
     public static void DeleteKey(string strKey)
     {
         PlayerPrefs.DeleteKey(strKey);
-        PlayerPrefs.DeleteKey(strKey + "_Encryption_Check");
-        PlayerPrefs.DeleteKey(strKey + "_Used_Key");
+        PlayerPrefs.DeleteKey(string.Format("{0}_Encryption_Check", strKey));
+        PlayerPrefs.DeleteKey(string.Format("{0}_Used_Key",         strKey));
     }
 
     public static void DeleteAll()

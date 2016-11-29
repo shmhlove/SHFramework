@@ -24,7 +24,7 @@ public enum eServiceState
     ConnectMarket,  // 마켓연결
 }
 
-// Enum : 번들 패킹 타입
+// 번들 패킹 타입
 public enum eBundlePackType
 {
     None,           // 아무것도 안함
@@ -85,9 +85,21 @@ public enum eObjectDestoryType
 // Bool
 public enum eBOOL
 {
+    None   = -1,
+    False  = 0,
+    True   = 1,
+}
+
+// 방향
+public enum eDirection
+{
     None,
-    False,
-    True,
+    Front,
+    Back,
+    Left,
+    Right,
+    Top,
+    Bottom,
 }
 
 // 순서

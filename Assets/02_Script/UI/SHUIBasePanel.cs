@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-public class SHUIBasePanel : SHMonoBehaviour
+public class SHUIBasePanel : SHMonoWrapper
 {
     #region Members
     [Header("BaseInfo")]
@@ -56,13 +56,13 @@ public class SHUIBasePanel : SHMonoBehaviour
     #region Utility Functions
     void PlayAnimation(AnimationClip pClip, Action pEndCallback)
     {
-        StartCoroutine(CoroutineToPlayAnim(m_pAnimRoot, pClip, pEndCallback));
+        PlayAnim(eDirection.Front, m_pAnimRoot, pClip, pEndCallback);
     }
     #endregion
 
 
     #region Event Handler
-    public void OnClickToClose()
+    public virtual void OnClickToClose()
     {
         Close();
     }

@@ -4,27 +4,52 @@ using System.Collections;
 
 public enum eNoticeButton
 {
+    None,
     One,
     Two,
     Three,
 }
 
+public enum eNoticeIcon
+{
+    None,
+    Error,
+    Warning,
+    Information,
+}
+
+public class NoticeUI_Param
+{
+    public eNoticeButton m_eButtonType    = eNoticeButton.None;
+    public eNoticeIcon   m_eIconType      = eNoticeIcon.None;
+    public string        m_strTitle       = string.Empty;
+    public string        m_strMessage     = string.Empty;
+
+    public Action        m_pEventToOK     = null;
+    public Action        m_pEventToCancel = null;
+    public Action        m_pEventToRetry  = null;
+    public Action        m_pEventToClose  = null;
+}
+
 public class SHUIPanel_Notice : SHUIBasePanel
 {
     #region Members : Inspector
-    [Header("NoticeInfo")]
+    [Header("Notice Info")]
     [SerializeField] private UILabel       m_pTitle     = null;
     [SerializeField] private UILabel       m_pMessage   = null;
+    [Header("Button Info")]
     [SerializeField] private GameObject    m_pOneButton = null;
     [SerializeField] private GameObject    m_pTwoButton = null;
     [SerializeField] private GameObject    m_pThrButton = null;
+    [Header("Icon Info")]
+    [SerializeField] private GameObject    m_pErrorIcon = null;
+    [SerializeField] private GameObject    m_pWarningIcon = null;
+    [SerializeField] private GameObject    m_pInfoIcon  = null;
     #endregion
 
 
-    #region Members : Event
-    private Action m_pEventToOK     = null;
-    private Action m_pEventToCancel = null;
-    private Action m_pEventToRetry  = null;
+    #region Members : Info
+    private NoticeUI_Param m_pInfo = null;
     #endregion
 
 
@@ -35,16 +60,22 @@ public class SHUIPanel_Notice : SHUIBasePanel
     #region Virtual Functions
     public override void OnBeforeShow(params object[] pArgs)
     {
-        if ((null == pArgs) || (3 > pArgs.Length))
+        if ((null == pArgs) || (1 > pArgs.Length))
             return;
 
-        SetActiveButton((eNoticeButton)pArgs[0]);
-        SetTitle((string)pArgs[1]);
-        SetMessage((string)pArgs[2]);
+        if (false == (pArgs[0] is NoticeUI_Param))
+            return;
 
-        if (4 <= pArgs.Length)  m_pEventToOK     = (Action)pArgs[3];
-        if (5 <= pArgs.Length)  m_pEventToCancel = (Action)pArgs[4];
-        if (6 <= pArgs.Length)  m_pEventToRetry  = (Action)pArgs[5];
+        var pParam = (NoticeUI_Param)pArgs[0];
+        if (null == pParam)
+            return;
+
+        m_pInfo = pParam;
+
+        SetButton(pParam.m_eButtonType);
+        SetIcon(pParam.m_eIconType);
+        SetTitle(pParam.m_strTitle);
+        SetMessage(pParam.m_strMessage);
     }
     #endregion
 
@@ -54,11 +85,17 @@ public class SHUIPanel_Notice : SHUIBasePanel
 
 
     #region Utility Functions
-    void SetActiveButton(eNoticeButton eType)
+    void SetButton(eNoticeButton eType)
     {
         m_pOneButton.SetActive(eNoticeButton.One   == eType);
         m_pTwoButton.SetActive(eNoticeButton.Two   == eType);
         m_pThrButton.SetActive(eNoticeButton.Three == eType);
+    }
+    void SetIcon(eNoticeIcon eType)
+    {
+        m_pErrorIcon.SetActive(eNoticeIcon.Error        == eType);
+        m_pWarningIcon.SetActive(eNoticeIcon.Warning    == eType);
+        m_pInfoIcon.SetActive(eNoticeIcon.Information   == eType);
     }
     void SetTitle(string strTitle)
     {
@@ -71,25 +108,32 @@ public class SHUIPanel_Notice : SHUIBasePanel
     #endregion
 
 
-        #region Event Handler
+    #region Event Handler
+    public override void OnClickToClose()
+    {
+        if (null != m_pInfo.m_pEventToClose)
+            m_pInfo.m_pEventToClose();
+
+        base.OnClickToClose();
+    }
     public void OnClickToOK()
     {
-        if (null != m_pEventToOK)
-            m_pEventToOK();
+        if (null != m_pInfo.m_pEventToOK)
+            m_pInfo.m_pEventToOK();
 
         Close();
     }
     public void OnClickToCancel()
     {
-        if (null != m_pEventToCancel)
-            m_pEventToCancel();
+        if (null != m_pInfo.m_pEventToCancel)
+            m_pInfo.m_pEventToCancel();
 
         Close();
     }
     public void OnClickToRetry()
     {
-        if (null != m_pEventToRetry)
-            m_pEventToRetry();
+        if (null != m_pInfo.m_pEventToRetry)
+            m_pInfo.m_pEventToRetry();
 
         Close();
     }
