@@ -6,7 +6,7 @@ public class SHUIBasePanel : SHMonoWrapper
 {
     #region Members
     [Header("BaseInfo")]
-    [SerializeField] public  eObjectDestoryType  m_eDestroyType;
+    [SerializeField] public  eObjectDestoryType  m_eDestroyType = eObjectDestoryType.ChangeScene;
     [SerializeField] private GameObject          m_pAnimRoot    = null;
     [SerializeField] private AnimationClip       m_pAnimToOpen  = null;
     [SerializeField] private AnimationClip       m_pAnimToClose = null;
@@ -26,15 +26,19 @@ public class SHUIBasePanel : SHMonoWrapper
 
 
     #region Interface Functions
-    public void Initialize()
+    public void Initialize(bool bIsActive)
     {
-        SHGameObject.SetParent(transform, SHUIRoot.GetRoot());
+        if (eObjectDestoryType.Never == m_eDestroyType)
+            SHGameObject.SetParent(transform, Single.UI.GetRootToGlobal());
+        else
+            SHGameObject.SetParent(transform, Single.UI.GetRootToScene());
+
         SetLocalScale(Vector3.one);
-        SetActive(true);
+        SetActive(bIsActive);
     }
     public void Show(params object[] pArgs)
     {
-        Initialize();
+        Initialize(true);
         OnBeforeShow(pArgs);
         PlayAnimation(m_pAnimToOpen, ()=> 
         {

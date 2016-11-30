@@ -268,7 +268,7 @@ public partial class SHResourceData : SHBaseData
 
         ResourceRequest pRequest = Resources.LoadAsync(pTable.m_strPath);
         pStart(pTable.m_strName, new SHLoadStartInfo(pRequest));
-        Single.Coroutine.Async((pIsDone) =>
+        Single.Coroutine.Async(() =>
         {
             if (null == pRequest.asset)
             {

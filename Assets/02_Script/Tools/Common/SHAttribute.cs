@@ -13,3 +13,8 @@ public class FuncButton : Attribute
 public class ReadOnlyField : PropertyAttribute
 {
 }
+
+// 특성 : 인스펙터에 같은 타입의 자식오브젝트를 콤보박스 형태로 노출합니다.
+public class SelectOnChildren : PropertyAttribute
+{
+}

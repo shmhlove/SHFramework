@@ -143,12 +143,15 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
     // 유틸 : 씬 이동 실행
     void ExcuteGoTo(eSceneType eType)
     {
-        if (true == IsNeedLoading(eType))
-            LoadScene(eSceneType.Loading, null);
-        else
-            LoadScene(eType, null);
+        PlayFadeIn(() =>
+        {
+            if (true == IsNeedLoading(eType))
+                LoadScene(eSceneType.Loading, (bIsSuccess) => PlayFadeOut(null));
+            else
+                LoadScene(eType, (bIsSuccess) => PlayFadeOut(null));
+        });
     }
-    
+
     // 유틸 : 씬 로드 ( Change 방식 : GoTo 명령시 호출됨 )
     AsyncOperation LoadScene(eSceneType eType, Action<bool> pComplate)
     {
@@ -166,15 +169,22 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
     // 유틸 : 씬 로드 후 처리를 위한 코루틴 등록
     AsyncOperation SetLoadPostProcess(Action<bool> pComplate, AsyncOperation pAsyncInfo)
     {
-        Single.Coroutine.Async((bIsSuccess) =>
+        if (null == pAsyncInfo)
         {
-            if (false == bIsSuccess)
-                Debug.LogError(string.Format("씬 로드 실패!!(SceneType : {0})", GetCurrentScene()));
+            Debug.LogError(string.Format("씬 로드 실패!!(SceneType : {0})", GetCurrentScene()));
 
             if (null != pComplate)
-                pComplate(bIsSuccess);
-        },
-        pAsyncInfo);
+                pComplate(false);
+        }
+        else
+        {
+            Single.Coroutine.Async(() =>
+            {
+                if (null != pComplate)
+                    pComplate(true);
+            },
+            pAsyncInfo);
+        }
 
         return pAsyncInfo;
     }
@@ -185,7 +195,7 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
         return m_pEventToChangeScene.Contains(pAction);
     }
 
-    // 유틸 : 씬 변경될때 알려달라고 한 곳에 알려주자
+    // 유틸 : 씬 변경이 시작될때 알려달라고 한 곳에 알려주자
     void SendCallback(eSceneType eCurrent, eSceneType eChange)
     {
         SHUtils.ForToList(m_pEventToChangeScene, (pAction) =>
@@ -200,9 +210,6 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
     // 유틸 : 씬 변경시 처리해야할 하드한 작업들
     void PerformanceToChangeScene(eSceneType eCurrent, eSceneType eChange)
     {
-        // 전역 코루틴 모두 제거
-        Single.Coroutine.DoDestroy();
-
         // 씬 변경 이벤트 콜
         SendCallback(eCurrent, eChange);
 
@@ -216,6 +223,30 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
         m_pHistory.Add(new SHSceneHistory(m_eCurrentScene, eType));
         m_eBeforeScene  = m_eCurrentScene;
         m_eCurrentScene = eType;
+    }
+
+    // 유틸 : 페이드 인
+    void PlayFadeIn(Action pCallback)
+    {
+        if (false == Single.UI.Show("Panel - FadeIn", pCallback))
+        {
+            if (null != pCallback)
+                pCallback();
+        }
+
+        SHCoroutine.Instance.NextUpdate(() => Single.UI.Close("Panel - FadeOut"));
+    }
+
+    // 유틸 : 페이드 아웃
+    void PlayFadeOut(Action pCallback)
+    {
+        if (false == Single.UI.Show("Panel - FadeOut", pCallback))
+        {
+            if (null != pCallback)
+                pCallback();
+        }
+
+        SHCoroutine.Instance.NextUpdate(() => Single.UI.Close("Panel - FadeIn"));
     }
     #endregion
 }

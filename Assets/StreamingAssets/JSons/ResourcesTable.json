@@ -1,12 +1,36 @@
 {
 	"ResourcesList": [
 		{
+			"s_Name": "Panel - FadeIn",
+			"s_FileName": "Panel - FadeIn.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "12776",
+			"s_Hash": "1FF0814CABB0CF1F97AF31365461C2F7",
+			"s_Path": "Prefab/UI/Panel - FadeIn"
+		},
+		{
+			"s_Name": "Panel - FadeOut",
+			"s_FileName": "Panel - FadeOut.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "12776",
+			"s_Hash": "D1A10768F6A390940DC1AE8F951D36BC",
+			"s_Path": "Prefab/UI/Panel - FadeOut"
+		},
+		{
 			"s_Name": "Panel - Notice",
 			"s_FileName": "Panel - Notice.prefab",
 			"s_Extension": ".prefab",
-			"s_Size": "28464",
-			"s_Hash": "7EE1875E3E06F48E7B3DADBEAF1E97F3",
+			"s_Size": "41476",
+			"s_Hash": "6A58C75F2A6AFCCD04A69E9F1AC58858",
 			"s_Path": "Prefab/UI/Panel - Notice"
+		},
+		{
+			"s_Name": "UI Root - Global",
+			"s_FileName": "UI Root - Global.prefab",
+			"s_Extension": ".prefab",
+			"s_Size": "10312",
+			"s_Hash": "F1EC28C9EA91FE25D92C975E1993EEC3",
+			"s_Path": "Prefab/UI/UI Root - Global"
 		}
 	]
 }

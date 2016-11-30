@@ -7,8 +7,24 @@ using System.Collections.Generic;
 public class SHCoroutine : SHSingleton<SHCoroutine>
 {
     #region Virtual Functions
-    public override void OnInitialize() { }
+    public override void OnInitialize()
+    {
+        SetDontDestroy();
+        Single.Scene.AddEventToChangeScene(OnEventToChangeScene);
+    }
     public override void OnFinalize() { }
+    public override void Awake() { }
+    public override void Start() { }
+    public override void OnDisable() { }
+    public override void OnDestroy() { }
+    #endregion
+
+
+    #region Event Handler
+    public void OnEventToChangeScene(eSceneType eCurrentScene, eSceneType eNextScene)
+    {
+        StopAllCoroutines();
+    }
     #endregion
 
 
@@ -101,17 +117,18 @@ public class SHCoroutine : SHSingleton<SHCoroutine>
 
     //yield return new AsyncOperation : 비동기 작업이 끝날 때 까지 대기 (씬로딩)
     //-----------------------------------------------
-    public AsyncOperation Async(Action<bool> pAction, AsyncOperation pAsync)
+    public AsyncOperation Async(Action pAction, AsyncOperation pAsync)
     {
         StartCoroutine(InvokeToAsync(pAction, pAsync));
         return pAsync;
     }
-    IEnumerator InvokeToAsync(Action<bool> pAction, AsyncOperation pAsync)
+    IEnumerator InvokeToAsync(Action pAction, AsyncOperation pAsync)
     {
-        yield return pAsync;
+        while((null != pAsync) && (false == pAsync.isDone))
+            yield return null;
 
         if (null != pAction)
-            pAction.Invoke(pAsync.isDone);
+            pAction.Invoke();
     }
     
 

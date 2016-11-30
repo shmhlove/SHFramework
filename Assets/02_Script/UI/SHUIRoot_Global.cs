@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class SHUIRoot : MonoBehaviour
+public class SHUIRoot_Global : MonoBehaviour
 {
     #region Members : Singleton
     private static Transform    m_pRoot     = null;
@@ -16,14 +16,11 @@ public class SHUIRoot : MonoBehaviour
         var pPanels = gameObject.GetComponentsInChildren<SHUIBasePanel>();
         SHUtils.ForToArray(pPanels, (pPanel) =>
         {
-            Single.UI.AddPanel(pPanel);
+            Single.UI.AddPanel(pPanel, false);
         });
 
-        if (null == m_pRoot)
-        {
-            m_pRoot   = transform;
-            m_pCamera = m_pRoot.GetComponentInChildren<UICamera>();
-        }
+        m_pRoot   = transform;
+        m_pCamera = m_pRoot.GetComponentInChildren<UICamera>();
     }
     void OnDestroy()
     {
@@ -33,10 +30,6 @@ public class SHUIRoot : MonoBehaviour
         m_pRoot   = null;
         m_pCamera = null;
     }
-    #endregion
-
-
-    #region Virtual Functions
     #endregion
 
 
@@ -50,13 +43,5 @@ public class SHUIRoot : MonoBehaviour
     {
         return m_pCamera;
     }
-    #endregion
-
-
-    #region Utility Functions
-    #endregion
-
-
-    #region Event Handler
     #endregion
 }

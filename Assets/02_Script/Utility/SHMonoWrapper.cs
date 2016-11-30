@@ -5,18 +5,18 @@ using System.Collections;
 public class SHMonoWrapper : MonoBehaviour
 {
     #region Members : Transform
-    public Vector3     m_vPosition         = Vector3.zero;
-    public Vector3     m_vLocalPosition    = Vector3.zero;
-    public Vector3     m_vLocalScale       = Vector3.zero;
-    public Quaternion  m_qRotate           = Quaternion.identity;
-    public Quaternion  m_qLocalRotate      = Quaternion.identity;
-    public bool?       m_eIsActive         = null;
+    [HideInInspector] public Vector3     m_vPosition         = Vector3.zero;
+    [HideInInspector] public Vector3     m_vLocalPosition    = Vector3.zero;
+    [HideInInspector] public Vector3     m_vLocalScale       = Vector3.zero;
+    [HideInInspector] public Quaternion  m_qRotate           = Quaternion.identity;
+    [HideInInspector] public Quaternion  m_qLocalRotate      = Quaternion.identity;
+    [HideInInspector] public bool?       m_eIsActive         = null;
     #endregion
 
 
     #region Members : Animation
-    public Animation   m_pAnim             = null;
-    public bool        m_bIsAnimPlaying    = false;
+    [HideInInspector] public Animation   m_pAnim             = null;
+    [HideInInspector] public bool        m_bIsAnimPlaying    = false;
     #endregion
 
 
@@ -27,11 +27,15 @@ public class SHMonoWrapper : MonoBehaviour
     }
     public virtual void Start()
     {
-        StopAllCoroutines();
+        
     }
     public virtual void OnDisable()
     {
         StopAllCoroutines();
+    }
+    public virtual void OnDestroy()
+    {
+
     }
     #endregion
 

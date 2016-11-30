@@ -52,12 +52,14 @@ public abstract class SHSingleton<T> : SHMonoWrapper where T : SHSingleton<T>
     // 시스템 : 생성(하이어라키에 올라간 싱글턴)
     public override void Awake()
     {
+        base.Awake();
         Initialize(this as T);
     }
 
     // 시스템 : 제거
-    public void OnDestroy()
+    public override void OnDestroy()
     {
+        base.OnDestroy();
         Destroyed();
     }
 
