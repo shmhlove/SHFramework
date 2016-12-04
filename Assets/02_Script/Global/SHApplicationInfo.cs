@@ -75,9 +75,12 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
     }
 
     // 시스템 : 업데이트
-    void Update()
+    public override void Update()
     {
         m_fDeltaTime += (Time.deltaTime - m_fDeltaTime) * 0.1f;
+
+        if (true == Input.GetKeyDown(KeyCode.Escape))
+            SHUtils.GameQuit();
     }
 
     // 시스템 : GUI 업데이트

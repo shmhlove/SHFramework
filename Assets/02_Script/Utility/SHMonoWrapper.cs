@@ -4,13 +4,9 @@ using System.Collections;
 
 public class SHMonoWrapper : MonoBehaviour
 {
-    #region Members : Transform
-    [HideInInspector] public Vector3     m_vPosition         = Vector3.zero;
-    [HideInInspector] public Vector3     m_vLocalPosition    = Vector3.zero;
-    [HideInInspector] public Vector3     m_vLocalScale       = Vector3.zero;
-    [HideInInspector] public Quaternion  m_qRotate           = Quaternion.identity;
-    [HideInInspector] public Quaternion  m_qLocalRotate      = Quaternion.identity;
-    [HideInInspector] public bool?       m_eIsActive         = null;
+    #region Members : Physics
+    [HideInInspector] public Vector3     m_vSpeed            = Vector3.zero;
+    [HideInInspector] public Vector3     m_vDirection        = Vector3.zero;
     #endregion
 
 
@@ -23,19 +19,36 @@ public class SHMonoWrapper : MonoBehaviour
     #region System Functions
     public virtual void Awake()
     {
-
     }
     public virtual void Start()
     {
-        
+    }
+    public virtual void OnEnable()
+    {
     }
     public virtual void OnDisable()
     {
-        StopAllCoroutines();
     }
     public virtual void OnDestroy()
     {
+    }
+    public virtual void Update()
+    {
+    }
+    public virtual void FixedUpdate()
+    {
+    }
+    public virtual void LateUpdate()
+    {
+    }
+    #endregion
 
+
+    #region Interface : Init Physics
+    public void InitPhysics()
+    {
+        m_vSpeed     = Vector3.zero;
+        m_vDirection = Vector3.zero;
     }
     #endregion
 
@@ -46,14 +59,11 @@ public class SHMonoWrapper : MonoBehaviour
         if (IsActive() == bIsActive)
             return;
         
-        gameObject.SetActive((m_eIsActive = bIsActive).Value);
+        gameObject.SetActive(bIsActive);
     }
     public bool IsActive()
     {
-        if (null == m_eIsActive)
-            m_eIsActive = gameObject.activeInHierarchy;
-
-        return m_eIsActive.Value;
+        return gameObject.activeInHierarchy;
     }
     #endregion
 
@@ -61,7 +71,7 @@ public class SHMonoWrapper : MonoBehaviour
     #region Interface : Position
     public void SetPosition(Vector3 vPos)
     {
-        gameObject.transform.position = m_vPosition = vPos;
+        gameObject.transform.position = vPos;
     }
     public void SetPositionX(float fX)
     {
@@ -77,7 +87,7 @@ public class SHMonoWrapper : MonoBehaviour
     }
     public void SetLocalPosition(Vector3 vPos)
     {
-        gameObject.transform.localPosition = m_vLocalPosition = vPos;
+        gameObject.transform.localPosition = vPos;
     }
     public void SetLocalPositionX(float fX)
     {
@@ -91,17 +101,29 @@ public class SHMonoWrapper : MonoBehaviour
         vPos.y = fY;
         SetLocalPosition(vPos);
     }
+    public void AddLocalPosition(Vector3 vPos)
+    {
+        gameObject.transform.localPosition = (GetLocalPosition() + vPos);
+    }
+    public void AddLocalPositionX(float fX)
+    {
+        Vector3 vPos = GetLocalPosition();
+        vPos.x += fX;
+        SetLocalPosition(vPos);
+    }
+    public void AddLocalPositionY(float fY)
+    {
+        Vector3 vPos = GetLocalPosition();
+        vPos.y += fY;
+        SetLocalPosition(vPos);
+    }
     public Vector3 GetPosition()
     {
-        return (Vector3.zero == m_vPosition) ?
-               (m_vPosition = gameObject.transform.position) :
-                m_vPosition;
+        return gameObject.transform.position;
     }
     public Vector3 GetLocalPosition()
     {
-        return (Vector3.zero == m_vLocalPosition) ?
-               (m_vLocalPosition = gameObject.transform.localPosition) :
-                m_vLocalPosition;
+        return gameObject.transform.localPosition;
     }
     #endregion
 
@@ -109,7 +131,7 @@ public class SHMonoWrapper : MonoBehaviour
     #region Interface : Scale
     public void SetLocalScale(Vector3 vScale)
     {
-        gameObject.transform.localScale = m_vLocalScale = vScale;
+        gameObject.transform.localScale = vScale;
     }
     public void SetLocalScaleZ(float fScale)
     {
@@ -119,9 +141,7 @@ public class SHMonoWrapper : MonoBehaviour
     }
     public Vector3 GetLocalScale()
     {
-        return (Vector3.zero == m_vLocalScale) ?
-               (m_vLocalScale = gameObject.transform.localScale) :
-                m_vLocalScale;
+        return gameObject.transform.localScale;
     }
     public bool IsZero2Scale()
     {
@@ -134,85 +154,86 @@ public class SHMonoWrapper : MonoBehaviour
     #region Interface : Rotate
     public void SetRotate(Vector3 vRotate)
     {
-        m_qRotate.eulerAngles = vRotate;
-        SetRotate(m_qRotate);
+        var pRotation = GetRotate();
+        pRotation.eulerAngles = vRotate;
+        SetRotate(pRotation);
     }
     public void SetRotate(Quaternion qRotate)
     {
-        gameObject.transform.rotation = m_qRotate = qRotate;
+        gameObject.transform.rotation = qRotate;
     }
     public void SetLocalRotate(Vector3 vRotate)
     {
-        m_qLocalRotate.eulerAngles = vRotate;
-        SetLocalRotate(m_qLocalRotate);
+        var pRotation = GetLocalRotate();
+        pRotation.eulerAngles = vRotate;
+        SetLocalRotate(pRotation);
     }
     public void SetLocalRotate(Quaternion qRotate)
     {
-        gameObject.transform.localRotation = m_qLocalRotate = qRotate;
+        gameObject.transform.localRotation = qRotate;
     }
-    public void SetRoll(float fValue)
+    public void SetRotateZ(float fValue)
     {
         Quaternion  qRot = GetLocalRotate();
         Vector3     vRet = qRot.eulerAngles;
         vRet.z = fValue;
         SetLocalRotate(vRet);
     }
-    public void AddRoll(float fValue)
+    public void AddRotateZ(float fValue)
     {
-        SetRoll(GetRoll() + fValue);
+        SetRotateZ(GetRotateZ() + fValue);
     }
-    public float GetRoll()
+    public float GetRotateZ()
     {
         return GetLocalRotate().eulerAngles.z;
     }
-    public void SetPitch(float fValue)
+    public void SetRotateX(float fValue)
     {
         Quaternion  qRot = GetLocalRotate();
         Vector3     vRet = qRot.eulerAngles;
         vRet.x = fValue;
         SetLocalRotate(vRet);
     }
-    public void AddPitch(float fValue)
+    public void AddRotateX(float fValue)
     {
-        SetPitch(GetPitch() + fValue);
+        SetRotateX(GetRotateX() + fValue);
     }
-    public float GetPitch()
+    public float GetRotateX()
     {
         return GetLocalRotate().eulerAngles.x;
     }
-    public void SetYaw(float fValue)
+    public void SetRotateY(float fValue)
     {
         Quaternion  qRot = GetLocalRotate();
         Vector3     vRet = qRot.eulerAngles;
         vRet.y = fValue;
         SetLocalRotate(vRet);
     }
-    public void AddYaw(float fValue)
+    public void AddRotateY(float fValue)
     {
-        SetYaw(GetYaw() + fValue);
+        SetRotateY(GetRotateY() + fValue);
     }
-    public float GetYaw()
+    public float GetRotateY()
     {
         return GetLocalRotate().eulerAngles.y;
     }
     public Quaternion GetRotate()
     {
-        return (Quaternion.identity == m_qRotate) ?
-               (m_qRotate = gameObject.transform.rotation) :
-                m_qRotate;
+        return gameObject.transform.rotation;
     }
     public Quaternion GetLocalRotate()
     {
-        return (Quaternion.identity == m_qLocalRotate) ?
-               (m_qLocalRotate = gameObject.transform.localRotation) :
-                m_qLocalRotate;
+        return gameObject.transform.localRotation;
     }
     #endregion
 
 
     #region Interface : Animation
-    public void PlayAnim(eDirection eDir, GameObject pObject, AnimationClip pClip, Action pEndCallback)
+    public void PlayAnim(eDirection ePlayDir, GameObject pObject, AnimationClip pClip, Action pEndCallback)
     {
+        if (null == pObject)
+            pObject = gameObject;
+
         if (null == pClip)
         {
             if (null != pEndCallback)
@@ -220,15 +241,22 @@ public class SHMonoWrapper : MonoBehaviour
             return;
         }
 
-        var pAnim = CreateAnimation(pObject);
+        if (false == pObject.activeInHierarchy)
+        {
+            if (null != pEndCallback)
+                pEndCallback();
+            return;
+        }
+
+        var pAnim = GetAnimation(pObject);
         if (null == pAnim.GetClip(pClip.name))
             pAnim.AddClip(pClip, pClip.name);
 
         if (1.0f == Time.timeScale)
         {
             var pState = pAnim[pClip.name];
-            pState.normalizedTime = (eDirection.Front == eDir) ? 0.0f :  1.0f;
-            pState.speed          = (eDirection.Front == eDir) ? 1.0f : -1.0f;
+            pState.normalizedTime = (eDirection.Front == ePlayDir) ? 0.0f :  1.0f;
+            pState.speed          = (eDirection.Front == ePlayDir) ? 1.0f : -1.0f;
 
             pAnim.Stop();
             pAnim.Play(pClip.name);
@@ -238,7 +266,7 @@ public class SHMonoWrapper : MonoBehaviour
         }
         else
         {
-            switch (eDir)
+            switch (ePlayDir)
             {
                 case eDirection.Front:
                     StartCoroutine(CoroutinePlayAnim_UnScaledForward(pObject, pAnim[pClip.name], pEndCallback));
@@ -249,7 +277,6 @@ public class SHMonoWrapper : MonoBehaviour
             }
         }
     }
-
     private IEnumerator CoroutinePlayAnim_WaitTime(float fSec, Action pCallback)
     {
         yield return new WaitForSeconds(fSec);
@@ -257,7 +284,6 @@ public class SHMonoWrapper : MonoBehaviour
         if (null != pCallback)
             pCallback();
     }
-
     private IEnumerator CoroutinePlayAnim_UnScaledForward(GameObject pObject, AnimationState pState, Action pEndCallback)
     {
         m_bIsAnimPlaying = true;
@@ -334,7 +360,7 @@ public class SHMonoWrapper : MonoBehaviour
 
 
     #region Utility Functions
-    Animation CreateAnimation(GameObject pObject = null)
+    Animation GetAnimation(GameObject pObject = null)
     {
         if (null != m_pAnim)
             return m_pAnim;

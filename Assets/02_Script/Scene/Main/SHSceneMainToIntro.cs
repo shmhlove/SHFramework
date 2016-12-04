@@ -13,7 +13,6 @@ public class SHSceneMainToIntro : SHMonoWrapper
     {
         base.Start();
         Single.AppInfo.CreateSingleton();
-        Single.UI.Show("Panel - Intro", (Action)OnEventToNextScene);
 	}
     #endregion
     
@@ -21,7 +20,7 @@ public class SHSceneMainToIntro : SHMonoWrapper
     #region Event Handler
     void OnEventToNextScene()
     {
-        Single.Scene.GoTo(eSceneType.Login);
+        Single.Scene.GoTo(eSceneType.InGame);
     }
     #endregion
 }

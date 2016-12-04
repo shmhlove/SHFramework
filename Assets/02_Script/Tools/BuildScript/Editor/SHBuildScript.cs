@@ -114,7 +114,7 @@ class SHBuildScript
         {
             case eNationType.Korea:
                 // ClinetConfiguration파일 업데이트( CDN 주소 )
-                WriteClientConfiguration(GetURLToConfigurationCDNOfKorea(eMode), eMode);
+                WriteClientConfiguration(GetURLToConfigurationCDNOfKorea(), eMode);
                 break;
         }
     }
@@ -200,9 +200,9 @@ class SHBuildScript
     }
 
     // 유틸 : 한국 ServerConfiguration CDN 주소
-    static string GetURLToConfigurationCDNOfKorea(eServiceMode eMode)
+    static string GetURLToConfigurationCDNOfKorea()
     {
-        return string.Format("{0}/{1}", "http://blueasa.synology.me/home/shmhlove/KOR", eMode);
+        return string.Format("{0}/{1}", "http://blueasa.synology.me/home/shmhlove/KOR", Application.productName);
     }
     
     // 후처리

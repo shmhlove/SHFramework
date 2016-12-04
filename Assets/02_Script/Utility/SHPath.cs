@@ -12,25 +12,29 @@ public static partial class SHPath
     // 경로 : 서버 URL
     public static string GetURLToServer()
     {
-        return Single.Table.GetServerURL();
+        return string.Empty;
+        //return Single.Table.GetServerURL();
     }
 
     // 경로 : Configuration CDN 주소
     public static string GetURLToServerConfigurationCDN()
     {
-        return Single.Table.GetServerConfigurationCDN();
+        return string.Empty;
+        //return Single.Table.GetServerConfigurationCDN();
     }
     
     // 경로 : 번들 CDN 주소
     public static string GetURLToBundleCDN()
     {
-        return Single.Table.GetBundleCDN();
+        return string.Empty;
+        //return Single.Table.GetBundleCDN();
     }
 
     // 경로 : 번들 CDN/플랫폼식별자 주소
     public static string GetURLToBundleCDNWithPlatform()
     {
-        return string.Format("{0}/{1}", GetURLToBundleCDN(), Single.AppInfo.GetStrToRuntimePlatform());
+        return string.Empty;
+        //return string.Format("{0}/{1}", GetURLToBundleCDN(), Single.AppInfo.GetStrToRuntimePlatform());
     }
     
     // 경로 : (Root)

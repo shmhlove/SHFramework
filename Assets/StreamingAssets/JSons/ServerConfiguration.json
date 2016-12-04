@@ -8,7 +8,7 @@
         {
             "ClientVersion":          "1.0.0",
             "GameServerURL":          "",
-            "BundleCDN":              "http://blueasa.synology.me/Dev",
+            "BundleCDN":              "",
             "CheckMessage":           "0시부터 0시까지 점검입니다.",
             "ServiceState":           "Run"
         },
@@ -16,7 +16,7 @@
         {
             "ClientVersion":          "1.0.0",
             "GameServerURL":          "",
-            "BundleCDN":              "http://blueasa.synology.me/Dev",
+            "BundleCDN":              "",
             "CheckMessage":           "0시부터 0시까지 점검입니다.",
             "ServiceState":           "Run"
         },
@@ -24,7 +24,7 @@
         {
             "ClientVersion":          "1.0.0",
             "GameServerURL":          "",
-            "BundleCDN":              "http://blueasa.synology.me/Dev",
+            "BundleCDN":              "",
             "CheckMessage":           "0시부터 0시까지 점검입니다.",
             "ServiceState":           "Run"
         },
@@ -32,7 +32,7 @@
         {
             "ClientVersion":          "1.0.0",
             "GameServerURL":          "",
-            "BundleCDN":              "http://blueasa.synology.me/Dev",
+            "BundleCDN":              "",
             "CheckMessage":           "0시부터 0시까지 점검입니다.",
             "ServiceState":           "Run"
         },
@@ -40,7 +40,7 @@
         {
             "ClientVersion":          "1.0.0",
             "GameServerURL":          "",
-            "BundleCDN":              "http://blueasa.synology.me/Dev",
+            "BundleCDN":              "",
             "CheckMessage":           "0시부터 0시까지 점검입니다.",
             "ServiceState":           "Run"
         },
@@ -50,7 +50,7 @@
         "Description_ServiceState_List":
         [
             "Run",
-            "Check"
+            "Check",
 			"ConnectMarket",
         ]
     }

@@ -88,7 +88,11 @@ public class SHCoroutine : SHSingleton<SHCoroutine>
     }
     IEnumerator InvokeToWaitTime(Action pAction, float fDelay)
     {
-        yield return new WaitForSeconds(fDelay);
+        if (0.0f >= fDelay)
+            yield return null;
+        else
+            yield return new WaitForSeconds(fDelay);
+
         pAction.Invoke();
     }
     
@@ -147,4 +151,30 @@ public class SHCoroutine : SHSingleton<SHCoroutine>
         pAction.Invoke();
     }
     #endregion
+
+
+    // StartCoroutine(pRoutine) : 코루틴 함수를 실행시켜준다.
+    // Stop 기능이 필요해서 Routine을 저장해두고 Stop처리할 수 있도록
+    //-----------------------------------------------
+    Dictionary<string, IEnumerator> m_pRoutines = new Dictionary<string, IEnumerator>();
+    public void Routine(string strKey, IEnumerator pRoutine)
+    {
+        if (true == IsRunRoutine(strKey))
+            return;
+
+        StartCoroutine(pRoutine);
+        m_pRoutines.Add(strKey, pRoutine);
+    }
+    public void StopRoutine(string strKey)
+    {
+        if (false == IsRunRoutine(strKey))
+            return;
+        
+        StopCoroutine(m_pRoutines[strKey]);
+        m_pRoutines.Remove(strKey);
+    }
+    public bool IsRunRoutine(string strKey)
+    {
+        return m_pRoutines.ContainsKey(strKey);
+    }
 }

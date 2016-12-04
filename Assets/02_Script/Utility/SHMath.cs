@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using System;
+using System.Linq;
 using System.Collections;
+using System.Collections.Generic;
 
-public static partial class SHMath
+public static class SHMath
 {
     // 소수점 자르기
     public static float Round(float fValue, int iOmit)
@@ -136,4 +139,43 @@ public static partial class SHMath
         return iCur;
     }
 
+    // Random
+    public static float Random(int iMin, int iMax)
+    {
+        return UnityEngine.Random.Range(iMin, iMax);
+    }
+    public static float Random(float fMin, float fMax)
+    {
+        return UnityEngine.Random.Range(fMin, fMax);
+    }
+    public static T RandomN<T>(List<T> pItems)
+    {
+        if ((null == pItems) || (0 == pItems.Count))
+            return default(T);
+
+        return pItems[UnityEngine.Random.Range(0, pItems.Count)];
+    }
+    public static T RandomW<T>(List<T> pItems, List<float> pWeight)
+    {
+        if ((null == pItems) || (0 == pItems.Count))
+            return default(T);
+
+        if ((null == pWeight) || (0 == pWeight.Count))
+            return RandomN(pItems);
+        
+        var pSubSums = new List<float>(pWeight.Count);
+        var pSum = pWeight.Aggregate(0.0f, (fAcc, fValue) =>
+        {
+            fAcc += fValue;
+            pSubSums.Add(fAcc);
+            return fAcc;
+        });
+
+        var fSelect = Random(0.0f, pSum);
+        return pItems[pSubSums.FindIndex(fSum => (fSelect < fSum))];
+    }
+    public static bool RandomTrue()
+    {
+        return (0 == Random(0, 2));
+    }
 }

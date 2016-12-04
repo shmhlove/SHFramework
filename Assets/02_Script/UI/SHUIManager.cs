@@ -16,7 +16,7 @@ public partial class SHUIManager : SHSingleton<SHUIManager>
     {
         SetDontDestroy();
         Single.Scene.AddEventToChangeScene(OnEventToChangeScene);
-        SHGameObject.SetParent(Single.Resource.GetGameObject("UI Root - Global"), gameObject);
+        SHGameObject.SetParent(Single.Resource.GetGameObject("UIRoot_Global"), gameObject);
     }
     public override void OnFinalize()
     {
@@ -45,29 +45,29 @@ public partial class SHUIManager : SHSingleton<SHUIManager>
 
         pPanel.Initialize(bIsActive);
     }
-    public bool Show(string strName, params object[] pArgs)
+    public SHUIBasePanel Show(string strName, params object[] pArgs)
     {
         var pPanel = GetPanel(strName);
         if (null == pPanel)
         {
             Debug.LogErrorFormat("Show() - No Exist Panel(Name : {0})", strName);
-            return false;
+            return null;
         }
         
         pPanel.Show(pArgs);
-        return true;
+        return pPanel;
     }
-    public bool Close(string strName)
+    public SHUIBasePanel Close(string strName)
     {
         var pPanel = GetPanel(strName);
         if (null == pPanel)
         {
             Debug.LogErrorFormat("Close() - No Exist Panel(Name : {0})", strName);
-            return false;
+            return null;
         }
 
         pPanel.Close();
-        return true;
+        return pPanel;
     }
     public bool IsExistPanel(string strName)
     {
@@ -89,7 +89,9 @@ public partial class SHUIManager : SHSingleton<SHUIManager>
     {
         if (false == m_dicPanels.ContainsKey(strName))
         {
-            AddPanel(Single.Resource.GetObjectComponent<SHUIBasePanel>(strName), false);
+            AddPanel(
+                Single.ObjectPool.Get<SHUIBasePanel>(strName, 
+                ePoolReturnType.None, ePoolDestroyType.None), false);
         }
 
         if (false == m_dicPanels.ContainsKey(strName))
@@ -140,7 +142,7 @@ public partial class SHUIManager : SHSingleton<SHUIManager>
     #region Temp Functions
     public void ShowNotice_NoMake()
     {
-        Show("Panel - Notice", new NoticeUI_Param()
+        Show("Panel_Notice", new NoticeUI_Param()
         {
             m_eButtonType   = eNoticeButton.One,
             m_eIconType     = eNoticeIcon.Information,

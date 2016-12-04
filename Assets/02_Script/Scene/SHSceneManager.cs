@@ -32,6 +32,8 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
 
     // 이벤트
     private EventList       m_pEventToChangeScene = new EventList();
+
+    public bool             m_bIsChanging     = false;
     #endregion
 
 
@@ -148,7 +150,7 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
             if (true == IsNeedLoading(eType))
                 LoadScene(eSceneType.Loading, (bIsSuccess) => PlayFadeOut(null));
             else
-                LoadScene(eType, (bIsSuccess) => PlayFadeOut(null));
+                LoadScene(eType,              (bIsSuccess) => PlayFadeOut(null));
         });
     }
 
@@ -228,25 +230,25 @@ public class SHSceneManager : SHSingleton<SHSceneManager>
     // 유틸 : 페이드 인
     void PlayFadeIn(Action pCallback)
     {
-        if (false == Single.UI.Show("Panel - FadeIn", pCallback))
+        if (false == Single.UI.Show("Panel_FadeIn", pCallback))
         {
             if (null != pCallback)
                 pCallback();
         }
 
-        SHCoroutine.Instance.NextUpdate(() => Single.UI.Close("Panel - FadeOut"));
+        SHCoroutine.Instance.NextUpdate(() => Single.UI.Close("Panel_FadeOut"));
     }
 
     // 유틸 : 페이드 아웃
     void PlayFadeOut(Action pCallback)
     {
-        if (false == Single.UI.Show("Panel - FadeOut", pCallback))
+        if (false == Single.UI.Show("Panel_FadeOut", pCallback))
         {
             if (null != pCallback)
                 pCallback();
         }
 
-        SHCoroutine.Instance.NextUpdate(() => Single.UI.Close("Panel - FadeIn"));
+        SHCoroutine.Instance.NextUpdate(() => Single.UI.Close("Panel_FadeIn"));
     }
     #endregion
 }

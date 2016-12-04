@@ -7,6 +7,7 @@ public class SHUIBasePanel : SHMonoWrapper
     #region Members
     [Header("BaseInfo")]
     [SerializeField] public  eObjectDestoryType  m_eDestroyType = eObjectDestoryType.ChangeScene;
+    [SerializeField] public  bool                m_bStartEnable = true;
     [SerializeField] private GameObject          m_pAnimRoot    = null;
     [SerializeField] private AnimationClip       m_pAnimToOpen  = null;
     [SerializeField] private AnimationClip       m_pAnimToClose = null;

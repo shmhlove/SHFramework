@@ -34,8 +34,10 @@ public class SHNativeInputManager : SHSingleton<SHNativeInputManager>
     public override void OnInitialize() { }
     public override void OnFinalize() { }
 
-    void Update()
+    public override void Update()
     {
+        base.Update();
+
         // Mobile
         if (0 < Input.touchCount)
         {

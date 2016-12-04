@@ -22,8 +22,10 @@ public partial class SHRenderTextureManager : SHSingleton<SHRenderTextureManager
     }
 
     // 시스템 : 프레임 업데이트
-    public void Update()
+    public override void Update()
     {
+        base.Update();
+
         foreach (SHRenderInfo pInfo in m_pRenderInfo)
         {
             // 참조카운트 체크 후 초기화 처리

@@ -479,7 +479,6 @@ public static partial class SHUtils
     #endregion
 }
 
-
 public class SHPair<T1, T2>
 {
     public T1 Value1;

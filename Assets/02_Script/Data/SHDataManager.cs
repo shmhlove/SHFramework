@@ -59,8 +59,10 @@ public class SHDataManager : SHSingleton<SHDataManager>
 
     #region System Functions
     // 시스템 : 업데이트
-    public void FixedUpdate()
+    public override void FixedUpdate()
     {
+        base.FixedUpdate();
+
         TableData.FrameMove();
         ResourcesData.FrameMove();
         AssetBundleData.FrameMove();
