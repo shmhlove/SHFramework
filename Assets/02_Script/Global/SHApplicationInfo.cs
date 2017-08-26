@@ -102,7 +102,6 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
         SetApplicationInfo();
 
         // 디버그 기능
-        StartCoroutine(PrintGameInfo());
         StartCoroutine(CheckReleaseTime());
     }
 
@@ -174,7 +173,7 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
     // 인터페이스 : 앱 이름
     public string GetAppName()
     {
-        return Application.bundleIdentifier.Split('.')[2];
+        return Application.identifier.Split('.')[2];
     }
 
     // 인터페이스 : 시스템 언어
@@ -289,25 +288,6 @@ public partial class SHApplicationInfo : SHSingleton<SHApplicationInfo>
         //    SetFrameRate(GetFrameRate() + 1);
         //if (true == GUI.Button(new Rect(GetRatioW(150), GetRatioH(50), GetRatioW(150), GetRatioH(50)), string.Format("Down RenderFrame : {0}", GetFrameRate())))
         //    SetFrameRate(GetFrameRate() - 1);
-    }
-
-    // 디버그 : 게임정보 출력
-    IEnumerator PrintGameInfo()
-    {
-        if (null == m_pDebugText)
-            yield break;
-
-        yield return new WaitForSeconds(1.0f);
-
-        Profiler.BeginSample("CheckMemory");
-
-        float fMemory       = Profiler.GetTotalAllocatedMemory() / 1024.0f / 1024.0f;
-        m_pDebugText.text        = string.Format("UsedMemory : {0:F2}MB\nFPS : {1:F2}", fMemory, (1.0f / m_fDeltaTime));
-        m_pDebugText.fontSize    = GetRatioW(20);
-        m_pDebugText.pixelOffset = new Vector2(0.0f, Screen.height * 0.7f);
-
-        Profiler.EndSample();
-        StartCoroutine(PrintGameInfo());
     }
 
     // 디버그 : 배포제한시간 체크
